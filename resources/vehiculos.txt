@@ -1,0 +1,10 @@
+2G1FC1E33F9102345	Chevrolet	Camaro	Rojo	Automóvil	2007
+1J4FB33E73Y123456	Ford	Focus	Azul	Automóvil	1999
+3N1AB7E34F9203456	Toyota	Corolla	Blanco	Automóvil	2009
+4M3AB7E35F9304567	Nissan	Sentra	Gris	Automóvil	1987
+5J8TB33E63Y123456	Honda	Civic	Negro	Automóvil	2010
+6F8WB33E64Y123456	Volkswagen	Jetta	Azul marino	Automóvil	1994
+7G1WB33E65Y123456	Kia	Sportage	Gris plata	Camioneta	2024
+8N1WB33E66Y123456	Hyundai	Tucson	Blanco	Camioneta	1998
+9F1WB33E67Y123456	Jeep	Grand Cherokee	Negro	Camioneta	2015
+10G1WB33E68Y123456	BMW	X5	Azul	Camioneta	1993

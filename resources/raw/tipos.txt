@@ -1,0 +1,8 @@
+Alimentos
+Bebidas
+Artículos de aseo personal
+Artículos de limpieza
+Medicamentos y productos farmaceuticos
+Papelería
+Artículos domésticos
+Suministros electrónicos

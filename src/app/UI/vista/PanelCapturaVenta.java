@@ -45,7 +45,7 @@ public class PanelCapturaVenta extends JPanel {
 	private JScrollPane tablePanel;
 	
 	private String[] columnNames = {
-		"Codigo", "Precio", "Cantidad", "Total"
+		"Codigo", "Cantidad", "Precio", "Total"
 	};
 	
 	public PanelCapturaVenta(Catalogo catalogo, Clientes clientes) {
@@ -96,6 +96,7 @@ public class PanelCapturaVenta extends JPanel {
 		gbc_agregarButton.gridx = 2;
 		gbc_agregarButton.gridy = 0;
 		topPanel.add(agregarButton, gbc_agregarButton);
+		agregarButton.addActionListener(e -> agregarProducto(codigoField.getText()));
 		
 		tablePanel = new JScrollPane();
 		add(tablePanel, BorderLayout.CENTER);
@@ -107,17 +108,23 @@ public class PanelCapturaVenta extends JPanel {
 				return false;
 			}
 		};
+		productsTable.setModel(model);
 		tablePanel.setViewportView(productsTable);
 	}
 	
 	
 	public void agregarProducto(String codigo) {
 		Producto producto = catalogo.get(codigo);
-		if(producto != null) {
-			DetallesVenta detalles = new DetallesVenta(codigo, producto.getPrecioVenta(), (int)cantidadSpin.getValue());
-			agregarList(detalles, producto);
-		} else {
+		
+		if(producto == null) {
 			JOptionPane.showMessageDialog(null, "No existe el producto");
+		}
+		else if(producto.getStockActual() <= producto.getStockMinimo()) {
+			JOptionPane.showMessageDialog(null, "No hay existencias");
+		} else {
+			DetallesVenta detalles = new DetallesVenta(codigo, producto.getPrecioVenta(), (int)cantidadSpin.getValue());
+			System.out.println("spinner: " + (int)cantidadSpin.getValue());
+			agregarList(detalles, producto);
 		}
 	}
 	
@@ -125,10 +132,18 @@ public class PanelCapturaVenta extends JPanel {
 	public void agregarList(DetallesVenta detalles, Producto producto) {
 		if(lista.contains(detalles)) {
 			int cantidadTotal = lista.get(lista.indexOf(detalles)).getCantidad() + detalles.getCantidad();
-			if(producto.getStockActual() - cantidadTotal > producto.getStockMinimo()) {
-				detalles.setCantidad(cantidadTotal);				
+			if(producto.getStockActual() - cantidadTotal >= producto.getStockMinimo()) {
+				lista.get(lista.indexOf(detalles)).setCantidad(cantidadTotal);
+				
+				System.out.println(cantidadTotal);
+				System.out.println(lista.get(lista.indexOf(detalles)).getCantidad());
+				
+				System.out.println("sumar cantidad");
+			}else {
+				JOptionPane.showMessageDialog(null, "No hay existencias");
 			}
 		} else {
+			System.out.println("nuevo elemento");
 			lista.add(detalles);
 		}
 		updateTable();
@@ -139,7 +154,14 @@ public class PanelCapturaVenta extends JPanel {
 		double total = lista.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
 		LocalDate fecha = LocalDate.now();
 		Venta venta = new Venta(total, fecha.toString(), lista);
+		lista.forEach(detalle -> {
+			Producto p = catalogo.get(detalle.getCodigo());
+			p.setStockActual(p.getStockActual() - detalle.getCantidad());
+		});
+			
 		clientes.add(venta);
+		lista.clear();
+		updateTable();
 	}
 	
 	

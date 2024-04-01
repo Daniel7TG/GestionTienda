@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import app.interfaces.Funcionable;
 import app.modelos.Clientes;
+import app.util.Util;
 
 public class PanelListadoVentas extends JPanel {
 
@@ -36,7 +37,7 @@ public class PanelListadoVentas extends JPanel {
 		setLayout(new GridLayout(1, 1, 0, 0));
 
 		this.clientes = clientes;		
-		String[][] data = clientes.getData();
+		Object[][] data = Util.anyToString(clientes.getList());
 		model = new DefaultTableModel(data, columnNames) {
 			@Override
 			public boolean isCellEditable(int row, int column){

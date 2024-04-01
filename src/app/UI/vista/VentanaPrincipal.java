@@ -68,6 +68,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelCapturaVenta capturaVentaPane;
 	private JButton registrarVentButton;
 	private JButton listarVentButton;
+	private PanelListadoVentas listadoVentasPane;
 	// Fin Clientes
 	
 	// Proveedores
@@ -116,6 +117,7 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal() {
 		font = new Font("Montserrat", Font.BOLD, 13);
 		catalogo = new Catalogo();
+		clientes = new Clientes();
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
 			public void paint(Graphics g){
@@ -227,6 +229,9 @@ public class VentanaPrincipal extends JFrame {
 			regVentaFunc();
 		});
 		listarVentButton = panelMenuVenta.getListarButton();
+		listarVentButton.addActionListener(e->{
+			listVentFunc();
+		});
 		contentPane.add(panelMenuVenta, BorderLayout.WEST);
 		revalidate();
 	}
@@ -250,6 +255,24 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuVenta, false);
 		revalidate();
+	}
+	
+	
+	public void listVentFunc() {
+		listadoVentasPane = new PanelListadoVentas(clientes);
+		panelEncabezados = new PanelEncabezados("Listado de Ventas");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
+		
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(e->{
+			cancelButton(panelEncabezados, panelMenuVenta, listadoVentasPane, panelOpciones);
+		});
+
+		panelEncabezados.add(listadoVentasPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuVenta , false);
+		revalidate();	
 	}
 	
 	// Inventario
@@ -391,6 +414,7 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.removeAll();
 		panelMenuProductos = null;
 		panelMenuCompra = null;
+		panelMenuVenta = null;
 		repaint();
 	}
 	

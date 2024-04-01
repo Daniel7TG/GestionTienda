@@ -104,34 +104,16 @@ public class Util {
 		
 		Class clazz = list.get(0).getClass();
 		Field[] fields = clazz.getDeclaredFields();
-		
 		Object[][] matriz = new Object[list.size()][fields.length];
-		
 		for(int i = 0; i < list.size(); i++) {
 			for(int j = 0; j < fields.length; j++) {
 				try {
 					matriz[i][j] = getGetter(fields[j], clazz).invoke((list.get(i)));
 				} catch (IllegalArgumentException |IllegalAccessException |InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-//				try {
-//					if(fields[j].getType() == int.class | fields[j].getType() == double.class) {
-//						matriz[i][j] = String.valueOf( fields[j].get(list.get(i)));
-//					}
-//					else if(fields[j].getType() == ArrayList.class) {
-//						
-//					}
-//					else {
-//						matriz[i][j] = fields[j].get(list.get(i));
-//					}
-//				} catch (IllegalArgumentException | IllegalAccessException e) {
-//					e.printStackTrace();
-//				}
 			}
 		}
-		
 		return matriz;
 	}
 	

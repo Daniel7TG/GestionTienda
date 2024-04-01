@@ -64,6 +64,7 @@ public class PanelCapturaProductos extends JPanel {
 	private JTextField marcaField;
 	private JTextField contenidoField;
 	private JTextField descripcionField;
+	private JTextField precioField;
 	private JComboBox<Integer> maximoBox;
 	private JComboBox<Integer> minimoBox;
 	private JComboBox<String> tipoBox;
@@ -297,8 +298,7 @@ public class PanelCapturaProductos extends JPanel {
 		gbc_presentacion.anchor = GridBagConstraints.EAST;
 		gbc_presentacion.gridx = 0;
 		gbc_presentacion.gridy = 3;
-		add(presentacion, gbc_presentacion);
-		
+		add(presentacion, gbc_presentacion);	
 		presentacionBox = new JComboBox<String>();
 		GridBagConstraints gbc_presentacionBox = new GridBagConstraints();
 		gbc_presentacionBox.insets = new Insets(0, 0, 5, 5);
@@ -307,6 +307,30 @@ public class PanelCapturaProductos extends JPanel {
 		gbc_presentacionBox.gridy = 3;
 		add(presentacionBox, gbc_presentacionBox);
 		presentacionBox.addItemListener(focusBox);
+
+		
+		JLabel precio = new JLabel("Precio de Venta");
+		GridBagConstraints gbc_precio = new GridBagConstraints();
+		gbc_precio.insets = new Insets(0, 0, 5, 5);
+		gbc_precio.fill = GridBagConstraints.VERTICAL;
+		gbc_precio.anchor = GridBagConstraints.EAST;
+		gbc_precio.gridx = 2;
+		gbc_precio.gridy = 3;
+		add(precio, gbc_precio);	
+		precioField = new JTextField();
+		precioField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(!Character.isDigit(e.getKeyChar()) & e.getKeyChar() != '.') e.consume();
+			}
+		});
+		GridBagConstraints gbc_precioField = new GridBagConstraints();
+		gbc_precioField.insets = new Insets(0, 0, 5, 5);
+		gbc_precioField.fill = GridBagConstraints.BOTH;
+		gbc_precioField.gridx = 3;
+		gbc_precioField.gridy = 3;
+		add(precioField, gbc_precioField);
+		precioField.addActionListener(focusField);
 
 		
 		JLabel stockMaximo = new JLabel("Stock Maximo");
@@ -419,6 +443,7 @@ public class PanelCapturaProductos extends JPanel {
 				medidaBox,
 				presentacionBox,
 				descripcionField,
+				precioField,
 				codigoDeBarras,
 				nombre,
 				marca,
@@ -428,7 +453,8 @@ public class PanelCapturaProductos extends JPanel {
 				presentacion,
 				stockMaximo, 
 				stockMinimo,
-				descripcion
+				descripcion,
+				precio
 		}, new GridBagConstraints[] {
 				gbc_codigoBarrasField,
 				gbc_nombreField,
@@ -441,6 +467,7 @@ public class PanelCapturaProductos extends JPanel {
 				gbc_medidaBox,
 				gbc_presentacionBox,
 				gbc_descripcionField,
+				gbc_precioField,
 				gbc_codigoDeBarras,
 				gbc_nombre,
 				gbc_marca,
@@ -450,8 +477,9 @@ public class PanelCapturaProductos extends JPanel {
 				gbc_presentacion,
 				gbc_stockMaximo, 
 				gbc_stockMinimo,
-				gbc_descripcion
-				}
+				gbc_descripcion,
+				gbc_precio
+		}
 		);
 		
     	
@@ -514,7 +542,8 @@ public class PanelCapturaProductos extends JPanel {
 					presentacionBox.getSelectedItem().toString(),
 					(Integer)maximoBox.getSelectedItem(),
 					(Integer)minimoBox.getSelectedItem(),
-					descripcionField.getText()
+					descripcionField.getText(),
+					Double.valueOf(precioField.getText())
 					);	
 			reiniciarCaptura();
 		}
@@ -545,6 +574,7 @@ public class PanelCapturaProductos extends JPanel {
 		maximoBox.setSelectedIndex(0);
 		minimoBox.setSelectedIndex(0);
 		descripcionField.setText("");
+		precioField.setText("");
 		imageLabel.setIcon(null);
 	}
 	
@@ -554,7 +584,6 @@ public class PanelCapturaProductos extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			((JTextField)e.getSource()).transferFocus();
 		}
-		
 	}
 	static class FocusBox implements ItemListener {
 		@Override

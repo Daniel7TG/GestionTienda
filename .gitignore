@@ -1,3 +1,4 @@
 bin
 .settings
 .classpath
+src/app/util/MainTests.java

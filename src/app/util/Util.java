@@ -1,6 +1,10 @@
 package app.util;
 
 import java.awt.Image;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -15,8 +19,18 @@ public class Util {
 	public static final String RUTAIMG = "C:\\Users\\odtgo\\Desktop\\javaPrograma\\img";
 	
 
+	public static String capitalizeCammel(String text) {
+		String initial = text.substring(0, 1).toUpperCase();
+		String complete;
+		if(text.length() > 1) {
+			complete = text.substring(1, text.length());
+		} else {
+			complete = "";
+		}
+		return initial + complete;		
+	}
+	
 	public static String capitalize(String text) {
-		
 		String[] subStrings = text.split(" ");
 		int i = 0; 
 		for(String item : subStrings) {
@@ -29,7 +43,6 @@ public class Util {
 		}
 		String cadenaFinal = String.join(" ", subStrings);
 		return cadenaFinal;
-		
 	}
 
 	
@@ -83,8 +96,60 @@ public class Util {
 			matriz[i][8] = list.get(i).getPresentacion();
 			matriz[i][9] = list.get(i).getDescripcion();
 		}
-		return matriz;
-		
+		return matriz;	
 	}
+	
+	public static <T> Object[][] anyToString(List<T> list){
+		if( list.size() == 0 ) return new String[][]{{}};
+		
+		Class clazz = list.get(0).getClass();
+		Field[] fields = clazz.getDeclaredFields();
+		
+		Object[][] matriz = new Object[list.size()][fields.length];
+		
+		for(int i = 0; i < list.size(); i++) {
+			for(int j = 0; j < fields.length; j++) {
+				try {
+					matriz[i][j] = getGetter(fields[j], clazz).invoke((list.get(i)));
+				} catch (IllegalArgumentException |IllegalAccessException |InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+//				try {
+//					if(fields[j].getType() == int.class | fields[j].getType() == double.class) {
+//						matriz[i][j] = String.valueOf( fields[j].get(list.get(i)));
+//					}
+//					else if(fields[j].getType() == ArrayList.class) {
+//						
+//					}
+//					else {
+//						matriz[i][j] = fields[j].get(list.get(i));
+//					}
+//				} catch (IllegalArgumentException | IllegalAccessException e) {
+//					e.printStackTrace();
+//				}
+			}
+		}
+		
+		return matriz;
+	}
+	
+	
+	public static Method getGetter(Field field, Class clazz) {
+		String methodName = "get" + capitalizeCammel(field.getName());
+		Method method = null;
+		try {
+			method = clazz.getMethod(methodName);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		}
+		return method;
+	}
+	
+	
+	
 	
 }

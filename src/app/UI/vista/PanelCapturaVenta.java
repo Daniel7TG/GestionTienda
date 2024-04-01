@@ -12,13 +12,17 @@ import javax.swing.table.DefaultTableModel;
 
 import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
+import app.modelos.Clientes;
+import app.modelos.Compra;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
+import app.modelos.Venta;
 import app.util.Util;
 
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +36,9 @@ public class PanelCapturaVenta extends JPanel {
 	private JTextField codigoField;
 	private DefaultTableModel model;
 	
+	private Clientes clientes;
 	private Catalogo catalogo;
-	private List<DetallesVenta> lista;
+	private ArrayList<DetallesVenta> lista;
 	private JPanel topPanel;
 	private JSpinner cantidadSpin;
 	private JButton agregarButton;
@@ -43,9 +48,9 @@ public class PanelCapturaVenta extends JPanel {
 		"Codigo", "Precio", "Cantidad", "Total"
 	};
 	
-	public PanelCapturaVenta(Catalogo catalogo) {
+	public PanelCapturaVenta(Catalogo catalogo, Clientes clientes) {
 		setLayout(new BorderLayout(0, 0));
-	
+		this.clientes = clientes;
 		this.catalogo = catalogo;
 		lista = new ArrayList<>();
 		
@@ -131,7 +136,10 @@ public class PanelCapturaVenta extends JPanel {
 	
 	
 	public void guardarVenta() {
-		
+		double total = lista.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
+		LocalDate fecha = LocalDate.now();
+		Venta venta = new Venta(total, fecha.toString(), lista);
+		clientes.add(venta);
 	}
 	
 	

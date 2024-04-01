@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 
 import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
+import app.modelos.Clientes;
 import app.modelos.Producto;
 
 import javax.swing.JMenuBar;
@@ -61,6 +62,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelListadoProductos listadoProductosPane;
 
 	// Clientes
+	private Clientes clientes;
 	private JMenuItem cMenuVenta;
 	private PanelMenuVenta panelMenuVenta;
 	private PanelCapturaVenta capturaVentaPane;
@@ -231,7 +233,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	
 	public void regVentaFunc() {
-		capturaVentaPane = new PanelCapturaVenta(catalogo);
+		capturaVentaPane = new PanelCapturaVenta(catalogo, clientes);
 		panelEncabezados = new PanelEncabezados("Registro de Venta");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();

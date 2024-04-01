@@ -18,6 +18,8 @@ public class Producto {
 	private int stockMinimo;
 	private String descripcion;
 	
+	private double precioVenta;
+	private double stockActual;
 		
 	/**
 	 * @param codigoBarras
@@ -43,6 +45,22 @@ public class Producto {
 		this.stockMaximo = stockMaximo;
 		this.stockMinimo = stockMinimo;
 		this.descripcion = descripcion;
+	}
+
+	public Producto(String codigoBarras, String nombre, String marca, String tipo, String contenido,
+			String unidadDeMedida, String presentacion, int stockMaximo, int stockMinimo, String descripcion, double precioVenta) {
+		this.codigoBarras = codigoBarras;
+		this.nombre = nombre;
+		this.marca = marca;
+		this.tipo = tipo;
+		this.contenido = contenido;
+		this.unidadDeMedida = unidadDeMedida;
+		this.presentacion = presentacion;
+		this.stockMaximo = stockMaximo;
+		this.stockMinimo = stockMinimo;
+		this.descripcion = descripcion;
+		this.precioVenta = precioVenta;
+		this.stockActual = 0;
 	}
 	public Producto(String codigoBarras) {
 		this.codigoBarras = codigoBarras;
@@ -126,8 +144,19 @@ public class Producto {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
-	
+	public double getPrecioVenta() {
+		return precioVenta;
+	}
+	public void setPrecioVenta(double precioVenta) {
+		this.precioVenta = precioVenta;
+	}
+	public double getStockActual() {
+		return stockActual;
+	}
+	public void setStockActual(double stockActual) {
+		this.stockActual = stockActual;
+	}
+
 	@Override
 	public String toString() {
 		return "Producto [codigoBarras=" + codigoBarras + ", nombre=" + nombre + ", marca=" + marca + ", tipo=" + tipo

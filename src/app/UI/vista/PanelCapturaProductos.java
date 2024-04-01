@@ -19,6 +19,7 @@ import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 
 import app.interfaces.Funcionable;
+import app.modelos.Catalogo;
 import app.modelos.Producto;
 import app.util.Util;
 
@@ -75,7 +76,7 @@ public class PanelCapturaProductos extends JPanel {
 	private Insets separation;
 	private JTable table;
 
-	private Funcionable catalogo;
+	private Catalogo catalogo;
 	private DefaultTableModel model;
 	private String[] columnNames = {"Codigo",
 				"Nombre",
@@ -92,7 +93,7 @@ public class PanelCapturaProductos extends JPanel {
 	 * @param catalogo 
 	 */
 	@SuppressWarnings("serial")
-	public PanelCapturaProductos(Funcionable catalogo) {
+	public PanelCapturaProductos(Catalogo catalogo) {
 		this.catalogo = catalogo;
 		focusField = new FocusField();
 		focusBox = new FocusBox();
@@ -123,6 +124,7 @@ public class PanelCapturaProductos extends JPanel {
 		codigoBarrasField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+
 				char[] texto = codigoBarrasField.getText().toCharArray();
 				
 				if(!Character.isDigit(e.getKeyChar())) {

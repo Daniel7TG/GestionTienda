@@ -37,7 +37,7 @@ import java.awt.Insets;
 @SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame {
 
-	private Funcionable catalogo;
+	private Catalogo catalogo;
 
 	private JMenuBar barra;
 	
@@ -60,10 +60,20 @@ public class VentanaPrincipal extends JFrame {
 	private PanelOpciones panelOpciones;
 	private PanelListadoProductos listadoProductosPane;
 
+	// Clientes
+	private JMenuItem cMenuVenta;
+	private PanelMenuVenta panelMenuVenta;
+	private PanelCapturaVenta capturaVentaPane;
+	private JButton registrarVentButton;
+	private JButton listarVentButton;
+	// Fin Clientes
+	
 	// Proveedores
 	private PanelMenuCompra panelMenuCompra;
 	private JButton registrarCompButton;
 	private JButton listarCompButton;
+	private JMenuItem pMenuCompra;
+	private JMenuItem pMenuListado;
 
 	private PanelCapturaCompra capturaCompraPane;
 	// Fin Proveedores
@@ -74,8 +84,6 @@ public class VentanaPrincipal extends JFrame {
 	private JMenuItem sMenuStock;
 	private JMenuItem sMenuListado;
 
-	private JMenuItem pMenuCompra;
-	private JMenuItem pMenuListado;
 
 	private JMenu menuStock;
 	private JMenu menuClientes;
@@ -146,6 +154,11 @@ public class VentanaPrincipal extends JFrame {
 				
 		
 		menuClientes = new JMenu("Gestion de clientes");
+		cMenuVenta = new JMenuItem("Venta");
+		menuClientes.add(cMenuVenta);
+		cMenuVenta.addActionListener(event->{
+			cMenuVentFunc();
+		});
 		barra.add(menuClientes);
 
 		pMenuListado = new JMenuItem("Compras");
@@ -183,6 +196,9 @@ public class VentanaPrincipal extends JFrame {
 		  menuConfiguracion
 				);
 	}
+
+
+
 	private void styleMenuItems(JMenuItem ...items) {
 		for(JMenuItem item: items) {
 			item.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -197,6 +213,41 @@ public class VentanaPrincipal extends JFrame {
 			menu.setFont(font);
 			menu.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		}
+	}
+	
+	// Clientes
+	private void cMenuVentFunc() {
+		clearContentPane();
+		if(panelMenuVenta != null) return;
+		panelMenuVenta = new PanelMenuVenta();
+		registrarVentButton = panelMenuVenta.getRegistrarButton();
+		registrarVentButton.addActionListener(e->{
+			regVentaFunc();
+		});
+		listarVentButton = panelMenuVenta.getListarButton();
+		contentPane.add(panelMenuVenta, BorderLayout.WEST);
+		revalidate();
+	}
+	
+	
+	public void regVentaFunc() {
+		capturaVentaPane = new PanelCapturaVenta(catalogo);
+		panelEncabezados = new PanelEncabezados("Registro de Venta");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		guardarButton.addActionListener(ec -> {
+			capturaVentaPane.guardarVenta();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuVenta, capturaVentaPane, panelOpciones);
+		});
+		panelEncabezados.add(capturaVentaPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuVenta, false);
+		revalidate();
 	}
 	
 	// Inventario

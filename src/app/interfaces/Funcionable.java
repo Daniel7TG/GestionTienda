@@ -4,19 +4,19 @@ import java.util.List;
 
 import app.modelos.Producto;
 
-public interface Funcionable {
+public interface Funcionable<T> {
 
-	boolean exists(String codigoBarras);
-	boolean exists(Producto codigoBarras);
-	void add(Producto producto);
-	Producto getProducto(int posicion);
-	Producto getProducto(String codigoBarras);
-	int getIndex(Producto producto);
-	int getIndex(String codigoBarras);
-	void remove(Producto producto);
-	void remove(String codigoBarras);
-	void update(Producto producto, int posicion);
-	List<Producto> getList();
+	boolean exists(String id);
+	boolean exists(T obj);
+	void add(T obj);
+	T get(int posicion);
+	T get(String id);
+	int getIndex(T obj);
+	int getIndex(String id);
+	void remove(T obj);
+	void remove(String id);
+	void update(T obj, int posicion);
+	List<T> getList();
 	String[][] getData();
 	int getSize();
 	boolean isEmpty();

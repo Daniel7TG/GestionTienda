@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import app.modelos.DetallesCompra;
+import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 
 public class Util {
@@ -48,6 +49,16 @@ public class Util {
 	}
 
 	
+	public static String[][] detallesVentaToStringMat(List<DetallesVenta> list){
+		String[][] matriz = new String[list.size()][DetallesVenta.class.getDeclaredFields().length];
+		for(int i = 0; i < list.size(); i++) {
+			matriz[i][0] = list.get(i).getCodigo();
+			matriz[i][1] = String.valueOf(list.get(i).getCantidad());
+			matriz[i][2] = String.valueOf(list.get(i).getPrecio());
+			matriz[i][3] = String.valueOf(list.get(i).getTotal());
+		}
+		return matriz;
+	}
 	public static String[][] detallesToStringMat(List<DetallesCompra> list){
 		String[][] matriz = new String[list.size()][DetallesCompra.class.getDeclaredFields().length];
 		for(int i = 0; i < list.size(); i++) {
@@ -56,8 +67,7 @@ public class Util {
 			matriz[i][2] = String.valueOf(list.get(i).getPrecio());
 			matriz[i][3] = String.valueOf(list.get(i).getTotal());
 		}
-		return matriz;
-		
+		return matriz;		
 	}
 	public static String[][] toStringMat(List<Producto> list){
 		String[][] matriz = new String[list.size()][Producto.class.getDeclaredFields().length];

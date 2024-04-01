@@ -99,6 +99,7 @@ public class Catalogo implements Funcionable<Producto> {
 
 	@Override
 	public String[][] getData() {
+		Util.anyToString(contenedor);
 		return Util.toStringMat(contenedor);
 	}
 

@@ -1,11 +1,19 @@
 package app.modelos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.interfaces.Funcionable;
+import app.util.Util;
 
 public class Clientes implements Funcionable<Venta>{
 
+	private List<Venta> contenedor;
+
+	public Clientes() {
+		contenedor = new ArrayList<Venta>();
+	}
+	
 	@Override
 	public boolean exists(String id) {
 		// TODO Auto-generated method stub
@@ -74,7 +82,6 @@ public class Clientes implements Funcionable<Venta>{
 
 	@Override
 	public String[][] getData() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

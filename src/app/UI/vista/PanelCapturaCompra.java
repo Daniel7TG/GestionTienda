@@ -241,8 +241,15 @@ public class PanelCapturaCompra extends JPanel {
 	public void guardarCompra() {
 		
 		double total = listaDetalles.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
+		listaDetalles.forEach(detalles -> {
+			Producto p = catalogo.get(detalles.getCodigo()); 
+			p.setStockActual(p.getStockActual() + detalles.getCantidad());
+			
+		});
 		LocalDate fecha = LocalDate.now();
 		Compra compra = new Compra(total, fecha.toString(), listaDetalles);
+		listaDetalles.clear();
+		model.setDataVector(Util.detallesToStringMat(listaDetalles), columnNames);				
 
 		System.out.println(compra.toString());
 	}

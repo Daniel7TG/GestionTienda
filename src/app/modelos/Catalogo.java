@@ -6,7 +6,7 @@ import java.util.List;
 import app.interfaces.Funcionable;
 import app.util.Util;
 
-public class Catalogo implements Funcionable {
+public class Catalogo implements Funcionable<Producto> {
 	
 	private List<Producto> contenedor;
 
@@ -40,14 +40,14 @@ public class Catalogo implements Funcionable {
 
 
 	@Override
-	public Producto getProducto(int posicion) {
+	public Producto get(int posicion) {
 		Producto p = contenedor.get(posicion);
 		return p;
 	}
 
 
 	@Override
-	public Producto getProducto(String codigoBarras) {
+	public Producto get(String codigoBarras) {
 		int index = contenedor.indexOf(new Producto(codigoBarras));
 		return index == -1 ? null : contenedor.get(index); 
 	}

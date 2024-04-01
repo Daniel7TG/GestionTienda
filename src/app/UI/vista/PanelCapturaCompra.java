@@ -8,7 +8,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import app.interfaces.Funcionable;
-import app.modelos.CompraFinal;
+import app.modelos.Catalogo;
+import app.modelos.Compra;
 import app.modelos.DetallesCompra;
 import app.modelos.Producto;
 import app.util.Util;
@@ -52,7 +53,7 @@ public class PanelCapturaCompra extends JPanel {
 	private JLabel lbTotal;
 
 	
-	private Funcionable catalogo;
+	private Catalogo catalogo;
 	private Insets separation;
 	private Font fontLabel;
 	private Font fontFunc;
@@ -64,7 +65,7 @@ public class PanelCapturaCompra extends JPanel {
 			"Precio", 
 			"Total"};
 	
-	public PanelCapturaCompra(Funcionable catalogo) {
+	public PanelCapturaCompra(Catalogo catalogo) {
 
 		this.catalogo = catalogo;
 		listaDetalles = new ArrayList<DetallesCompra>();
@@ -217,7 +218,7 @@ public class PanelCapturaCompra extends JPanel {
 		String codigo = (String) codigoField.getText();
 		double total = precio*cantidad;
 
-		Producto p = catalogo.getProducto(codigo);
+		Producto p = catalogo.get(codigo);
 		if(p != null) {
 			List<DetallesCompra> detallesExistente = listaDetalles.stream().filter(d -> d.getCodigo().equals(codigo)).collect(Collectors.toList());
 			
@@ -241,7 +242,7 @@ public class PanelCapturaCompra extends JPanel {
 		
 		double total = listaDetalles.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
 		LocalDate fecha = LocalDate.now();
-		CompraFinal compra = new CompraFinal(total, fecha.toString(), listaDetalles);
+		Compra compra = new Compra(total, fecha.toString(), listaDetalles);
 
 		System.out.println(compra.toString());
 	}

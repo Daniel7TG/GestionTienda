@@ -45,3 +45,6 @@ public class PanelListadoProductos extends JPanel {
 	}	
 	
 }
+
+
+

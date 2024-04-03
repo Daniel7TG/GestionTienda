@@ -82,6 +82,7 @@ public class Clientes implements Funcionable<Venta>{
 
 	@Override
 	public Object[][] getData() {
+		System.out.println("tamano:" + contenedor.size());
 		return Util.anyToString(contenedor);
 	}
 

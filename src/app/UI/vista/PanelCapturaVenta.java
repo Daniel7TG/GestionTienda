@@ -2,22 +2,19 @@ package app.UI.vista;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
-import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
 import app.modelos.Clientes;
-import app.modelos.Compra;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Venta;
@@ -28,9 +25,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class PanelCapturaVenta extends JPanel {
@@ -98,13 +96,13 @@ public class PanelCapturaVenta extends JPanel {
 			}
 		});
 		
-		agregarButton = new JButton("Agregar");
+		agregarButton = new JButton("Preview Ticket");
 		GridBagConstraints gbc_agregarButton = new GridBagConstraints();
 		gbc_agregarButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_agregarButton.gridx = 2;
 		gbc_agregarButton.gridy = 0;
 		topPanel.add(agregarButton, gbc_agregarButton);
-		agregarButton.addActionListener(e -> agregarProducto(codigoField.getText()));
+		agregarButton.addActionListener(e -> showTicket(lista));
 		
 		tablePanel = new JScrollPane();
 		add(tablePanel, BorderLayout.CENTER);
@@ -153,6 +151,7 @@ public class PanelCapturaVenta extends JPanel {
 	
 	
 	public void guardarVenta() {
+		if(lista.size() == 0) return;
 		double total = lista.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
 		LocalDate fecha = LocalDate.now();
 		Venta venta = new Venta(total, fecha.toString(), lista);
@@ -167,6 +166,58 @@ public class PanelCapturaVenta extends JPanel {
 	}
 	
 	
+	public void showTicket(ArrayList<DetallesVenta> lista) {
+		JFrame ticketFrame = new JFrame();
+		ticketFrame.setBounds(0, 0, 300, 700);
+		FlowLayout layout = new FlowLayout(FlowLayout.CENTER);
+		JLabel textTicket = new JLabel(generateTicket(lista), JLabel.CENTER);
+		textTicket.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		System.out.println(generateTicket(lista));
+		ticketFrame.setLayout(layout);
+		ticketFrame.add(textTicket);
+		ticketFrame.setVisible(true);
+		ticketFrame.setResizable(false);
+	}
+	
+	private static String centerText( String texto, int espacio ) {
+		int tlength = texto.length();
+		
+		if(tlength > espacio) return "error";
+		
+		int margin = (espacio - tlength) / 2;
+		
+		String centeredText = "<p>" +
+				" ".repeat(margin) + 
+				texto + 
+				" ".repeat(margin) + 
+				( margin % 2 == 0 ? "" : " " );
+		
+		return centeredText + "<p/>";
+	}
+	private static String formatProduct(DetallesVenta details, int space) {
+		String finalText = "";
+		StringBuilder textoLeft = new StringBuilder(details.getCodigo());
+		int middle = space/2;
+		
+		if(textoLeft.length() > middle) {
+			finalText = textoLeft.substring(0, middle) + "  ";
+		}
+		else {
+			finalText = String.format( ("%-" + (middle + 2) + "s"), textoLeft.toString());
+		}				
+		finalText += String.format("%" + (middle-2) + "s", "$" + details.getTotal()) + "<br/>";	
+		return finalText;	
+	}
+	public static String generateTicket(ArrayList<DetallesVenta> detailsList) {
+		StringBuilder ticket = new StringBuilder("<html>");
+		ticket.append( centerText("Tienda", 35) );
+		ticket.append( centerText("Tel: 55-5555-5555", 35) );
+		ticket.append( centerText("Suc. CDMX", 35) );
+		
+		
+		detailsList.forEach(detail -> ticket.append(formatProduct(detail, 35)));
+		return String.valueOf(ticket) + "<html/>";
+	}
 	public void updateTable() {
 		model.setDataVector(Util.anyToString(lista), columnNames);
 	}

@@ -73,7 +73,7 @@ public class Proveedores implements Funcionable<Compra>{
 	}
 
 	@Override
-	public String[][] getData() {
+	public Object[][] getData() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -18,7 +18,7 @@ public interface Funcionable<T> {
 	void remove(String id);
 	void update(T obj, int posicion);
 	List<T> getList();
-	String[][] getData();
+	Object[][] getData();
 	int getSize();
 	boolean isEmpty();
 	

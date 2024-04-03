@@ -24,12 +24,11 @@ public class Catalogo implements Funcionable<Producto> {
 		p.setCodigoBarras(codigoBarras);
 		return contenedor.contains(p);
 	}
-	
-	
+		
+	@Override
 	public boolean exists(Producto p) {
 		return contenedor.contains(p);
 	}
-
 
 
 	@Override
@@ -98,9 +97,8 @@ public class Catalogo implements Funcionable<Producto> {
 
 
 	@Override
-	public String[][] getData() {
-		Util.anyToString(contenedor);
-		return Util.toStringMat(contenedor);
+	public Object[][] getData() {
+		return Util.anyToString(contenedor);
 	}
 
 

@@ -15,86 +15,84 @@ public class Clientes implements Funcionable<Venta>{
 	}
 	
 	@Override
+	/**
+	 * @deprecated
+	 **/
 	public boolean exists(String id) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean exists(Venta obj) {
-		// TODO Auto-generated method stub
-		return false;
+		return contenedor.contains(obj);
 	}
 
 	@Override
 	public void add(Venta obj) {
-		// TODO Auto-generated method stub
-		
+		contenedor.add(obj);
 	}
 
 	@Override
 	public Venta get(int posicion) {
-		// TODO Auto-generated method stub
-		return null;
+		return contenedor.get(posicion);
 	}
 
 	@Override
+	/**
+	 * @deprecated
+	 **/
 	public Venta get(String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int getIndex(Venta obj) {
-		// TODO Auto-generated method stub
-		return 0;
+		return contenedor.indexOf(obj);
 	}
 
 	@Override
+	/**
+	 * @deprecated
+	 **/
 	public int getIndex(String id) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void remove(Venta obj) {
-		// TODO Auto-generated method stub
-		
+		contenedor.remove(obj);
 	}
 
 	@Override
-	public void remove(String id) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * @deprecated
+	 **/
+	public void remove(String id) {		
 	}
 
 	@Override
 	public void update(Venta obj, int posicion) {
-		// TODO Auto-generated method stub
-		
+		contenedor.set(posicion, obj);
 	}
 
 	@Override
 	public List<Venta> getList() {
-		// TODO Auto-generated method stub
-		return null;
+		return contenedor;
 	}
 
 	@Override
-	public String[][] getData() {
-		return null;
+	public Object[][] getData() {
+		return Util.anyToString(contenedor);
 	}
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return contenedor.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return contenedor.isEmpty();
 	}
 
 }

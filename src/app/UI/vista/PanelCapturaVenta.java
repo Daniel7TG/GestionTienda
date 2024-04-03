@@ -8,6 +8,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import app.interfaces.Funcionable;
@@ -70,6 +74,9 @@ public class PanelCapturaVenta extends JPanel {
 		gbc_cantidadSpin.gridx = 0;
 		gbc_cantidadSpin.gridy = 0;
 		topPanel.add(cantidadSpin, gbc_cantidadSpin);
+		SpinnerNumberModel cantidadModel = new SpinnerNumberModel(1, 1, 1000, 1);
+		cantidadSpin.setModel(cantidadModel);
+		cantidadSpin.setEditor(new JSpinner.DefaultEditor(cantidadSpin));
 		
 		codigoField = new JTextField();
 		GridBagConstraints gbc_codigoField = new GridBagConstraints();
@@ -85,6 +92,7 @@ public class PanelCapturaVenta extends JPanel {
 //				(int)e.getKeyChar() != 8, 8 es el boton de borrar
 				if(codigoField.getText().length() > 12 & (int)e.getKeyChar() != 8 ) {
 					agregarProducto(codigoField.getText());
+					codigoField.setText("");
 					e.consume();
 				}
 			}
@@ -102,7 +110,7 @@ public class PanelCapturaVenta extends JPanel {
 		add(tablePanel, BorderLayout.CENTER);
 		
 		productsTable = new JTable();
-		model = new DefaultTableModel(Util.detallesVentaToStringMat(lista), columnNames) {
+		model = new DefaultTableModel(Util.anyToString(lista), columnNames) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -110,6 +118,7 @@ public class PanelCapturaVenta extends JPanel {
 		};
 		productsTable.setModel(model);
 		tablePanel.setViewportView(productsTable);
+		
 	}
 	
 	
@@ -123,7 +132,6 @@ public class PanelCapturaVenta extends JPanel {
 			JOptionPane.showMessageDialog(null, "No hay existencias");
 		} else {
 			DetallesVenta detalles = new DetallesVenta(codigo, producto.getPrecioVenta(), (int)cantidadSpin.getValue());
-			System.out.println("spinner: " + (int)cantidadSpin.getValue());
 			agregarList(detalles, producto);
 		}
 	}
@@ -134,16 +142,10 @@ public class PanelCapturaVenta extends JPanel {
 			int cantidadTotal = lista.get(lista.indexOf(detalles)).getCantidad() + detalles.getCantidad();
 			if(producto.getStockActual() - cantidadTotal >= producto.getStockMinimo()) {
 				lista.get(lista.indexOf(detalles)).setCantidad(cantidadTotal);
-				
-				System.out.println(cantidadTotal);
-				System.out.println(lista.get(lista.indexOf(detalles)).getCantidad());
-				
-				System.out.println("sumar cantidad");
 			}else {
 				JOptionPane.showMessageDialog(null, "No hay existencias");
 			}
 		} else {
-			System.out.println("nuevo elemento");
 			lista.add(detalles);
 		}
 		updateTable();
@@ -166,7 +168,7 @@ public class PanelCapturaVenta extends JPanel {
 	
 	
 	public void updateTable() {
-		model.setDataVector(Util.detallesVentaToStringMat(lista), columnNames);
+		model.setDataVector(Util.anyToString(lista), columnNames);
 	}
 	
 	

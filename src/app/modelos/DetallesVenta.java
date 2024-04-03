@@ -2,8 +2,8 @@ package app.modelos;
 
 public class DetallesVenta {
 	String codigo;
-	double precio;
 	int cantidad;
+	double precio;
 	double total;
 	
 	/**

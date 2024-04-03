@@ -2,6 +2,9 @@ package app.UI.vista;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JSpinner.DefaultEditor;
+import javax.swing.JSpinner.NumberEditor;
 
 import java.awt.GridBagLayout;
 
@@ -13,6 +16,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import java.awt.Insets;
@@ -21,6 +25,7 @@ import java.awt.KeyboardFocusManager;
 import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
 import app.modelos.Producto;
+import app.util.TableModel;
 import app.util.Util;
 
 import javax.swing.JComboBox;
@@ -35,7 +40,12 @@ import static app.util.Util.*;
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -50,7 +60,8 @@ import java.awt.event.ItemEvent;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 import javax.swing.JTable;
 
 
@@ -78,17 +89,20 @@ public class PanelCapturaProductos extends JPanel {
 	private JTable table;
 
 	private Catalogo catalogo;
-	private DefaultTableModel model;
+	private TableModel model;
 	private String[] columnNames = {"Codigo",
-				"Nombre",
-				"Marca",
-				"Contenido",
-				"Maximo",
-				"Minimo",
-				"Tipo",
-				"Medida",
-				"Presentacion",
-				"Descripcion",};
+			"Nombre",
+			"Marca",
+			"Tipo",
+			"Contenido",
+			"Medida",
+			"Presentacion",
+			"Maximo",
+			"Minimo",
+			"Descripcion",
+			"Precio",
+			"Cantidad",
+			};
 	/**
 	 * Create the panel.
 	 * @param catalogo 
@@ -321,17 +335,19 @@ public class PanelCapturaProductos extends JPanel {
 		precioField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if(!Character.isDigit(e.getKeyChar()) & e.getKeyChar() != '.') e.consume();
+				if(!(precioField.getText() + e.getKeyChar()).matches("^[0-9]+(\\.[0-9]*)?$") ) {
+					e.consume();
+				}
 			}
 		});
+		
 		GridBagConstraints gbc_precioField = new GridBagConstraints();
 		gbc_precioField.insets = new Insets(0, 0, 5, 5);
 		gbc_precioField.fill = GridBagConstraints.BOTH;
 		gbc_precioField.gridx = 3;
 		gbc_precioField.gridy = 3;
 		add(precioField, gbc_precioField);
-		precioField.addActionListener(focusField);
-
+		
 		
 		JLabel stockMaximo = new JLabel("Stock Maximo");
 		GridBagConstraints gbc_stockMaximo = new GridBagConstraints();
@@ -388,30 +404,12 @@ public class PanelCapturaProductos extends JPanel {
 		add(descripcionField, gbc_descripcionField);
 		descripcionField.setColumns(10);
 		
-	    String[][] data = catalogo.getData();
-	    model = new DefaultTableModel(data, columnNames) {
-	        	@Override
-				public boolean isCellEditable(int row, int column){
-	        		return false;
-	        	}
-	        };
-	    model.setDataVector(data, columnNames);				
-        table = new JTable(model);
+		Object[][] data = catalogo.getData();
+		table = new JTable();
+		model = new TableModel(table, data, columnNames);
+		table.setModel(model);
+		model.configurarTabla(4, 4, 3, 3, 2, 3, 3, 2, 2, 4, 2, 2);
 		table.setRowHeight(30);
-		
-		SwingUtilities.invokeLater(()->{
-			int[] columnWeights = {3, 3, 2, 2, 1, 1, 2, 2, 2, 3};
-			int parcialWeights = table.getWidth() / Arrays.stream(columnWeights).sum();;
-			
-			for(int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
-				table.getColumnModel()
-				.getColumn(i)
-				.setPreferredWidth( columnWeights[i]*parcialWeights );
-			}
-			table.repaint();
-			table.revalidate();
-		});
-		
 		
         JScrollPane tableScroll = new JScrollPane(table);		
         tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -553,7 +551,7 @@ public class PanelCapturaProductos extends JPanel {
 	
 	
 	public void actualizarTabla() {
-		model.setDataVector(catalogo.getData(), columnNames);
+		model.update(catalogo.getData());
 	}
 	
 	
@@ -574,7 +572,7 @@ public class PanelCapturaProductos extends JPanel {
 		maximoBox.setSelectedIndex(0);
 		minimoBox.setSelectedIndex(0);
 		descripcionField.setText("");
-		precioField.setText("");
+		precioField.setText("0.0");
 		imageLabel.setIcon(null);
 	}
 	

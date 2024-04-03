@@ -1,6 +1,7 @@
 package app.modelos;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Venta {
@@ -17,7 +18,8 @@ public class Venta {
 	public Venta(double total, String fecha, ArrayList<DetallesVenta> detalles) {
 		this.total = total;
 		this.fecha = fecha;
-		this.detalles = detalles;
+		this.detalles = new ArrayList<DetallesVenta>();
+		this.detalles.addAll(detalles);
 	}
 
 	public double getTotal() {
@@ -37,6 +39,7 @@ public class Venta {
 	}
 
 	public ArrayList<DetallesVenta> getDetalles() {
+		System.out.println("obteniendo detalles: " + detalles.toString());
 		return detalles;
 	}
 
@@ -49,4 +52,9 @@ public class Venta {
 		return "VentaFinal [total=" + total + ", fecha=" + fecha + ", detalles=" + detalles + "]";
 	}
 		
+	@Override
+	public boolean equals(Object obj) {
+		return fecha.equals(((Venta)obj).fecha) & total == ((Venta)obj).total;
+	}
+	
 }

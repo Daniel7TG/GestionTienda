@@ -151,7 +151,7 @@ public class PanelCapturaCompra extends JPanel {
 		add(lbTotal, gbc_lbTotal);
 
 		
-		String[][] data = Util.detallesToStringMat(listaDetalles);
+		Object[][] data = Util.anyToString(listaDetalles);
 		model = new DefaultTableModel(data, columnNames) {
 			@Override
 			public boolean isCellEditable(int row, int column){
@@ -231,7 +231,7 @@ public class PanelCapturaCompra extends JPanel {
 			else {
 				if(p.getStockMaximo() >= cantidad) listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));							
 			}
-			model.setDataVector(Util.detallesToStringMat(listaDetalles), columnNames);				
+			model.setDataVector(Util.anyToString(listaDetalles), columnNames);				
 		} else {
 			JOptionPane.showMessageDialog(null, "no existe el producto");
 		}
@@ -249,7 +249,7 @@ public class PanelCapturaCompra extends JPanel {
 		LocalDate fecha = LocalDate.now();
 		Compra compra = new Compra(total, fecha.toString(), listaDetalles);
 		listaDetalles.clear();
-		model.setDataVector(Util.detallesToStringMat(listaDetalles), columnNames);				
+		model.setDataVector(Util.anyToString(listaDetalles), columnNames);				
 
 		System.out.println(compra.toString());
 	}

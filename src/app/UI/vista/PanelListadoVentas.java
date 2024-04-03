@@ -1,5 +1,6 @@
 package app.UI.vista;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.Arrays;
 
@@ -7,10 +8,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import app.interfaces.Funcionable;
 import app.modelos.Clientes;
+import app.util.TableModel;
 import app.util.Util;
 
 public class PanelListadoVentas extends JPanel {
@@ -18,17 +21,10 @@ public class PanelListadoVentas extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private JTable table;
-	private DefaultTableModel model;
-	private String[] columnNames = {"Codigo",
-			"Nombre",
-			"Marca",
-			"Contenido",
-			"Maximo",
-			"Minimo",
-			"Tipo",
-			"Medida",
-			"Presentacion",
-	"Descripcion"};
+	private TableModel model;
+	private String[] columnNames = {"Total", 
+			"Fecha",
+			"Detalles"};
 	private Clientes clientes;
 	private JScrollPane tableScroll;
 	
@@ -37,33 +33,17 @@ public class PanelListadoVentas extends JPanel {
 		setLayout(new GridLayout(1, 1, 0, 0));
 
 		this.clientes = clientes;		
-		Object[][] data = Util.anyToString(clientes.getList());
-		model = new DefaultTableModel(data, columnNames) {
-			@Override
-			public boolean isCellEditable(int row, int column){
-				return false;
-			}
-		};
-		model.setDataVector(data, columnNames);				
-		table = new JTable(model);
-		table.setRowHeight(30);
+		Object[][] data = clientes.getData();
+		table = new JTable();
+		model = new TableModel(table, data, columnNames);
+		table.setModel(model);
+		model.renderListColumn(2);
+		model.configurarTabla(2, 2, 6);
 		tableScroll = new JScrollPane(table);		
 		tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(tableScroll);
 	}
 	
-	public void configurarTabla() {
-		SwingUtilities.invokeLater(()->{
-			int[] columnWeights = {3, 3, 2, 2, 1, 1, 2, 2, 2, 3};
-			int parcialWeights = table.getWidth() / Arrays.stream(columnWeights).sum();
-			for(int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
-				table.getColumnModel()
-				.getColumn(i)
-				.setPreferredWidth( columnWeights[i]*parcialWeights );
-			}
-			table.repaint();
-			table.revalidate();
-		});
-	}
+	
 
 }

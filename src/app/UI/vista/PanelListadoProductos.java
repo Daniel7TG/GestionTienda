@@ -1,11 +1,9 @@
 package app.UI.vista;
 
 import java.awt.GridLayout;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
 import app.modelos.Catalogo;
 import app.util.TableModel;
 
@@ -43,5 +41,4 @@ public class PanelListadoProductos extends JPanel {
 		tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(tableScroll);	
 	}	
-	
 }

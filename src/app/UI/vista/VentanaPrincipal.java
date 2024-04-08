@@ -26,6 +26,7 @@ import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
 import app.modelos.Clientes;
 import app.modelos.Producto;
+import app.modelos.Proveedores;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -72,6 +73,7 @@ public class VentanaPrincipal extends JFrame {
 	// Fin Clientes
 	
 	// Proveedores
+	private Proveedores proveedores;
 	private PanelMenuCompra panelMenuCompra;
 	private JButton registrarCompButton;
 	private JButton listarCompButton;
@@ -292,16 +294,11 @@ public class VentanaPrincipal extends JFrame {
 	
 	
 	public void regCompraFunc() {
-		capturaCompraPane = new PanelCapturaCompra(catalogo);
+		capturaCompraPane = new PanelCapturaCompra(catalogo, proveedores);
 		panelEncabezados = new PanelEncabezados("Registro de Compra");
 		panelOpciones = new PanelOpciones(capturaCompraPane.getField(), PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
 		cancelarButton = panelOpciones.getCancelarButton();
-		confirmarButton = panelOpciones.getConfirmButton();
-		
-		confirmarButton.addActionListener(ec->{
-			 capturaCompraPane.getDetalles();
-		});
 		
 		guardarButton.addActionListener(ec -> {
 			capturaCompraPane.guardarCompra();

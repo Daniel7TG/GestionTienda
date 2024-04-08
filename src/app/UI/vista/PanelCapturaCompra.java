@@ -16,6 +16,7 @@ import app.modelos.Catalogo;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
 import app.modelos.Producto;
+import app.modelos.Proveedores;
 import app.util.Util;
 
 import java.time.*;
@@ -66,6 +67,7 @@ public class PanelCapturaCompra extends JPanel {
 	private JLabel lbTotal;
 
 
+	private Proveedores proveedores;
 	private Catalogo catalogo;
 	private Insets separation;
 	private Font fontLabel;
@@ -79,9 +81,11 @@ public class PanelCapturaCompra extends JPanel {
 	"Total"};
 	private JButton confirmarButton;
 
-	public PanelCapturaCompra(Catalogo catalogo) {
+	public PanelCapturaCompra(Catalogo catalogo, Proveedores proveedores) {
 
 		this.catalogo = catalogo;
+		this.proveedores = proveedores;
+		
 		listaDetalles = new ArrayList<DetallesCompra>();
 		separation = new Insets(10, 5, 10, 5);
 		fontLabel = new Font("Montserrat", Font.PLAIN, 16);
@@ -96,24 +100,6 @@ public class PanelCapturaCompra extends JPanel {
 
 		codigoField = new JTextField();
 
-		//     /*
-
-		codigoField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				buscarProductoCodigo(codigoField.getText());
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				buscarProductoCodigo(codigoField.getText());
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				buscarProductoCodigo(codigoField.getText());
-			}
-		}); 
 		codigoField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -122,14 +108,7 @@ public class PanelCapturaCompra extends JPanel {
 					e.consume();
 				}
 				if(texto.length == 13) {
-					if(catalogo.exists(codigoField.getText())) {
-						precioSpin.requestFocus();
-
-					}else {
-						visualizar("No existe este producto");
-						codigoField.requestFocus();
-						limpiarCampos();
-					}
+					buscarProductoCodigo(codigoField.getText());
 					e.consume();
 
 				}
@@ -174,6 +153,7 @@ public class PanelCapturaCompra extends JPanel {
 
 		totalField = new JTextField();
 		totalField.setColumns(10);
+		totalField.setEditable(false);
 		GridBagConstraints gbc_totalField = new GridBagConstraints();
 		gbc_totalField.insets = new Insets(0, 0, 5, 5);
 		gbc_totalField.fill = GridBagConstraints.BOTH;
@@ -181,7 +161,7 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_totalField.gridy = 4;
 		add(totalField, gbc_totalField);
 
-		fechaLabel = new JLabel("New label");
+		fechaLabel = new JLabel(LocalDate.now().toString());
 		GridBagConstraints gbc_fechaLabel = new GridBagConstraints();
 		gbc_fechaLabel.gridx = 0;
 		gbc_fechaLabel.gridwidth = 2;
@@ -282,11 +262,13 @@ public class PanelCapturaCompra extends JPanel {
 
 		precioSpin.addKeyListener(new KeyAdapter() { //calcula el total cada que se cambia el valor //el mismo para cantidadSpin o text
 			@Override
-			public void keyTyped(KeyEvent e) { 
-				if(!precioSpin.getText().isEmpty())
-
-					totalField.setText(String.valueOf(Double.valueOf(precioSpin.getText()) * (Integer)cantidadSpin.getValue()));
-				//	totalField.setText(String.valueOf(Double.valueOf(precioSpin.getText()) * Integer.valueOf(cantidadSpin.getText())));
+			public void keyTyped(KeyEvent e) {
+				if(!(precioSpin.getText() + e.getKeyChar()).matches("^[0-9]+(\\.[0-9]*)?$") ) {
+					e.consume();
+				} 
+				if(!precioSpin.getText().isEmpty()) {
+					totalField.setText(String.valueOf(Double.valueOf(precioSpin.getText()) * (Integer)cantidadSpin.getValue()));					
+				}
 			}
 		});
 
@@ -317,42 +299,42 @@ public class PanelCapturaCompra extends JPanel {
 	}
 
 
-	public void getDetalles() {
-
-		double precio = Double.parseDouble(precioSpin.getText());
-		int cantidad = (int) cantidadSpin.getValue();
-		String codigo = codigoField.getText();
-		double total = precio * cantidad;
-
-		Producto p = catalogo.get(codigo);
-		if (p != null) {
-			DetallesCompra detalleExistente = null;
-			for (DetallesCompra detalle : listaDetalles) {
-				if (detalle.getCodigo().equals(codigo)) {
-					detalleExistente = detalle;
-					break;
-				}
-			}
-
-			if (detalleExistente != null) {
-				//// si existe se tiene que actualizar la tabla con la nueva cantidad con el nuevo total	
-				detalleExistente.setCantidad(detalleExistente.getCantidad() + cantidad);
-				detalleExistente.setTotal(detalleExistente.getCantidad() * precio);
-
-			} else { /// si no, se agrega otro detalle a la lista 
-				if (p.getStockMaximo() >= cantidad) {
-					listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
-				} else {
-					JOptionPane.showMessageDialog(null, "Cantidad excede el stock máximo");
-				}
-			}
-
-			actualizarTabla();
-			limpiarCampos();
-		} else {
-			visualizar("El producto no existe");
-		}
-	}
+//	public void getDetalles() {
+//
+//		double precio = Double.parseDouble(precioSpin.getText());
+//		int cantidad = (int) cantidadSpin.getValue();
+//		String codigo = codigoField.getText();
+//		double total = precio * cantidad;
+//
+//		Producto p = catalogo.get(codigo);
+//		if (p != null) {
+//			DetallesCompra detalleExistente = null;
+//			for (DetallesCompra detalle : listaDetalles) {
+//				if (detalle.getCodigo().equals(codigo)) {
+//					detalleExistente = detalle;
+//					break;
+//				}
+//			}
+//
+//			if (detalleExistente != null) {
+//				//// si existe se tiene que actualizar la tabla con la nueva cantidad con el nuevo total	
+//				detalleExistente.setCantidad(detalleExistente.getCantidad() + cantidad);
+//				detalleExistente.setTotal(detalleExistente.getCantidad() * precio);
+//
+//			} else { /// si no, se agrega otro detalle a la lista 
+//				if (p.getStockMaximo() >= cantidad) {
+//					listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
+//				} else {
+//					JOptionPane.showMessageDialog(null, "Cantidad excede el stock máximo");
+//				}
+//			}
+//
+//			actualizarTabla();
+//			limpiarCampos();
+//		} else {
+//			visualizar("El producto no existe");
+//		}
+//	}
 
 	private void actualizarTabla() {
 		Object[][] data = Util.anyToString(listaDetalles);
@@ -366,22 +348,6 @@ public class PanelCapturaCompra extends JPanel {
 	}
 
 
-
-	public void guardarCompra() {
-
-		double total = listaDetalles.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
-		listaDetalles.forEach(detalles -> {
-			Producto p = catalogo.get(detalles.getCodigo()); 
-			p.setStockActual(p.getStockActual() + detalles.getCantidad());
-
-		});
-		LocalDate fecha = LocalDate.now();
-		Compra compra = new Compra(total, fecha.toString(), listaDetalles);
-		listaDetalles.clear();
-		model.setDataVector(Util.anyToString(listaDetalles), columnNames);				
-
-		System.out.println(compra.toString());
-	}
 
 
 
@@ -397,38 +363,45 @@ public class PanelCapturaCompra extends JPanel {
 		}
 		for(int i = 0; i < components.length; i++)
 			add(components[i], constraints[i]);
-
 	}
-
+	
 
 	public JTextField getField() {
 		return totalField;
 	}
 
-	//////////////////
+	
+	public void guardarCompra() {
+		
+		double total = listaDetalles.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
+		listaDetalles.forEach(detalles -> 
+			catalogo.get(detalles.getCodigo()) 
+			.addStock(detalles.getCantidad())	
+		);
+		LocalDate fecha = LocalDate.now();
+		Compra compra = new Compra(total, fecha.toString(), listaDetalles);
+		proveedores.add(compra);
+		listaDetalles.clear();
+		actualizarTabla();
+	}
 
-
+	
 	public void buscarProductoCodigo(String codigo) {
-		Producto producto = catalogo.get(codigo);
-		if (producto == null) {
-			visualizar("aaaaaaaaaaaaaaaaa");
-
+		if (!catalogo.exists(codigo)) {
+			visualizar("No existe este producto");
 			limpiarCampos();
+			codigoField.requestFocus();
 			return;
-
+		} else {
+			precioSpin.requestFocus();
 		}
-
-		List<DetallesCompra> detallesExistente = listaDetalles.stream()
-				.filter(d -> d.getCodigo().equals(codigo))
-				.collect(Collectors.toList());
-
-		if (!detallesExistente.isEmpty()) {
-			DetallesCompra detalles = detallesExistente.get(0);
-			cantidadSpin.setValue((Integer) cantidadSpin.getValue() + detalles.getCantidad());
+		
+		int detallesIndex = listaDetalles.indexOf(new DetallesCompra(codigo));
+		if (detallesIndex != -1) {
+			DetallesCompra detalles = listaDetalles.get(detallesIndex);
+			cantidadSpin.setValue((Integer) detalles.getCantidad());
 			precioSpin.setText(String.valueOf(detalles.getPrecio()));
 			totalField.setText(String.valueOf(detalles.getTotal()));
-		} else {
-			precioSpin.setText(String.valueOf(producto.getPrecioVenta())); 
 		}
 	}
 
@@ -444,18 +417,13 @@ public class PanelCapturaCompra extends JPanel {
 		model.setDataVector(data, columnNames);
 		 */
 		// se busca si ya existe un producto con el mismo código
-		DetallesCompra detalleExistente = null;
-		for (DetallesCompra detalle : listaDetalles) {
-			if (detalle.getCodigo().equals(codigo)) {
-				detalleExistente = detalle;
-				break;
-			}
-		}
-
-		if (detalleExistente != null) {
+		int detallesIndex = listaDetalles.indexOf(new DetallesCompra(codigo));
+		if (detallesIndex != -1) {
 			// Si existe, actualiza la cantidad y el total
-			detalleExistente.setCantidad(detalleExistente.getCantidad() + cantidad);
-			detalleExistente.setTotal(detalleExistente.getTotal() + total);
+			DetallesCompra detalleExistente = listaDetalles.get(detallesIndex);
+			detalleExistente.setCantidad(cantidad);
+			detalleExistente.setPrecio(precio);
+			detalleExistente.setTotal(total);
 		} else {
 			// Si no, agrega un nuevo detalle a la lista
 			listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
@@ -482,7 +450,6 @@ public class PanelCapturaCompra extends JPanel {
 			totalField.setText(String.valueOf(total)); // Actualiza el texto del total
 		} else {
 			totalField.setText(""); 
-
 		}
 	}////////
 

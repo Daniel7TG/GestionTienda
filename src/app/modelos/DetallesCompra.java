@@ -19,6 +19,9 @@ public class DetallesCompra {
 		this.precio = precio;
 		this.cantidad = cantidad;
 	}
+	public DetallesCompra(String codigo) {
+		this.codigo = codigo;
+	}
 	
 	
 	public String getCodigo() {
@@ -45,7 +48,10 @@ public class DetallesCompra {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	
+	@Override
+	public boolean equals(Object obj) {
+		return codigo.equals(((DetallesCompra)obj).codigo);			
+	}
 	
 		
 }

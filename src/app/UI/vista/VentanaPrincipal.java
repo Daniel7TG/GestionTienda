@@ -294,7 +294,7 @@ public class VentanaPrincipal extends JFrame {
 	public void regCompraFunc() {
 		capturaCompraPane = new PanelCapturaCompra(catalogo);
 		panelEncabezados = new PanelEncabezados("Registro de Compra");
-		panelOpciones = new PanelOpciones(capturaCompraPane.getField(), PanelOpciones.ALL);
+		panelOpciones = new PanelOpciones(capturaCompraPane.getField(), PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
 		cancelarButton = panelOpciones.getCancelarButton();
 		confirmarButton = panelOpciones.getConfirmButton();

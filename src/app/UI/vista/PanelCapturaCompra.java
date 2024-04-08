@@ -3,9 +3,13 @@ package app.UI.vista;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.JTextComponent;
 
 import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
@@ -16,13 +20,20 @@ import app.util.Util;
 
 import java.time.*;
 
+import static mx.edu.tecnm.zitacuaro.sistemas.modelo.Utileria.visualizar;
+
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JSpinner;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -33,6 +44,8 @@ import java.util.stream.Collectors;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class PanelCapturaCompra extends JPanel {
 
@@ -45,14 +58,14 @@ public class PanelCapturaCompra extends JPanel {
 	private JTable table;
 
 	private JTextField precioSpin;
-	private JSpinner cantidadSpin;
+	private JSpinner cantidadSpin;			//private JTextField cantidadSpin; 
 	private JLabel fechaLabel;
 	private JLabel lbCodigo;
 	private JLabel lbPrecio;
 	private JLabel lbCantidad;
 	private JLabel lbTotal;
 
-	
+
 	private Catalogo catalogo;
 	private Insets separation;
 	private Font fontLabel;
@@ -63,8 +76,9 @@ public class PanelCapturaCompra extends JPanel {
 	private String[] columnNames = {"Codigo",
 			"Cantidad",
 			"Precio", 
-			"Total"};
-	
+	"Total"};
+	private JButton confirmarButton;
+
 	public PanelCapturaCompra(Catalogo catalogo) {
 
 		this.catalogo = catalogo;
@@ -81,6 +95,49 @@ public class PanelCapturaCompra extends JPanel {
 		setLayout(gridBagLayout);
 
 		codigoField = new JTextField();
+
+		//     /*
+
+		codigoField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				buscarProductoCodigo(codigoField.getText());
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				buscarProductoCodigo(codigoField.getText());
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				buscarProductoCodigo(codigoField.getText());
+			}
+		}); 
+		codigoField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char[] texto = codigoField.getText().toCharArray();
+				if(!Character.isDigit(e.getKeyChar())) {
+					e.consume();
+				}
+				if(texto.length == 13) {
+					if(catalogo.exists(codigoField.getText())) {
+						precioSpin.requestFocus();
+
+					}else {
+						visualizar("No existe este producto");
+						codigoField.requestFocus();
+						limpiarCampos();
+					}
+					e.consume();
+
+				}
+
+			}
+		});
+		//    */
+
 		codigoField.setColumns(10);
 		GridBagConstraints gbc_codigoField = new GridBagConstraints();
 		gbc_codigoField.insets = new Insets(0, 0, 5, 5);
@@ -97,7 +154,17 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_precioSpin.gridy = 2;
 		add(precioSpin, gbc_precioSpin);
 
-		cantidadSpin = new JSpinner();
+		cantidadSpin = new JSpinner();			//cantidadSpin = new JTextField();
+
+		///////////
+		cantidadSpin.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				actualizarTotal();
+			}
+		});
+
+		//////////////
 		GridBagConstraints gbc_cantidadSpin = new GridBagConstraints();
 		gbc_cantidadSpin.fill = GridBagConstraints.BOTH;
 		gbc_cantidadSpin.insets = new Insets(0, 0, 5, 5);
@@ -150,7 +217,7 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_lbTotal.gridy = 3;
 		add(lbTotal, gbc_lbTotal);
 
-		
+
 		Object[][] data = Util.anyToString(listaDetalles);
 		model = new DefaultTableModel(data, columnNames) {
 			@Override
@@ -170,22 +237,61 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_tableScroll.gridheight = 6;
 		add(tableScroll, gbc_tableScroll);
 
-		
-		precioSpin.addKeyListener(new KeyAdapter() {
+
+
+
+		confirmarButton = new JButton("Confirmar");
+		confirmarButton.setFocusPainted(false);
+		confirmarButton.setRolloverSelectedIcon(new ImageIcon(PanelOpciones.class.getResource("/img/selectedConfirm.png")));
+		confirmarButton.setSelectedIcon(new ImageIcon(PanelOpciones.class.getResource("/img/selectedConfirm.png")));
+		confirmarButton.setBorderPainted(false);
+		confirmarButton.setContentAreaFilled(false);
+		confirmarButton.setForeground(Color.WHITE);
+		confirmarButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		confirmarButton.setPressedIcon(new ImageIcon(PanelOpciones.class.getResource("/img/selectedConfirm.png")));
+		confirmarButton.setDisabledIcon(new ImageIcon(PanelOpciones.class.getResource("/img/disabledConfirm.png")));
+		confirmarButton.setRolloverIcon(new ImageIcon(PanelOpciones.class.getResource("/img/hoverConfirm.png")));
+		confirmarButton.setIcon(new ImageIcon(PanelOpciones.class.getResource("/img/defaultConfirm.png")));
+		confirmarButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		confirmarButton.addFocusListener(new FocusListener() {
 			@Override
-			public void keyTyped(KeyEvent e) {
-				if(!precioSpin.getText().isEmpty())
-				totalField.setText(String.valueOf(Double.valueOf(precioSpin.getText()) * (Integer)cantidadSpin.getValue()));
+			public void focusGained(FocusEvent e) {
+				confirmarButton.setSelected(true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				confirmarButton.setSelected(false);							
+			}						
+		});
+
+		confirmarButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				registrarProducto();
 			}
 		});
-		cantidadSpin.addChangeListener(new ChangeListener() {
+
+		GridBagConstraints gbc_confirmarButton = new GridBagConstraints();
+		gbc_confirmarButton.anchor = GridBagConstraints.EAST;
+		gbc_confirmarButton.insets = new Insets(0, 0, 0, 5);
+		gbc_confirmarButton.gridx = 0;
+		gbc_confirmarButton.gridy = 5;
+		add(confirmarButton, gbc_confirmarButton);
+
+
+		precioSpin.addKeyListener(new KeyAdapter() { //calcula el total cada que se cambia el valor //el mismo para cantidadSpin o text
 			@Override
-			public void stateChanged(ChangeEvent e) {
+			public void keyTyped(KeyEvent e) { 
 				if(!precioSpin.getText().isEmpty())
-					totalField.setText(String.valueOf(Double.valueOf(precioSpin.getText()) * (Integer)cantidadSpin.getValue()));				
+
+					totalField.setText(String.valueOf(Double.valueOf(precioSpin.getText()) * (Integer)cantidadSpin.getValue()));
+				//	totalField.setText(String.valueOf(Double.valueOf(precioSpin.getText()) * Integer.valueOf(cantidadSpin.getText())));
 			}
 		});
-		
+
+
+
 		style(new Component[] {
 				codigoField,
 				totalField,
@@ -212,39 +318,62 @@ public class PanelCapturaCompra extends JPanel {
 
 
 	public void getDetalles() {
-		
-		double precio = Double.valueOf(precioSpin.getText());
-		int cantidad= (int)cantidadSpin.getValue();
-		String codigo = (String) codigoField.getText();
-		double total = precio*cantidad;
+
+		double precio = Double.parseDouble(precioSpin.getText());
+		int cantidad = (int) cantidadSpin.getValue();
+		String codigo = codigoField.getText();
+		double total = precio * cantidad;
 
 		Producto p = catalogo.get(codigo);
-		if(p != null) {
-			List<DetallesCompra> detallesExistente = listaDetalles.stream().filter(d -> d.getCodigo().equals(codigo)).collect(Collectors.toList());
-			
-			if(!detallesExistente.isEmpty()) {
-				if(p.getStockMaximo() >= cantidad + detallesExistente.get(0).getCantidad()) {					
-				detallesExistente.get(0).setCantidad(detallesExistente.get(0).getCantidad() + cantidad);
-				detallesExistente.get(0).setTotal(detallesExistente.get(0).getCantidad() * precio);
+		if (p != null) {
+			DetallesCompra detalleExistente = null;
+			for (DetallesCompra detalle : listaDetalles) {
+				if (detalle.getCodigo().equals(codigo)) {
+					detalleExistente = detalle;
+					break;
 				}
 			}
-			else {
-				if(p.getStockMaximo() >= cantidad) listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));							
+
+			if (detalleExistente != null) {
+				//// si existe se tiene que actualizar la tabla con la nueva cantidad con el nuevo total	
+				detalleExistente.setCantidad(detalleExistente.getCantidad() + cantidad);
+				detalleExistente.setTotal(detalleExistente.getCantidad() * precio);
+
+			} else { /// si no, se agrega otro detalle a la lista 
+				if (p.getStockMaximo() >= cantidad) {
+					listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
+				} else {
+					JOptionPane.showMessageDialog(null, "Cantidad excede el stock máximo");
+				}
 			}
-			model.setDataVector(Util.anyToString(listaDetalles), columnNames);				
+
+			actualizarTabla();
+			limpiarCampos();
 		} else {
-			JOptionPane.showMessageDialog(null, "no existe el producto");
+			visualizar("El producto no existe");
 		}
-		
 	}
-	
+
+	private void actualizarTabla() {
+		Object[][] data = Util.anyToString(listaDetalles);
+		DefaultTableModel newModel = new DefaultTableModel(data, columnNames) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		table.setModel(newModel);
+	}
+
+
+
 	public void guardarCompra() {
-		
+
 		double total = listaDetalles.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
 		listaDetalles.forEach(detalles -> {
 			Producto p = catalogo.get(detalles.getCodigo()); 
 			p.setStockActual(p.getStockActual() + detalles.getCantidad());
-			
+
 		});
 		LocalDate fecha = LocalDate.now();
 		Compra compra = new Compra(total, fecha.toString(), listaDetalles);
@@ -275,8 +404,87 @@ public class PanelCapturaCompra extends JPanel {
 	public JTextField getField() {
 		return totalField;
 	}
-	
-	
 
+	//////////////////
+
+
+	public void buscarProductoCodigo(String codigo) {
+		Producto producto = catalogo.get(codigo);
+		if (producto == null) {
+			visualizar("aaaaaaaaaaaaaaaaa");
+
+			limpiarCampos();
+			return;
+
+		}
+
+		List<DetallesCompra> detallesExistente = listaDetalles.stream()
+				.filter(d -> d.getCodigo().equals(codigo))
+				.collect(Collectors.toList());
+
+		if (!detallesExistente.isEmpty()) {
+			DetallesCompra detalles = detallesExistente.get(0);
+			cantidadSpin.setValue((Integer) cantidadSpin.getValue() + detalles.getCantidad());
+			precioSpin.setText(String.valueOf(detalles.getPrecio()));
+			totalField.setText(String.valueOf(detalles.getTotal()));
+		} else {
+			precioSpin.setText(String.valueOf(producto.getPrecioVenta())); 
+		}
+	}
+
+
+
+	private void registrarProducto() {
+		String codigo = codigoField.getText();
+		double precio = Double.parseDouble(precioSpin.getText());
+		int cantidad = (int) cantidadSpin.getValue();
+		double total = precio * cantidad;
+		/*listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
+		Object[][] data = Util.anyToString(listaDetalles);
+		model.setDataVector(data, columnNames);
+		 */
+		// se busca si ya existe un producto con el mismo código
+		DetallesCompra detalleExistente = null;
+		for (DetallesCompra detalle : listaDetalles) {
+			if (detalle.getCodigo().equals(codigo)) {
+				detalleExistente = detalle;
+				break;
+			}
+		}
+
+		if (detalleExistente != null) {
+			// Si existe, actualiza la cantidad y el total
+			detalleExistente.setCantidad(detalleExistente.getCantidad() + cantidad);
+			detalleExistente.setTotal(detalleExistente.getTotal() + total);
+		} else {
+			// Si no, agrega un nuevo detalle a la lista
+			listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
+		}
+
+		actualizarTabla();
+		limpiarCampos();
+
+	}
+
+	private void limpiarCampos() {
+		codigoField.setText("");
+		precioSpin.setText("");
+		cantidadSpin.setValue(0);
+		totalField.setText("");
+	}
+
+	private void actualizarTotal() {
+		String precioText = precioSpin.getText().trim(); // elimina los espacios en blanco
+		if (!precioText.isEmpty()) {
+			double precio = Double.parseDouble(precioText);
+			int cantidad = (int) cantidadSpin.getValue();
+			double total = precio * cantidad;
+			totalField.setText(String.valueOf(total)); // Actualiza el texto del total
+		} else {
+			totalField.setText(""); 
+
+		}
+	}////////
 
 }
+

@@ -159,3 +159,4 @@ public class PanelOpciones extends JPanel {
 	
 
 }
+	

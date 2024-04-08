@@ -41,10 +41,6 @@ public class TableModel extends DefaultTableModel {
 	public int getColumnCount() {
 		return columns.length;
 	}
-//	@Override
-//	public Object getValueAt(int rowIndex, int columnIndex) {
-//		return data[rowIndex][columnIndex];
-//	}
 	@Override
 	public String getColumnName(int column) {
 		return columns[column];

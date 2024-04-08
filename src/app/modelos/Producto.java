@@ -66,23 +66,33 @@ public class Producto {
 		this.codigoBarras = codigoBarras;
 	}
 	public Producto() {
-//		System.out.println("constructor");		
 	}
 	
 //	@Override
 //	protected void finalize() throws Throwable {
 //		System.out.println("finalize");
 //	}
-//	
-//	
-//	public static void main(String[] args) {
-//		Producto p = new Producto();
-//		p = null;
-//		
-//		System.gc();
-//	}
 	
-	
+	public void addStock(int value) {
+		stockActual += value;
+	}
+	public void subtractStock(int value) {
+		stockActual -= value;
+	}
+	/**
+	 * @param value to add to actual Stock
+	 * @return true if can be added considering stock maximo
+	 */
+	public boolean valStockMax(int value) {
+		return stockActual + value <= stockMaximo;
+	}
+	/**
+	 * @param value to add to actual Stock
+	 * @return true if can be subtracted considering stock minimo
+	 */
+	public boolean valStockMin(int value) {
+		return stockActual - value >= stockMinimo;
+	}
 	
 	public String getCodigoBarras() {
 		return codigoBarras;

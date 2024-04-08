@@ -27,7 +27,6 @@ public class DetallesVenta {
 				+ "]";
 	}
 	
-	
 	public String getCodigo() {
 		return codigo;
 	}

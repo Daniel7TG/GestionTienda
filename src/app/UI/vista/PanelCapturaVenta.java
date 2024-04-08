@@ -18,6 +18,7 @@ import app.modelos.Clientes;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Venta;
+import app.util.TableModel;
 import app.util.Util;
 
 import java.awt.Insets;
@@ -36,7 +37,7 @@ public class PanelCapturaVenta extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTable productsTable;
 	private JTextField codigoField;
-	private DefaultTableModel model;
+	private TableModel model;
 	
 	private Clientes clientes;
 	private Catalogo catalogo;
@@ -46,6 +47,7 @@ public class PanelCapturaVenta extends JPanel {
 	private JButton agregarButton;
 	private JScrollPane tablePanel;
 	
+	private Object[][] data = new Object[0][0];
 	private String[] columnNames = {
 		"Codigo", "Cantidad", "Precio", "Total"
 	};
@@ -89,7 +91,7 @@ public class PanelCapturaVenta extends JPanel {
 			public void keyTyped(KeyEvent e) {
 //				(int)e.getKeyChar() != 8, 8 es el boton de borrar
 				if(codigoField.getText().length() > 12 & (int)e.getKeyChar() != 8 ) {
-					agregarProducto(codigoField.getText());
+					addToList(codigoField.getText());
 					codigoField.setText("");
 					e.consume();
 				}
@@ -104,25 +106,19 @@ public class PanelCapturaVenta extends JPanel {
 		topPanel.add(agregarButton, gbc_agregarButton);
 		agregarButton.addActionListener(e -> showTicket(lista));
 		
-		tablePanel = new JScrollPane();
-		add(tablePanel, BorderLayout.CENTER);
 		
+		tablePanel = new JScrollPane();
 		productsTable = new JTable();
-		model = new DefaultTableModel(Util.anyToString(lista), columnNames) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
+		model = new TableModel(productsTable, data, columnNames);
 		productsTable.setModel(model);
 		tablePanel.setViewportView(productsTable);
-		
+
+		add(tablePanel, BorderLayout.CENTER);
 	}
 	
 	
-	public void agregarProducto(String codigo) {
+	public void addToList(String codigo) {
 		Producto producto = catalogo.get(codigo);
-		
 		if(producto == null) {
 			JOptionPane.showMessageDialog(null, "No existe el producto");
 		}
@@ -130,21 +126,20 @@ public class PanelCapturaVenta extends JPanel {
 			JOptionPane.showMessageDialog(null, "No hay existencias");
 		} else {
 			DetallesVenta detalles = new DetallesVenta(codigo, producto.getPrecioVenta(), (int)cantidadSpin.getValue());
-			agregarList(detalles, producto);
+			addToList(detalles, producto);
 		}
 	}
 	
 	
-	public void agregarList(DetallesVenta detalles, Producto producto) {
-		if(lista.contains(detalles)) {
-			int cantidadTotal = lista.get(lista.indexOf(detalles)).getCantidad() + detalles.getCantidad();
-			if(producto.getStockActual() - cantidadTotal >= producto.getStockMinimo()) {
-				lista.get(lista.indexOf(detalles)).setCantidad(cantidadTotal);
-			}else {
-				JOptionPane.showMessageDialog(null, "No hay existencias");
-			}
+	public void addToList(DetallesVenta det, Producto prod) {
+		int index = lista.indexOf(det);
+		if(index != -1) {
+			DetallesVenta detExst = lista.get(index);
+			int cantTotal = detExst.getCantidad() + det.getCantidad();
+			if (prod.valStockMin(cantTotal)) detExst.setCantidad(cantTotal);
+			else JOptionPane.showMessageDialog(null, "No hay existencias");
 		} else {
-			lista.add(detalles);
+			lista.add(det);
 		}
 		updateTable();
 	}
@@ -152,14 +147,13 @@ public class PanelCapturaVenta extends JPanel {
 	
 	public void guardarVenta() {
 		if(lista.size() == 0) return;
-		double total = lista.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
-		LocalDate fecha = LocalDate.now();
-		Venta venta = new Venta(total, fecha.toString(), lista);
-		lista.forEach(detalle -> {
-			Producto p = catalogo.get(detalle.getCodigo());
-			p.setStockActual(p.getStockActual() - detalle.getCantidad());
-		});
-			
+		double total = lista.stream().mapToDouble(DetallesVenta::getTotal).sum();
+		String fecha = LocalDate.now().toString();
+		Venta venta = new Venta(total, fecha, lista);
+		lista.forEach(detalle -> 
+			catalogo.get(detalle.getCodigo()).
+			subtractStock(detalle.getCantidad())
+		);
 		clientes.add(venta);
 		lista.clear();
 		updateTable();
@@ -169,60 +163,16 @@ public class PanelCapturaVenta extends JPanel {
 	public void showTicket(ArrayList<DetallesVenta> lista) {
 		JFrame ticketFrame = new JFrame();
 		ticketFrame.setBounds(0, 0, 300, 700);
-		FlowLayout layout = new FlowLayout(FlowLayout.CENTER);
-		JLabel textTicket = new JLabel(generateTicket(lista), JLabel.CENTER);
+		JLabel textTicket = new JLabel(Util.generateTicket(lista), JLabel.CENTER);
 		textTicket.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		System.out.println(generateTicket(lista));
-		ticketFrame.setLayout(layout);
 		ticketFrame.add(textTicket);
 		ticketFrame.setVisible(true);
 		ticketFrame.setResizable(false);
 	}
 	
-	private static String centerText( String texto, int espacio ) {
-		int tlength = texto.length();
-		
-		if(tlength > espacio) return "error";
-		
-		int margin = (espacio - tlength) / 2;
-		
-		String centeredText = "<p>" +
-				" ".repeat(margin) + 
-				texto + 
-				" ".repeat(margin) + 
-				( margin % 2 == 0 ? "" : " " );
-		
-		return centeredText + "<p/>";
-	}
-	private static String formatProduct(DetallesVenta details, int space) {
-		String finalText = "";
-		StringBuilder textoLeft = new StringBuilder(details.getCodigo());
-		int middle = space/2;
-		
-		if(textoLeft.length() > middle) {
-			finalText = textoLeft.substring(0, middle) + "  ";
-		}
-		else {
-			finalText = String.format( ("%-" + (middle + 2) + "s"), textoLeft.toString());
-		}				
-		finalText += String.format("%" + (middle-2) + "s", "$" + details.getTotal()) + "<br/>";	
-		return finalText;	
-	}
-	public static String generateTicket(ArrayList<DetallesVenta> detailsList) {
-		StringBuilder ticket = new StringBuilder("<html>");
-		ticket.append( centerText("Tienda", 35) );
-		ticket.append( centerText("Tel: 55-5555-5555", 35) );
-		ticket.append( centerText("Suc. CDMX", 35) );
-		
-		
-		detailsList.forEach(detail -> ticket.append(formatProduct(detail, 35)));
-		return String.valueOf(ticket) + "<html/>";
-	}
+
 	public void updateTable() {
-		model.setDataVector(Util.anyToString(lista), columnNames);
+		model.update(Util.anyToString(lista));
 	}
-	
-	
-	
 
 }

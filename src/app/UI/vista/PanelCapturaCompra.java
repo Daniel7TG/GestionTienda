@@ -412,11 +412,6 @@ public class PanelCapturaCompra extends JPanel {
 		double precio = Double.parseDouble(precioSpin.getText());
 		int cantidad = (int) cantidadSpin.getValue();
 		double total = precio * cantidad;
-		/*listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
-		Object[][] data = Util.anyToString(listaDetalles);
-		model.setDataVector(data, columnNames);
-		 */
-		// se busca si ya existe un producto con el mismo código
 		int detallesIndex = listaDetalles.indexOf(new DetallesCompra(codigo));
 		if (detallesIndex != -1) {
 			// Si existe, actualiza la cantidad y el total
@@ -425,7 +420,6 @@ public class PanelCapturaCompra extends JPanel {
 			detalleExistente.setPrecio(precio);
 			detalleExistente.setTotal(total);
 		} else {
-			// Si no, agrega un nuevo detalle a la lista
 			listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
 		}
 
@@ -442,16 +436,16 @@ public class PanelCapturaCompra extends JPanel {
 	}
 
 	private void actualizarTotal() {
-		String precioText = precioSpin.getText().trim(); // elimina los espacios en blanco
+		String precioText = precioSpin.getText().trim(); 
 		if (!precioText.isEmpty()) {
 			double precio = Double.parseDouble(precioText);
 			int cantidad = (int) cantidadSpin.getValue();
 			double total = precio * cantidad;
-			totalField.setText(String.valueOf(total)); // Actualiza el texto del total
+			totalField.setText(String.valueOf(total)); 
 		} else {
 			totalField.setText(""); 
 		}
-	}////////
+	}
 
 }
 

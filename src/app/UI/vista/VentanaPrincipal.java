@@ -286,7 +286,6 @@ public class VentanaPrincipal extends JFrame {
 		registrarCompButton.addActionListener(e->{
 			regCompraFunc();
 		});
-		
 		listarCompButton = panelMenuCompra.getListarButton();	
 		contentPane.add(panelMenuCompra, BorderLayout.WEST);
 		revalidate();

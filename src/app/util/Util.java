@@ -93,11 +93,12 @@ public class Util {
 				texto + 
 				" ".repeat(margin) + 
 				( margin % 2 == 0 ? "" : " " );
-		
+	
 		return centeredText + "<pre/>";
 	}
 	
 	
+	// Sobrecargar metodo para hacerlo con detalles compra 
 	private static String formatProduct(DetallesVenta details, int space) {
 		String finalText = "<pre>";
 		StringBuilder textoLeft = new StringBuilder(details.getCodigo());
@@ -109,11 +110,13 @@ public class Util {
 		else {
 			finalText = String.format( ("%-" + (middle + 2) + "s"), textoLeft.toString());
 		}				
-		finalText += String.format("%" + (middle-2) + "s", "$" + details.getTotal()) + "<pre/>";	
+		finalText += String.format("%5s", details.getCantidad()+"u");
+		finalText += String.format("%" + (middle-7) + "s", "$" + details.getTotal()) + "<pre/>";	
 		return finalText;	
 	}
 	
 	
+	// agregar ticketHeader como array de strings para formatear 
 	public static String generateTicket(ArrayList<DetallesVenta> detailsList) {
 		StringBuilder ticket = new StringBuilder("<html>");
 		ticket.append( centerText("Tienda", 35) );

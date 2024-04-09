@@ -1,93 +1,87 @@
 package app.modelos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.interfaces.Funcionable;
+import app.util.Util;
 
 public class Proveedores implements Funcionable<Compra>{
 
+	private List<Compra> contenedor;
+
+	public Proveedores() {
+		contenedor = new ArrayList<Compra>();
+	}
+
 	@Override
 	public boolean exists(String id) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean exists(Compra obj) {
-		// TODO Auto-generated method stub
-		return false;
+		return contenedor.contains(obj);
 	}
 
 	@Override
 	public void add(Compra obj) {
-		// TODO Auto-generated method stub
-		
+		contenedor.add(obj);
 	}
 
 	@Override
 	public Compra get(int posicion) {
-		// TODO Auto-generated method stub
-		return null;
+		return contenedor.get(posicion);
 	}
 
 	@Override
 	public Compra get(String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int getIndex(Compra obj) {
-		// TODO Auto-generated method stub
-		return 0;
+	return contenedor.indexOf(obj);
 	}
 
 	@Override
 	public int getIndex(String id) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void remove(Compra obj) {
-		// TODO Auto-generated method stub
-		
+		contenedor.remove(obj);
 	}
 
 	@Override
 	public void remove(String id) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void update(Compra obj, int posicion) {
-		// TODO Auto-generated method stub
-		
+		contenedor.set(posicion, obj);
+
 	}
 
 	@Override
 	public List<Compra> getList() {
-		// TODO Auto-generated method stub
-		return null;
+		return contenedor;
 	}
 
 	@Override
 	public Object[][] getData() {
-		// TODO Auto-generated method stub
-		return null;
+		return Util.anyToString(contenedor);
 	}
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return contenedor.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return contenedor.isEmpty();
 	}
 
 }

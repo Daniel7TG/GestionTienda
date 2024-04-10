@@ -52,6 +52,10 @@ public class DetallesCompra {
 	public boolean equals(Object obj) {
 		return codigo.equals(((DetallesCompra)obj).codigo);			
 	}
+	@Override
+	public String toString() {
+		return "DetallesCompra [codigo=" + codigo + ", cantidad=" + cantidad + ", precio=" + precio + ", total=" + total
+				+ "]";
+	}
 	
-		
 }

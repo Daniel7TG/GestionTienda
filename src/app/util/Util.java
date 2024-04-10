@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import app.modelos.Catalogo;
+import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
 
 public class Util {
@@ -96,38 +98,88 @@ public class Util {
 	
 		return centeredText + "<pre/>";
 	}
-	
-	
-	// Sobrecargar metodo para hacerlo con detalles compra 
-	private static String formatProduct(DetallesVenta details, int space) {
-		String finalText = "<pre>";
-		StringBuilder textoLeft = new StringBuilder(details.getCodigo());
-		int middle = space/2;
+	private static String centerText( String texto, int espacio, boolean first ) {
+		int tlength = texto.length();
+		if(tlength > espacio) return "_";
+		int margin = (espacio - tlength) / 2;
 		
-		if(textoLeft.length() > middle) {
-			finalText = textoLeft.substring(0, middle) + "  ";
-		}
-		else {
-			finalText = String.format( ("%-" + (middle + 2) + "s"), textoLeft.toString());
-		}				
-		finalText += String.format("%5s", details.getCantidad()+"u");
-		finalText += String.format("%" + (middle-7) + "s", "$" + details.getTotal()) + "<pre/>";	
-		return finalText;	
+		String centeredText = (first ? "<pre>" : "") + 
+				" ".repeat(margin) + 
+				texto + 
+				" ".repeat(margin) + 
+				( margin % 2 == 0 ? "" : " " );
+		
+		return centeredText + "<pre/>";
 	}
 	
+	private static String formatProducto(int space, String codigo, String nombre, String cantidad, String precio, String total) {
+		String finalText = "<pre>";
+		int division = space/5;
+		finalText = String.format( ("%-" + (division + 2) + "s"), codigo); //codigo
+		finalText += String.format("%-" + (division + 2) + "s", nombre); //nombre			
+		finalText += String.format("%-" + (division - 2) + "s", cantidad + "u"); //cantidad	
+		finalText += String.format("%-" + (division - 2) + "s", "$" + precio);	// precio
+		finalText += String.format("%-" + (division) + "s", "$" + total); // total			
+		return finalText + "<pre/>";	
+	}
+	public static String formatProduct(DetallesVenta v, Catalogo cat, int space) {
+		return formatProducto(space, 
+				v.getCodigo(), 
+				cat.get(v.getCodigo()).getNombre(), 
+				String.valueOf(v.getCantidad()), 
+				String.valueOf(v.getPrecio()), 
+				String.valueOf(v.getTotal()));
+	}
+	public static String formatProduct(DetallesCompra c, Catalogo cat, int space) {
+		return formatProducto(space, 
+				c.getCodigo(), 
+				cat.get(c.getCodigo()).getNombre(), 
+				String.valueOf(c.getCantidad()), 
+				String.valueOf(c.getPrecio()), 
+				String.valueOf(c.getTotal()));		
+	}
 	
+	// Sobrecargar metodo para hacerlo con detalles compra 
+	private static String formatAny(int space, String...elementos) {
+		StringBuilder finalText = new StringBuilder("<pre>");
+		int division = space/elementos.length;
+		for(String texto : elementos) {
+			finalText.append(String.format( ("%-" + (division) + "s"), texto));
+		}
+		return finalText + "<pre/>";	
+	}
 	// agregar ticketHeader como array de strings para formatear 
-	public static String generateTicket(ArrayList<DetallesVenta> detailsList) {
+	public static String generateTicketVenta(ArrayList<DetallesVenta> detailsList, Catalogo catalogo,  List<String> headers) {
 		StringBuilder ticket = new StringBuilder("<html>");
-		ticket.append( centerText("Tienda", 35) );
-		ticket.append( centerText("Tel: 55-5555-5555", 35) );
-		ticket.append( centerText("Suc. CDMX", 35) );
-		
-		
-		detailsList.forEach(detail -> ticket.append(formatProduct(detail, 35)));
-		ticket.append(formatProduct(
-				new DetallesVenta("Total", detailsList.stream().mapToDouble(DetallesVenta::getTotal).sum(), 1)
-				, 35));
+		int space = 60; 
+		ticket.append( centerText(headers.get(0), space, true));
+		for(int i = 1; i < headers.size(); i++) {
+			ticket.append( centerText(headers.get(i), space) );
+		}
+		ticket.append(formatAny(space, "Codigo", "Nombre", "Cantidad", "Precio", "Total"));
+		detailsList.forEach(detail -> ticket.append(formatProduct(detail, catalogo, space)));
+		ticket.append(formatAny(space, "Total:", 
+				"", 
+				String.valueOf(detailsList.stream().mapToInt(DetallesVenta::getCantidad).sum()), 
+				"", 
+				String.valueOf(detailsList.stream().mapToDouble(DetallesVenta::getTotal).sum())));
+		return String.valueOf(ticket) + "<html/>";
+	}
+	
+	public static String generateTicketCompra(ArrayList<DetallesCompra> detailsList, Catalogo catalogo, List<String> headers) {
+		StringBuilder ticket = new StringBuilder("<html>");
+		int space = 60; 
+		ticket.append( centerText(headers.get(0), space, true) );
+		for(int i = 1; i < headers.size(); i++) {
+			ticket.append( centerText(headers.get(i), space) );
+		}
+		ticket.append(formatAny(space, "Codigo", "Nombre", "Cantidad", "Precio", "Total"));
+		detailsList.forEach(detail -> ticket.append(formatProduct(detail, catalogo, space)));
+		ticket.append(formatAny(space, "Total:", 
+				"", 
+				String.valueOf(detailsList.stream().mapToInt(DetallesCompra::getCantidad).sum()), 
+				"", 
+				String.valueOf(detailsList.stream().mapToDouble(DetallesCompra::getTotal).sum())));
 		return String.valueOf(ticket) + "<html/>";
 	}
 	

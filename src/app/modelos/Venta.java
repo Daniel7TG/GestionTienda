@@ -3,13 +3,14 @@ package app.modelos;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Venta {
 
+	String folio;
 	double total;
 	String fecha;
 	ArrayList<DetallesVenta> detalles;
-	
 	/**
 	 * @param total
 	 * @param fecha
@@ -20,6 +21,15 @@ public class Venta {
 		this.fecha = fecha;
 		this.detalles = new ArrayList<DetallesVenta>();
 		this.detalles.addAll(detalles);
+		this.folio = UUID.randomUUID().toString().substring(0, 15);
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
 	}
 
 	public double getTotal() {

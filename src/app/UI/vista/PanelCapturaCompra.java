@@ -3,6 +3,7 @@ package app.UI.vista;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -15,6 +16,7 @@ import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
+import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Proveedores;
 import app.util.Util;
@@ -47,6 +49,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 public class PanelCapturaCompra extends JPanel {
 
@@ -79,6 +82,7 @@ public class PanelCapturaCompra extends JPanel {
 			"Cantidad",
 			"Precio", 
 	"Total"};
+	private List<String> headers = List.of("Registro de compra", LocalDate.now().toString());
 	private JButton confirmarButton;
 
 	public PanelCapturaCompra(Catalogo catalogo, Proveedores proveedores) {
@@ -134,7 +138,8 @@ public class PanelCapturaCompra extends JPanel {
 		add(precioSpin, gbc_precioSpin);
 
 		cantidadSpin = new JSpinner();			//cantidadSpin = new JTextField();
-
+		SpinnerNumberModel cantidadModel = new SpinnerNumberModel(1, 1, 1000, 1);
+		cantidadSpin.setModel(cantidadModel);
 		///////////
 		cantidadSpin.addChangeListener(new ChangeListener() {
 			@Override
@@ -299,42 +304,6 @@ public class PanelCapturaCompra extends JPanel {
 	}
 
 
-//	public void getDetalles() {
-//
-//		double precio = Double.parseDouble(precioSpin.getText());
-//		int cantidad = (int) cantidadSpin.getValue();
-//		String codigo = codigoField.getText();
-//		double total = precio * cantidad;
-//
-//		Producto p = catalogo.get(codigo);
-//		if (p != null) {
-//			DetallesCompra detalleExistente = null;
-//			for (DetallesCompra detalle : listaDetalles) {
-//				if (detalle.getCodigo().equals(codigo)) {
-//					detalleExistente = detalle;
-//					break;
-//				}
-//			}
-//
-//			if (detalleExistente != null) {
-//				//// si existe se tiene que actualizar la tabla con la nueva cantidad con el nuevo total	
-//				detalleExistente.setCantidad(detalleExistente.getCantidad() + cantidad);
-//				detalleExistente.setTotal(detalleExistente.getCantidad() * precio);
-//
-//			} else { /// si no, se agrega otro detalle a la lista 
-//				if (p.getStockMaximo() >= cantidad) {
-//					listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
-//				} else {
-//					JOptionPane.showMessageDialog(null, "Cantidad excede el stock máximo");
-//				}
-//			}
-//
-//			actualizarTabla();
-//			limpiarCampos();
-//		} else {
-//			visualizar("El producto no existe");
-//		}
-//	}
 
 	private void actualizarTabla() {
 		Object[][] data = Util.anyToString(listaDetalles);
@@ -373,7 +342,7 @@ public class PanelCapturaCompra extends JPanel {
 	
 	public void guardarCompra() {
 		
-		double total = listaDetalles.stream().mapToDouble(detalles -> detalles.getTotal()).sum();
+		double total = listaDetalles.stream().mapToDouble(DetallesCompra::getTotal).sum();
 		listaDetalles.forEach(detalles -> 
 			catalogo.get(detalles.getCodigo()) 
 			.addStock(detalles.getCantidad())	
@@ -381,6 +350,7 @@ public class PanelCapturaCompra extends JPanel {
 		LocalDate fecha = LocalDate.now();
 		Compra compra = new Compra(total, fecha.toString(), listaDetalles);
 		proveedores.add(compra);
+		showTicket(listaDetalles);
 		listaDetalles.clear();
 		actualizarTabla();
 	}
@@ -412,7 +382,15 @@ public class PanelCapturaCompra extends JPanel {
 		double precio = Double.parseDouble(precioSpin.getText());
 		int cantidad = (int) cantidadSpin.getValue();
 		double total = precio * cantidad;
+		Producto producto = catalogo.get(codigo);
+		
 		int detallesIndex = listaDetalles.indexOf(new DetallesCompra(codigo));
+		
+		if (!producto.valStockMax(cantidad)) {
+			JOptionPane.showMessageDialog(null, "Supera el StockMaximo");
+			return;
+		}
+
 		if (detallesIndex != -1) {
 			// Si existe, actualiza la cantidad y el total
 			DetallesCompra detalleExistente = listaDetalles.get(detallesIndex);
@@ -428,6 +406,17 @@ public class PanelCapturaCompra extends JPanel {
 
 	}
 
+	public void showTicket(ArrayList<DetallesCompra> lista) {
+		JFrame ticketFrame = new JFrame();
+		ticketFrame.setBounds(0, 0, 500, 750);
+		JLabel textTicket = new JLabel(Util.generateTicketCompra(lista, catalogo, headers), JLabel.CENTER);
+		textTicket.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		ticketFrame.add(textTicket);
+		ticketFrame.setVisible(true);
+		ticketFrame.setResizable(false);
+	}
+	
+	
 	private void limpiarCampos() {
 		codigoField.setText("");
 		precioSpin.setText("");

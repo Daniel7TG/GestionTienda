@@ -79,7 +79,7 @@ public class VentanaPrincipal extends JFrame {
 	private JButton listarCompButton;
 	private JMenuItem pMenuCompra;
 	private JMenuItem pMenuListado;
-
+	private PanelListadoCompras listadoComprasPane;
 	private PanelCapturaCompra capturaCompraPane;
 	// Fin Proveedores
 	
@@ -119,13 +119,14 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal() {
 		font = new Font("Montserrat", Font.BOLD, 13);
 		catalogo = new Catalogo();
+		proveedores = new Proveedores();
 		clientes = new Clientes();
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
 			public void paint(Graphics g){
-				ImageIcon img = new ImageIcon("resources/img/GatoC.jpg");
-				g.drawImage(img.getImage(), 0, 0, getWidth(), getHeight(), this);
-				setOpaque(false);
+//				ImageIcon img = new ImageIcon("resources/img/GatoC.jpg");
+//				g.drawImage(img.getImage(), 0, 0, getWidth(), getHeight(), this);
+//				setOpaque(false);
 				super.paint(g);
 			}
 		};
@@ -287,6 +288,9 @@ public class VentanaPrincipal extends JFrame {
 			regCompraFunc();
 		});
 		listarCompButton = panelMenuCompra.getListarButton();	
+		listarCompButton.addActionListener(e->{
+			listCompFunc();
+		});
 		contentPane.add(panelMenuCompra, BorderLayout.WEST);
 		revalidate();
 	}
@@ -310,6 +314,22 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuCompra, false);
 		revalidate();
+	}
+	
+	
+	public void listCompFunc() {
+		listadoComprasPane = new PanelListadoCompras(proveedores);
+		panelEncabezados = new PanelEncabezados("Listado de Compras");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(e->{
+			cancelButton(panelEncabezados, panelMenuCompra, listadoComprasPane, panelOpciones);
+		});
+		panelEncabezados.add(listadoComprasPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuCompra , false);
+		revalidate();	
 	}
 	
 	

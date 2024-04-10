@@ -26,6 +26,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,6 +52,7 @@ public class PanelCapturaVenta extends JPanel {
 	private String[] columnNames = {
 		"Codigo", "Cantidad", "Precio", "Total"
 	};
+	private List<String> headers = List.of("Tienda", "Sucursal Zitacuaro", "Telefono: 55-5555-5555", "RFC: ", LocalDate.now().toString());
 	
 	public PanelCapturaVenta(Catalogo catalogo, Clientes clientes) {
 		setLayout(new BorderLayout(0, 0));
@@ -155,6 +157,7 @@ public class PanelCapturaVenta extends JPanel {
 			subtractStock(detalle.getCantidad())
 		);
 		clientes.add(venta);
+		showTicket(lista);
 		lista.clear();
 		updateTable();
 	}
@@ -162,8 +165,8 @@ public class PanelCapturaVenta extends JPanel {
 	
 	public void showTicket(ArrayList<DetallesVenta> lista) {
 		JFrame ticketFrame = new JFrame();
-		ticketFrame.setBounds(0, 0, 300, 700);
-		JLabel textTicket = new JLabel(Util.generateTicket(lista), JLabel.CENTER);
+		ticketFrame.setBounds(0, 0, 500, 750);
+		JLabel textTicket = new JLabel(Util.generateTicketVenta(lista, catalogo, headers), JLabel.CENTER);
 		textTicket.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		ticketFrame.add(textTicket);
 		ticketFrame.setVisible(true);

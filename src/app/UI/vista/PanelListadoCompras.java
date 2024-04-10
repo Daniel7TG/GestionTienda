@@ -1,40 +1,34 @@
 package app.UI.vista;
 
-import java.awt.Component;
 import java.awt.GridLayout;
-import java.util.Arrays;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
-import app.interfaces.Funcionable;
 import app.modelos.Clientes;
+import app.modelos.Proveedores;
 import app.util.TableModel;
-import app.util.Util;
 
-public class PanelListadoVentas extends JPanel {
+public class PanelListadoCompras extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	private JTable table;
 	private TableModel model;
 	private String[] columnNames = {"Folio",
-			"Total", 
+			"Total",
 			"Fecha",
 			"Detalles"};
-	private Clientes clientes;
+	private Proveedores proveedores;
 	private JScrollPane tableScroll;
 	
-	@SuppressWarnings("serial")
-	public PanelListadoVentas(Clientes clientes) {
+	
+	public PanelListadoCompras(Proveedores proveedores) {
 		setLayout(new GridLayout(1, 1, 0, 0));
 
-		this.clientes = clientes;		
-		Object[][] data = clientes.getData();
+		this.proveedores = proveedores;		
+		Object[][] data = proveedores.getData();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
 		table.setModel(model);
@@ -44,7 +38,5 @@ public class PanelListadoVentas extends JPanel {
 		tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(tableScroll);
 	}
-	
-	
 
 }

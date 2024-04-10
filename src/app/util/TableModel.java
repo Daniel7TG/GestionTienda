@@ -75,7 +75,7 @@ public class TableModel extends DefaultTableModel {
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			if(size <= 0) return null;			
-			List<DetallesVenta> arrayList = (List<DetallesVenta>)data[row][column];
+			List arrayList = (List)data[row][column];
 			String[] stringArray = new String[arrayList.size()];
 			table.setRowHeight(row, 19 * arrayList.size() );
 			for(int i = 0; i < arrayList.size(); i++) stringArray[i] = arrayList.get(i).toString();

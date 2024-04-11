@@ -1,61 +1,15 @@
 package app.modelos;
 
-public class DetallesCompra {
-	String codigo;
-	int cantidad;
-	double precio;
-	double total;
-	
-	
-	/**
-	 * @param codigo
-	 * @param total
-	 * @param precio
-	 * @param cantidad
-	 */
-	public DetallesCompra(String codigo, double total, double precio, int cantidad) {
-		this.codigo = codigo;
-		this.total = total;
-		this.precio = precio;
-		this.cantidad = cantidad;
+import app.abstractClasses.Detalles;
+
+public class DetallesCompra extends Detalles {
+
+	public DetallesCompra(String codigo, double precio, int cantidad) {
+		super(codigo, precio, cantidad);
 	}
+
 	public DetallesCompra(String codigo) {
-		this.codigo = codigo;
-	}
-	
-	
-	public String getCodigo() {
-		return codigo;
-	}
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-	public double getTotal() {
-		return total;
-	}
-	public void setTotal(double total) {
-		this.total = total;
-	}
-	public double getPrecio() {
-		return precio;
-	}
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-	public int getCantidad() {
-		return cantidad;
-	}
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		return codigo.equals(((DetallesCompra)obj).codigo);			
-	}
-	@Override
-	public String toString() {
-		return "DetallesCompra [codigo=" + codigo + ", cantidad=" + cantidad + ", precio=" + precio + ", total=" + total
-				+ "]";
+		super(codigo);
 	}
 	
 }

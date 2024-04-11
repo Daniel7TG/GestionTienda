@@ -398,7 +398,7 @@ public class PanelCapturaCompra extends JPanel {
 			detalleExistente.setPrecio(precio);
 			detalleExistente.setTotal(total);
 		} else {
-			listaDetalles.add(new DetallesCompra(codigo, total, precio, cantidad));
+			listaDetalles.add(new DetallesCompra(codigo, precio, cantidad));
 		}
 
 		actualizarTabla();
@@ -409,7 +409,7 @@ public class PanelCapturaCompra extends JPanel {
 	public void showTicket(ArrayList<DetallesCompra> lista) {
 		JFrame ticketFrame = new JFrame();
 		ticketFrame.setBounds(0, 0, 500, 750);
-		JLabel textTicket = new JLabel(Util.generateTicketCompra(lista, catalogo, headers), JLabel.CENTER);
+		JLabel textTicket = new JLabel(Util.generateTicket(lista, catalogo, headers), JLabel.CENTER);
 		textTicket.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		ticketFrame.add(textTicket);
 		ticketFrame.setVisible(true);

@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
+import app.abstractClasses.Detalles;
 import app.modelos.Catalogo;
 import app.modelos.Clientes;
 import app.modelos.DetallesVenta;
@@ -166,7 +167,7 @@ public class PanelCapturaVenta extends JPanel {
 	public void showTicket(ArrayList<DetallesVenta> lista) {
 		JFrame ticketFrame = new JFrame();
 		ticketFrame.setBounds(0, 0, 500, 750);
-		JLabel textTicket = new JLabel(Util.generateTicketVenta(lista, catalogo, headers), JLabel.CENTER);
+		JLabel textTicket = new JLabel(Util.generateTicket(lista, catalogo, headers), JLabel.CENTER);
 		textTicket.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		ticketFrame.add(textTicket);
 		ticketFrame.setVisible(true);
@@ -175,7 +176,7 @@ public class PanelCapturaVenta extends JPanel {
 	
 
 	public void updateTable() {
-		model.update(Util.anyToString(lista));
+		model.update(Util.anyToString(lista, Detalles.class));
 	}
 
 }

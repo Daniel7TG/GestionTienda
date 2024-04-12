@@ -11,6 +11,9 @@ public class DetallesCompra extends Detalles {
 	public DetallesCompra(String codigo, double precio, int cantidad) {
 		super(codigo, precio, cantidad);
 	}
+	public DetallesCompra(String codigo, double precio, int cantidad, LocalDate fechaCaducidad) {
+		super(codigo, precio, cantidad);
+	}
 
 	public DetallesCompra(String codigo) {
 		super(codigo);

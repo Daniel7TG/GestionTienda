@@ -5,6 +5,9 @@ import javax.swing.JPanel;
 import app.UI.vista.general.PanelCapturaDireccion;
 import app.modelos.Proveedor;
 import app.modelos.containers.Proveedores;
+import app.util.Util.FocusField;
+import app.util.Util.FocusBox;
+
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
@@ -15,6 +18,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -39,6 +44,7 @@ public class PanelCapturaProveedor extends JPanel {
 		fontFunc = new Font("Montserrat", Font.PLAIN, 13);
 		this.proveedores = proveedores;
 		panelDireccion = new PanelCapturaDireccion();
+		FocusField focusField = new FocusField();
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -78,7 +84,9 @@ public class PanelCapturaProveedor extends JPanel {
 					if(proveedores.exists(rfcField.getText())) {
 						JOptionPane.showMessageDialog(null, "Ya existe este proveedor");
 						rfcField.setText("");
-					} 
+					} else {
+						rfcField.transferFocus();
+					}
 					e.consume();
 				}				
 			}
@@ -92,6 +100,7 @@ public class PanelCapturaProveedor extends JPanel {
 		rfcField.setColumns(10);
 		
 		razonField = new JTextField();
+		razonField.addActionListener(focusField);
 		GridBagConstraints gbc_razonField = new GridBagConstraints();
 		gbc_razonField.insets = new Insets(0, 0, 0, 5);
 		gbc_razonField.fill = GridBagConstraints.BOTH;
@@ -101,6 +110,7 @@ public class PanelCapturaProveedor extends JPanel {
 		razonField.setColumns(10);
 		
 		telefonoField = new JTextField();
+		telefonoField.addActionListener(focusField);
 		telefonoField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -144,9 +154,33 @@ public class PanelCapturaProveedor extends JPanel {
 	}
 	
 	public void guardarProveedor() {
-		Proveedor proveedor = new Proveedor(razonField.getText(), rfcField.getText(), telefonoField.getText(), panelDireccion.getDireccion());
-		proveedores.add(proveedor);
-		proveedores.getList().forEach(System.out::println);
+		if(razonField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El campo de razon no puede estar vacio");
+		}
+		else if(rfcField.getText().isBlank() & rfcField.getText().length() == 13) {
+			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacio");		
+		}
+		else if(telefonoField.getText().isBlank() & telefonoField.getText().length() == 10) {
+			JOptionPane.showMessageDialog(null, "El campo de telefono no puede estar vacio");				
+		} else {			
+			Proveedor proveedor = new Proveedor(razonField.getText(), rfcField.getText(), telefonoField.getText(), panelDireccion.getDireccion());
+			proveedores.add(proveedor);
+			vaciarComponentes();
+			proveedores.getList().forEach(System.out::println);
+		}
+	}
+	
+	
+	public Component getLastItem() {
+		return panelDireccion.getLastItem();
+	}
+	
+	
+	public void vaciarComponentes() {
+		razonField.setText("");
+		rfcField.setText("");
+		telefonoField.setText("");
+		panelDireccion.vaciarComponentes();
 	}
 
 }

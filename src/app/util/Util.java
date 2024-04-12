@@ -1,6 +1,10 @@
 package app.util;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 import app.abstractClasses.Detalles;
 import app.modelos.DetallesCompra;
@@ -60,6 +66,8 @@ public class Util {
 		Class clazz = list.get(0).getClass();
 		return anyToString(list, clazz);
 	}
+	
+	
 	public static <T> Object[][] anyToString(List<T> list, Class cl){
 		Class clazz = cl;
 		Field[] fields = clazz.getDeclaredFields();
@@ -92,6 +100,8 @@ public class Util {
 	private static String centerText( String texto, int espacio ) {
 		return centerText(texto, espacio, false);
 	}
+	
+	
 	private static String centerText( String texto, int espacio, boolean first ) {
 		int tlength = texto.length();
 		if(tlength > espacio) return "_";
@@ -106,6 +116,7 @@ public class Util {
 		return centeredText + "<pre/>";
 	}
 	
+	
 	private static String formatProducto(int space, String codigo, String nombre, String cantidad, String precio, String total) {
 		String finalText = "<pre>";
 		int division = space/5;
@@ -116,6 +127,8 @@ public class Util {
 		finalText += String.format("%-" + (division) + "s", "$" + total); // total			
 		return finalText + "<pre/>";	
 	}
+	
+	
 	public static String formatProduct(Detalles v, Catalogo cat, int space) {
 		return formatProducto(space, 
 				v.getCodigo(), 
@@ -124,6 +137,7 @@ public class Util {
 				String.valueOf(v.getPrecio()), 
 				String.valueOf(v.getTotal()));
 	}
+	
 	
 	// Sobrecargar metodo para hacerlo con detalles compra 
 	private static String formatAny(int space, String...elementos) {
@@ -134,6 +148,8 @@ public class Util {
 		}
 		return finalText + "<pre/>";	
 	}
+	
+	
 	// agregar ticketHeader como array de strings para formatear 
 	public static String generateTicket(ArrayList<? extends Detalles> detailsList, Catalogo catalogo,  List<String> headers) {
 		StringBuilder ticket = new StringBuilder("<html>");
@@ -152,5 +168,22 @@ public class Util {
 				String.valueOf(detailsList.stream().mapToDouble(Detalles::getTotal).sum())));
 		return String.valueOf(ticket) + "<html/>";
 	}
+
+	
+	public static class FocusField implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			((JTextField)e.getSource()).transferFocus();
+		}
+	}
+	
+	
+	public static class FocusBox implements ItemListener {
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			((JComboBox<?>)e.getSource()).transferFocus();
+		}
+	}
+
 	
 }

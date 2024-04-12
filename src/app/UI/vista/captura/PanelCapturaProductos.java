@@ -587,7 +587,6 @@ public class PanelCapturaProductos extends JPanel {
 		public void itemStateChanged(ItemEvent e) {
 			((JComboBox<?>)e.getSource()).transferFocus();
 		}
-		
 	}
 	public JTextField getDescripcionField() {
 		return descripcionField;

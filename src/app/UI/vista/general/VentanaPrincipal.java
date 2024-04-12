@@ -317,7 +317,7 @@ public class VentanaPrincipal extends JFrame {
 	private void regProvFunc() {
 		capturaProveedorPane = new PanelCapturaProveedor(proveedores);
 		panelEncabezados = new PanelEncabezados("Registro de Proveedores");
-		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
+		panelOpciones = new PanelOpciones(capturaProveedorPane, PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
 		cancelarButton = panelOpciones.getCancelarButton();
 		

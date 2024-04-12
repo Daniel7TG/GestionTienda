@@ -1,4 +1,4 @@
-package app.UI.vista;
+package app.UI.vista.captura;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,8 +23,8 @@ import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 
 import app.interfaces.Funcionable;
-import app.modelos.Catalogo;
 import app.modelos.Producto;
+import app.modelos.containers.Catalogo;
 import app.util.TableModel;
 import app.util.Util;
 
@@ -496,7 +496,6 @@ public class PanelCapturaProductos extends JPanel {
 		}
 		for(int i = 0; i < components.length; i++)
 		add(components[i], constraints[i]);
-
 	}
 	
 	

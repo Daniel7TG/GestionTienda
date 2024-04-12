@@ -1,82 +1,72 @@
-package app.modelos;
+package app.modelos.containers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.interfaces.Funcionable;
+import app.modelos.Compra;
 import app.util.Util;
 
-public class HistorialVenta implements Funcionable<Venta>{
+public class HistorialCompra implements Funcionable<Compra>{
 
-	private List<Venta> contenedor;
+	private List<Compra> contenedor;
 
-	public HistorialVenta() {
-		contenedor = new ArrayList<Venta>();
+	public HistorialCompra() {
+		contenedor = new ArrayList<Compra>();
 	}
-	
+
 	@Override
-	/**
-	 * @deprecated
-	 **/
 	public boolean exists(String id) {
 		return false;
 	}
 
 	@Override
-	public boolean exists(Venta obj) {
+	public boolean exists(Compra obj) {
 		return contenedor.contains(obj);
 	}
 
 	@Override
-	public void add(Venta obj) {
+	public void add(Compra obj) {
 		contenedor.add(obj);
 	}
 
 	@Override
-	public Venta get(int posicion) {
+	public Compra get(int posicion) {
 		return contenedor.get(posicion);
 	}
 
 	@Override
-	/**
-	 * @deprecated
-	 **/
-	public Venta get(String id) {
+	public Compra get(String id) {
 		return null;
 	}
 
 	@Override
-	public int getIndex(Venta obj) {
-		return contenedor.indexOf(obj);
+	public int getIndex(Compra obj) {
+	return contenedor.indexOf(obj);
 	}
 
 	@Override
-	/**
-	 * @deprecated
-	 **/
 	public int getIndex(String id) {
 		return 0;
 	}
 
 	@Override
-	public void remove(Venta obj) {
+	public void remove(Compra obj) {
 		contenedor.remove(obj);
 	}
 
 	@Override
-	/**
-	 * @deprecated
-	 **/
-	public void remove(String id) {		
+	public void remove(String id) {
 	}
 
 	@Override
-	public void update(Venta obj, int posicion) {
+	public void update(Compra obj, int posicion) {
 		contenedor.set(posicion, obj);
+
 	}
 
 	@Override
-	public List<Venta> getList() {
+	public List<Compra> getList() {
 		return contenedor;
 	}
 

@@ -1,9 +1,10 @@
-package app.modelos;
+package app.modelos.containers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.interfaces.Funcionable;
+import app.modelos.Producto;
 import app.util.Util;
 
 public class Catalogo implements Funcionable<Producto> {

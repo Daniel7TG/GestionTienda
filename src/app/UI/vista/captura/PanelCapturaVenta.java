@@ -1,4 +1,4 @@
-package app.UI.vista;
+package app.UI.vista.captura;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -14,11 +14,11 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 import app.abstractClasses.Detalles;
-import app.modelos.Catalogo;
-import app.modelos.HistorialVenta;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Venta;
+import app.modelos.containers.Catalogo;
+import app.modelos.containers.HistorialVenta;
 import app.util.TableModel;
 import app.util.Util;
 

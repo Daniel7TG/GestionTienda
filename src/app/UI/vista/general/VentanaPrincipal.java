@@ -1,4 +1,4 @@
-package app.UI.vista;
+package app.UI.vista.general;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,11 +22,24 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import app.UI.vista.captura.PanelCapturaCompra;
+import app.UI.vista.captura.PanelCapturaProductos;
+import app.UI.vista.captura.PanelCapturaProveedor;
+import app.UI.vista.captura.PanelCapturaVenta;
+import app.UI.vista.consulta.PanelConsultaProductos;
+import app.UI.vista.listado.PanelListadoCompras;
+import app.UI.vista.listado.PanelListadoProductos;
+import app.UI.vista.listado.PanelListadoVentas;
+import app.UI.vista.menus.PanelMenuCompra;
+import app.UI.vista.menus.PanelMenuProductos;
+import app.UI.vista.menus.PanelMenuProveedores;
+import app.UI.vista.menus.PanelMenuVenta;
 import app.interfaces.Funcionable;
-import app.modelos.Catalogo;
-import app.modelos.HistorialVenta;
 import app.modelos.Producto;
-import app.modelos.HistorialCompra;
+import app.modelos.containers.Catalogo;
+import app.modelos.containers.HistorialCompra;
+import app.modelos.containers.HistorialVenta;
+import app.modelos.containers.Proveedores;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -64,7 +77,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelConsultaProductos consultaProductosPane;
 	
 	// Clientes
-	private HistorialVenta clientes;
+	private HistorialVenta historialVenta;
 	private JMenuItem cMenuVenta;
 	private PanelMenuVenta panelMenuVenta;
 	private PanelCapturaVenta capturaVentaPane;
@@ -74,14 +87,20 @@ public class VentanaPrincipal extends JFrame {
 	// Fin Clientes
 	
 	// Proveedores
-	private HistorialCompra proveedores;
+	private Proveedores proveedores;
+	
+	private HistorialCompra historialCompra;
 	private PanelMenuCompra panelMenuCompra;
 	private JButton registrarCompButton;
 	private JButton listarCompButton;
 	private JMenuItem pMenuCompra;
-	private JMenuItem pMenuListado;
+	private JMenuItem pMenuProveedores;
 	private PanelListadoCompras listadoComprasPane;
 	private PanelCapturaCompra capturaCompraPane;
+	
+	private JButton registrarProvButton;
+	private PanelCapturaProveedor capturaProveedorPane;
+	private PanelMenuProveedores panelMenuProveedores;
 	// Fin Proveedores
 	
 	private JMenuItem sMenuProductos;
@@ -120,8 +139,10 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal() {
 		font = new Font("Montserrat", Font.BOLD, 13);
 		catalogo = new Catalogo();
-		proveedores = new HistorialCompra();
-		clientes = new HistorialVenta();
+		historialCompra = new HistorialCompra();
+		historialVenta = new HistorialVenta();
+		proveedores = new Proveedores();
+		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
 			public void paint(Graphics g){
@@ -169,12 +190,13 @@ public class VentanaPrincipal extends JFrame {
 		});
 		barra.add(menuClientes);
 
-		pMenuListado = new JMenuItem("Compras");
-		pMenuListado.addActionListener(event->{
-			pMenuListFunc();
-		});
+		pMenuCompra = new JMenuItem("Compras");
+		pMenuCompra.addActionListener(event-> pMenuCompFunc());
+		pMenuProveedores = new JMenuItem("Proveedores");
+		pMenuProveedores.addActionListener(event-> pMenuProvFunc());
 		menuProveedores = new JMenu("Gestion de Provedores");
-		menuProveedores.add(pMenuListado);
+		menuProveedores.add(pMenuProveedores);
+		menuProveedores.add(pMenuCompra);
 		barra.add(menuProveedores);
 
 		menuContabilidad = new JMenu("Contabilidad");
@@ -242,7 +264,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	
 	public void regVentaFunc() {
-		capturaVentaPane = new PanelCapturaVenta(catalogo, clientes);
+		capturaVentaPane = new PanelCapturaVenta(catalogo, historialVenta);
 		panelEncabezados = new PanelEncabezados("Registro de Venta");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
@@ -263,7 +285,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	
 	public void listVentFunc() {
-		listadoVentasPane = new PanelListadoVentas(clientes);
+		listadoVentasPane = new PanelListadoVentas(historialVenta);
 		panelEncabezados = new PanelEncabezados("Listado de Ventas");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
 		
@@ -279,8 +301,40 @@ public class VentanaPrincipal extends JFrame {
 		revalidate();	
 	}
 	
-	// Inventario
-	private void pMenuListFunc() {
+	// Inventario / Proveedores
+	private void pMenuProvFunc() {
+		clearContentPane();
+		if(panelMenuProveedores != null) return;
+		panelMenuProveedores = new PanelMenuProveedores();
+		registrarProvButton = panelMenuProveedores.getRegistrarButton();
+		registrarProvButton.addActionListener(e->{
+			regProvFunc();
+		});
+		contentPane.add(panelMenuProveedores, BorderLayout.WEST);
+		revalidate();
+	}
+	
+	private void regProvFunc() {
+		capturaProveedorPane = new PanelCapturaProveedor(proveedores);
+		panelEncabezados = new PanelEncabezados("Registro de Proveedores");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		guardarButton.addActionListener(ec -> {
+			capturaProveedorPane.guardarProveedor();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuProveedores, capturaProveedorPane, panelOpciones);
+		});
+		panelEncabezados.add(capturaProveedorPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuProveedores, false);
+		revalidate();
+	}
+
+	private void pMenuCompFunc() {
 		clearContentPane();
 		if(panelMenuCompra != null) return;
 		panelMenuCompra = new PanelMenuCompra();
@@ -298,7 +352,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	
 	public void regCompraFunc() {
-		capturaCompraPane = new PanelCapturaCompra(catalogo, proveedores);
+		capturaCompraPane = new PanelCapturaCompra(catalogo, historialCompra, proveedores);
 		panelEncabezados = new PanelEncabezados("Registro de Compra");
 		panelOpciones = new PanelOpciones(capturaCompraPane.getField(), PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
@@ -319,7 +373,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	
 	public void listCompFunc() {
-		listadoComprasPane = new PanelListadoCompras(proveedores);
+		listadoComprasPane = new PanelListadoCompras(historialCompra);
 		panelEncabezados = new PanelEncabezados("Listado de Compras");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
 		cancelarButton = panelOpciones.getCancelarButton();
@@ -448,6 +502,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	public void clearContentPane() {
 		contentPane.removeAll();
+		panelMenuProveedores = null;
 		panelMenuProductos = null;
 		panelMenuCompra = null;
 		panelMenuVenta = null;

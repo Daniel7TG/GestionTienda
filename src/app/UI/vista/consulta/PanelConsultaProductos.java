@@ -1,10 +1,10 @@
-package app.UI.vista;
+package app.UI.vista.consulta;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import app.modelos.Catalogo;
 import app.modelos.Producto;
+import app.modelos.containers.Catalogo;
 
 import java.awt.GridLayout;
 

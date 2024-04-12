@@ -17,8 +17,14 @@ public class Proveedor {
 		this.razonSocial = razonSocial;
 		this.rfc = rfc;
 		this.telefono = telefono;
-		this.domicilio = new Domicilio();
+		this.domicilio = domicilio;
 	}
+	/**
+	 * 
+	 */
+	public Proveedor() {
+	}
+
 
 	public String getRazonSocial() {
 		return razonSocial;
@@ -44,5 +50,15 @@ public class Proveedor {
 	public void setDomicilio(Domicilio domicilio) {
 		this.domicilio = domicilio;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return rfc.equals(((Proveedor)obj).rfc);
+	}
 	
+	@Override
+	public String toString() {
+		return "Proveedor [rfc=" + rfc + ", razonSocial=" + razonSocial + ", domicilio=" + domicilio + ", telefono="
+				+ telefono + "]";
+	}
 }

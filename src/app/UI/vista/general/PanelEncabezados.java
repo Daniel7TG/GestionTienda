@@ -1,4 +1,4 @@
-package app.UI.vista;
+package app.UI.vista.general;
 
 import javax.swing.JPanel;
 

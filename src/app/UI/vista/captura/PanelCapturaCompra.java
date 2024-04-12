@@ -1,4 +1,4 @@
-package app.UI.vista;
+package app.UI.vista.captura;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -12,14 +12,17 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 
+import app.UI.vista.general.PanelOpciones;
 import app.abstractClasses.Detalles;
 import app.interfaces.Funcionable;
-import app.modelos.Catalogo;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
-import app.modelos.HistorialCompra;
+import app.modelos.Proveedor;
+import app.modelos.containers.Catalogo;
+import app.modelos.containers.HistorialCompra;
+import app.modelos.containers.Proveedores;
 import app.util.TableModel;
 import app.util.Util;
 
@@ -53,6 +56,7 @@ import javax.swing.JTable;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JComboBox;
 
 public class PanelCapturaCompra extends JPanel {
 
@@ -64,16 +68,17 @@ public class PanelCapturaCompra extends JPanel {
 	private JTextField totalField;
 	private JTable productsTable;
 
+	private JTextField fechaField;
 	private JTextField precioSpin;
 	private JSpinner cantidadSpin;			//private JTextField cantidadSpin; 
-	private JLabel fechaLabel;
 	private JLabel lbCodigo;
 	private JLabel lbPrecio;
 	private JLabel lbCantidad;
 	private JLabel lbTotal;
 
 
-	private HistorialCompra proveedores;
+	private HistorialCompra historialCompra;
+	private Proveedores proveedores;
 	private Catalogo catalogo;
 	private Insets separation;
 	private Font fontLabel;
@@ -89,26 +94,42 @@ public class PanelCapturaCompra extends JPanel {
 	private JButton confirmarButton;
 
 	private JScrollPane tablePanel;
+	private JLabel lbFecha;
+	private JLabel lbProveedor;
+	private JComboBox<String> rfcBox;
 
-	public PanelCapturaCompra(Catalogo catalogo, HistorialCompra proveedores) {
+	public PanelCapturaCompra(Catalogo catalogo, HistorialCompra historialCompra, Proveedores proveedores) {
 
 		this.catalogo = catalogo;
+		this.historialCompra = historialCompra;
 		this.proveedores = proveedores;
-		
+
 		listaDetalles = new ArrayList<DetallesCompra>();
 		separation = new Insets(10, 5, 10, 5);
 		fontLabel = new Font("Montserrat", Font.PLAIN, 16);
 		fontFunc = new Font("Montserrat", Font.PLAIN, 13);
-
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{182, 86, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 3.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 9.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 9.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 
-		codigoField = new JTextField();
+		tablePanel = new JScrollPane();
+		productsTable = new JTable();
+		model = new TableModel(productsTable, data, columnNames);
+		productsTable.setModel(model);
+		tablePanel.setViewportView(productsTable);
 
+		GridBagConstraints gbc_tableScroll = new GridBagConstraints();
+		gbc_tableScroll.fill = GridBagConstraints.BOTH;
+		gbc_tableScroll.gridy = 0;
+		gbc_tableScroll.gridx = 2;
+		gbc_tableScroll.gridheight = 7;
+		add(tablePanel, gbc_tableScroll);
+		
+		codigoField = new JTextField();
 		codigoField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -119,19 +140,16 @@ public class PanelCapturaCompra extends JPanel {
 				if(texto.length == 13) {
 					buscarProductoCodigo(codigoField.getText());
 					e.consume();
-
 				}
-
 			}
 		});
-		//    */
 
 		codigoField.setColumns(10);
 		GridBagConstraints gbc_codigoField = new GridBagConstraints();
 		gbc_codigoField.insets = new Insets(0, 0, 5, 5);
 		gbc_codigoField.fill = GridBagConstraints.BOTH;
 		gbc_codigoField.gridx = 0;
-		gbc_codigoField.gridy = 2;
+		gbc_codigoField.gridy = 1;
 		add(codigoField, gbc_codigoField);
 
 		precioSpin = new JTextField();
@@ -139,89 +157,48 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_precioSpin.fill = GridBagConstraints.BOTH;
 		gbc_precioSpin.insets = new Insets(0, 0, 5, 5);
 		gbc_precioSpin.gridx = 1;
-		gbc_precioSpin.gridy = 2;
+		gbc_precioSpin.gridy = 1;
 		add(precioSpin, gbc_precioSpin);
 
-		cantidadSpin = new JSpinner();			//cantidadSpin = new JTextField();
+		cantidadSpin = new JSpinner();		
 		SpinnerNumberModel cantidadModel = new SpinnerNumberModel(1, 1, 1000, 1);
 		cantidadSpin.setModel(cantidadModel);
-		///////////
-		cantidadSpin.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				actualizarTotal();
-			}
-		});
+		cantidadSpin.addChangeListener(c-> actualizarTotal());
 
-		//////////////
+		lbProveedor = new JLabel("Rfc del Proveedor");
+		GridBagConstraints gbc_lbProveedor = new GridBagConstraints();
+		gbc_lbProveedor.insets = new Insets(0, 0, 5, 5);
+		gbc_lbProveedor.gridx = 1;
+		gbc_lbProveedor.gridy = 2;
+		add(lbProveedor, gbc_lbProveedor);
+
 		GridBagConstraints gbc_cantidadSpin = new GridBagConstraints();
 		gbc_cantidadSpin.fill = GridBagConstraints.BOTH;
 		gbc_cantidadSpin.insets = new Insets(0, 0, 5, 5);
 		gbc_cantidadSpin.gridx = 0;
-		gbc_cantidadSpin.gridy = 4;
+		gbc_cantidadSpin.gridy = 3;
 		add(cantidadSpin, gbc_cantidadSpin);
-
-		totalField = new JTextField();
-		totalField.setColumns(10);
-		totalField.setEditable(false);
-		GridBagConstraints gbc_totalField = new GridBagConstraints();
-		gbc_totalField.insets = new Insets(0, 0, 5, 5);
-		gbc_totalField.fill = GridBagConstraints.BOTH;
-		gbc_totalField.gridx = 1;
-		gbc_totalField.gridy = 4;
-		add(totalField, gbc_totalField);
-
-		fechaLabel = new JLabel(LocalDate.now().toString());
-		GridBagConstraints gbc_fechaLabel = new GridBagConstraints();
-		gbc_fechaLabel.gridx = 0;
-		gbc_fechaLabel.gridwidth = 2;
-		gbc_fechaLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_fechaLabel.gridy = 0;
-		add(fechaLabel, gbc_fechaLabel);
 
 		lbCodigo = new JLabel("Còdigo");
 		GridBagConstraints gbc_lbCodigo = new GridBagConstraints();
 		gbc_lbCodigo.insets = new Insets(0, 0, 5, 5);
 		gbc_lbCodigo.gridx = 0;
-		gbc_lbCodigo.gridy = 1;
+		gbc_lbCodigo.gridy = 0;
 		add(lbCodigo, gbc_lbCodigo);
 
 		lbPrecio = new JLabel("Precio");
 		GridBagConstraints gbc_lbPrecio = new GridBagConstraints();
 		gbc_lbPrecio.insets = new Insets(0, 0, 5, 5);
 		gbc_lbPrecio.gridx = 1;
-		gbc_lbPrecio.gridy = 1;
+		gbc_lbPrecio.gridy = 0;
 		add(lbPrecio, gbc_lbPrecio);
 
 		lbCantidad = new JLabel("Cantidad");
 		GridBagConstraints gbc_lbCantidad = new GridBagConstraints();
 		gbc_lbCantidad.insets = new Insets(0, 0, 5, 5);
 		gbc_lbCantidad.gridx = 0;
-		gbc_lbCantidad.gridy = 3;
+		gbc_lbCantidad.gridy = 2;
 		add(lbCantidad, gbc_lbCantidad);
-
-		lbTotal = new JLabel("Total");
-		GridBagConstraints gbc_lbTotal = new GridBagConstraints();
-		gbc_lbTotal.insets = new Insets(0, 0, 5, 5);
-		gbc_lbTotal.gridx = 1;
-		gbc_lbTotal.gridy = 3;
-		add(lbTotal, gbc_lbTotal);
-
-
-		
-		tablePanel = new JScrollPane();
-		productsTable = new JTable();
-		model = new TableModel(productsTable, data, columnNames);
-		productsTable.setModel(model);
-		tablePanel.setViewportView(productsTable);
-
-		
-		GridBagConstraints gbc_tableScroll = new GridBagConstraints();
-		gbc_tableScroll.fill = GridBagConstraints.BOTH;
-		gbc_tableScroll.gridy = 0;
-		gbc_tableScroll.gridx = 2;
-		gbc_tableScroll.gridheight = 6;
-		add(tablePanel, gbc_tableScroll);
 
 
 
@@ -249,20 +226,58 @@ public class PanelCapturaCompra extends JPanel {
 				confirmarButton.setSelected(false);							
 			}						
 		});
+		confirmarButton.addActionListener(e->registrarProducto());
 
-		confirmarButton.addActionListener(new ActionListener() {
+		rfcBox = new JComboBox<String>();
+		proveedores.getList().stream().map(Proveedor::getRfc).forEach(rfcBox::addItem);
+		
+		GridBagConstraints gbc_rfcBox = new GridBagConstraints();
+		gbc_rfcBox.insets = new Insets(0, 0, 5, 5);
+		gbc_rfcBox.fill = GridBagConstraints.BOTH;
+		gbc_rfcBox.gridx = 1;
+		gbc_rfcBox.gridy = 3;
+		add(rfcBox, gbc_rfcBox);
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				registrarProducto();
-			}
-		});
+		lbFecha = new JLabel("Fecha");
+		GridBagConstraints gbc_lbFecha = new GridBagConstraints();
+		gbc_lbFecha.insets = new Insets(0, 0, 5, 5);
+		gbc_lbFecha.gridx = 0;
+		gbc_lbFecha.gridy = 4;
+		add(lbFecha, gbc_lbFecha);
+
+		lbTotal = new JLabel("Total");
+		GridBagConstraints gbc_lbTotal = new GridBagConstraints();
+		gbc_lbTotal.insets = new Insets(0, 0, 5, 5);
+		gbc_lbTotal.gridx = 1;
+		gbc_lbTotal.gridy = 4;
+		add(lbTotal, gbc_lbTotal);
+
+		fechaField = new JTextField();
+		fechaField.setText(LocalDate.now().toString());
+		fechaField.setEditable(false);
+		GridBagConstraints gbc_fechaField = new GridBagConstraints();
+		gbc_fechaField.insets = new Insets(0, 0, 5, 5);
+		gbc_fechaField.fill = GridBagConstraints.BOTH;
+		gbc_fechaField.gridx = 0;
+		gbc_fechaField.gridy = 5;
+		add(fechaField, gbc_fechaField);
+		fechaField.setColumns(10);
+
+		totalField = new JTextField();
+		totalField.setColumns(10);
+		totalField.setEditable(false);
+		GridBagConstraints gbc_totalField = new GridBagConstraints();
+		gbc_totalField.insets = new Insets(0, 0, 5, 5);
+		gbc_totalField.fill = GridBagConstraints.BOTH;
+		gbc_totalField.gridx = 1;
+		gbc_totalField.gridy = 5;
+		add(totalField, gbc_totalField);
 
 		GridBagConstraints gbc_confirmarButton = new GridBagConstraints();
-		gbc_confirmarButton.anchor = GridBagConstraints.EAST;
+		gbc_confirmarButton.gridwidth = 2;
 		gbc_confirmarButton.insets = new Insets(0, 0, 0, 5);
 		gbc_confirmarButton.gridx = 0;
-		gbc_confirmarButton.gridy = 5;
+		gbc_confirmarButton.gridy = 6;
 		add(confirmarButton, gbc_confirmarButton);
 
 
@@ -279,13 +294,15 @@ public class PanelCapturaCompra extends JPanel {
 		});
 
 
-
 		style(new Component[] {
 				codigoField,
+				rfcBox,
 				totalField,
 				precioSpin,
 				cantidadSpin,
-				fechaLabel,
+				lbFecha,
+				fechaField,
+				lbProveedor,
 				lbCodigo,
 				lbPrecio,
 				lbCantidad,
@@ -293,10 +310,13 @@ public class PanelCapturaCompra extends JPanel {
 		},
 				new GridBagConstraints[] {
 						gbc_codigoField,
+						gbc_rfcBox,
 						gbc_totalField,
 						gbc_precioSpin,
 						gbc_cantidadSpin,
-						gbc_fechaLabel,
+						gbc_lbFecha,
+						gbc_fechaField,
+						gbc_lbProveedor,
 						gbc_lbCodigo,
 						gbc_lbPrecio,
 						gbc_lbCantidad,
@@ -327,29 +347,29 @@ public class PanelCapturaCompra extends JPanel {
 		for(int i = 0; i < components.length; i++)
 			add(components[i], constraints[i]);
 	}
-	
+
 
 	public JTextField getField() {
 		return totalField;
 	}
 
-	
+
 	public void guardarCompra() {
-		
-//		double total = listaDetalles.stream().mapToDouble(DetallesCompra::getTotal).sum();
+
+		//		double total = listaDetalles.stream().mapToDouble(DetallesCompra::getTotal).sum();
 		listaDetalles.forEach(detalles -> 
-			catalogo.get(detalles.getCodigo()) 
-			.addStock(detalles.getCantidad())	
-		);
+		catalogo.get(detalles.getCodigo()) 
+		.addStock(detalles.getCantidad())	
+				);
 		LocalDate fecha = LocalDate.now();
 		Compra compra = new Compra(fecha.toString(), listaDetalles);
-		proveedores.add(compra);
+		historialCompra.add(compra);
 		showTicket(listaDetalles);
 		listaDetalles.clear();
 		actualizarTabla();
 	}
 
-	
+
 	public void buscarProductoCodigo(String codigo) {
 		if (!catalogo.exists(codigo)) {
 			visualizar("No existe este producto");
@@ -359,7 +379,7 @@ public class PanelCapturaCompra extends JPanel {
 		} else {
 			precioSpin.requestFocus();
 		}
-		
+
 		int detallesIndex = listaDetalles.indexOf(new DetallesCompra(codigo));
 		if (detallesIndex != -1) {
 			DetallesCompra detalles = listaDetalles.get(detallesIndex);
@@ -377,9 +397,9 @@ public class PanelCapturaCompra extends JPanel {
 		int cantidad = (int) cantidadSpin.getValue();
 		double total = precio * cantidad;
 		Producto producto = catalogo.get(codigo);
-		
+
 		int detallesIndex = listaDetalles.indexOf(new DetallesCompra(codigo));
-		
+
 		if (!producto.valStockMax(cantidad)) {
 			JOptionPane.showMessageDialog(null, "Supera el StockMaximo");
 			return;
@@ -405,12 +425,12 @@ public class PanelCapturaCompra extends JPanel {
 		ticketFrame.setBounds(0, 0, 500, 750);
 		JLabel textTicket = new JLabel(Util.generateTicket(lista, catalogo, headers), JLabel.CENTER);
 		textTicket.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		ticketFrame.add(textTicket);
+		ticketFrame.getContentPane().add(textTicket);
 		ticketFrame.setVisible(true);
 		ticketFrame.setResizable(false);
 	}
-	
-	
+
+
 	private void limpiarCampos() {
 		codigoField.setText("");
 		precioSpin.setText("");

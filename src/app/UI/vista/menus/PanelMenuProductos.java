@@ -1,4 +1,4 @@
-package app.UI.vista;
+package app.UI.vista.menus;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;

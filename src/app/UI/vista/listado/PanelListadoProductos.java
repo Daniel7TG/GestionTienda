@@ -1,4 +1,4 @@
-package app.UI.vista;
+package app.UI.vista.listado;
 
 import java.awt.GridLayout;
 
@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import app.modelos.Catalogo;
+import app.modelos.containers.Catalogo;
 import app.util.TableModel;
 
 public class PanelListadoProductos extends JPanel {

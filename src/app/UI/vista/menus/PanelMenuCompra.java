@@ -1,29 +1,30 @@
-package app.UI.vista;
+package app.UI.vista.menus;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class PanelMenuVenta extends JPanel {
+public class PanelMenuCompra extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JButton registrarButton;
 	private JButton listarButton;
 
-	/**
-	 * Create the panel.
-	 */
-	public PanelMenuVenta() {
+	public PanelMenuCompra() {
+
 		setMaximumSize(new Dimension(200, 32767));
 		setBackground(Color.decode("#b0cfe0"));
 		setLayout(new GridLayout(6, 1, 0, 20));
+
 		
 		registrarButton = new JButton("Registrar");
 		registrarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -52,7 +53,9 @@ public class PanelMenuVenta extends JPanel {
 		listarButton.setIcon(new ImageIcon(PanelMenuProductos.class.getResource("/img/default.png")));
 		listarButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		add(listarButton);
+		
 	}
+	
 	public void enableButtons(boolean status) {
 		registrarButton.setEnabled(status);
 		listarButton.setEnabled(status);
@@ -61,7 +64,9 @@ public class PanelMenuVenta extends JPanel {
 	public JButton getRegistrarButton() {
 		return registrarButton;
 	}
+
 	public JButton getListarButton() {
 		return listarButton;
-	}
+	}	
+
 }

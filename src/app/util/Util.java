@@ -10,9 +10,9 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import app.abstractClasses.Detalles;
-import app.modelos.Catalogo;
 import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
+import app.modelos.containers.Catalogo;
 
 public class Util {
 

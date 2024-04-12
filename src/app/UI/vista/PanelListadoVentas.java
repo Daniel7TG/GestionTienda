@@ -11,8 +11,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import app.abstractClasses.Transaccion;
 import app.interfaces.Funcionable;
-import app.modelos.Clientes;
+import app.modelos.HistorialVenta;
 import app.util.TableModel;
 import app.util.Util;
 
@@ -26,17 +27,17 @@ public class PanelListadoVentas extends JPanel {
 			"Total", 
 			"Fecha",
 			"Detalles"};
-	private Clientes clientes;
+	private HistorialVenta clientes;
 	private JScrollPane tableScroll;
 	
 	@SuppressWarnings("serial")
-	public PanelListadoVentas(Clientes clientes) {
+	public PanelListadoVentas(HistorialVenta clientes) {
 		setLayout(new GridLayout(1, 1, 0, 0));
 
 		this.clientes = clientes;		
 		Object[][] data = clientes.getData();
 		table = new JTable();
-		model = new TableModel(table, data, columnNames);
+		model = new TableModel(table, clientes.getList(), columnNames, Transaccion.class);
 		table.setModel(model);
 		model.renderListColumn(3);
 		model.configurarTabla(2, 2, 2, 6);

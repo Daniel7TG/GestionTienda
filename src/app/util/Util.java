@@ -142,6 +142,7 @@ public class Util {
 		for(int i = 1; i < headers.size(); i++) {
 			ticket.append( centerText(headers.get(i), space) );
 		}
+		ticket.append("*".repeat(space));
 		ticket.append(formatAny(space, "Codigo", "Nombre", "Cantidad", "Precio", "Total"));
 		detailsList.forEach(detail -> ticket.append(formatProduct(detail, catalogo, space)));
 		ticket.append(formatAny(space, "Total:", 

@@ -6,8 +6,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import app.modelos.Clientes;
-import app.modelos.Proveedores;
+import app.modelos.HistorialVenta;
+import app.abstractClasses.Transaccion;
+import app.modelos.HistorialCompra;
 import app.util.TableModel;
 
 public class PanelListadoCompras extends JPanel {
@@ -20,17 +21,16 @@ public class PanelListadoCompras extends JPanel {
 			"Total",
 			"Fecha",
 			"Detalles"};
-	private Proveedores proveedores;
+	private HistorialCompra proveedores;
 	private JScrollPane tableScroll;
 	
 	
-	public PanelListadoCompras(Proveedores proveedores) {
+	public PanelListadoCompras(HistorialCompra proveedores) {
 		setLayout(new GridLayout(1, 1, 0, 0));
 
 		this.proveedores = proveedores;		
-		Object[][] data = proveedores.getData();
 		table = new JTable();
-		model = new TableModel(table, data, columnNames);
+		model = new TableModel(table, proveedores.getList(), columnNames, Transaccion.class);
 		table.setModel(model);
 		model.renderListColumn(3);
 		model.configurarTabla(2, 2, 2, 6);

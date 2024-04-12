@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 import app.abstractClasses.Detalles;
 import app.modelos.Catalogo;
-import app.modelos.Clientes;
+import app.modelos.HistorialVenta;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Venta;
@@ -41,7 +41,7 @@ public class PanelCapturaVenta extends JPanel {
 	private JTextField codigoField;
 	private TableModel model;
 	
-	private Clientes clientes;
+	private HistorialVenta clientes;
 	private Catalogo catalogo;
 	private ArrayList<DetallesVenta> lista;
 	private JPanel topPanel;
@@ -55,7 +55,7 @@ public class PanelCapturaVenta extends JPanel {
 	};
 	private List<String> headers = List.of("Tienda", "Sucursal Zitacuaro", "Telefono: 55-5555-5555", "RFC: ", LocalDate.now().toString());
 	
-	public PanelCapturaVenta(Catalogo catalogo, Clientes clientes) {
+	public PanelCapturaVenta(Catalogo catalogo, HistorialVenta clientes) {
 		setLayout(new BorderLayout(0, 0));
 		this.clientes = clientes;
 		this.catalogo = catalogo;
@@ -152,7 +152,7 @@ public class PanelCapturaVenta extends JPanel {
 		if(lista.size() == 0) return;
 		double total = lista.stream().mapToDouble(DetallesVenta::getTotal).sum();
 		String fecha = LocalDate.now().toString();
-		Venta venta = new Venta(total, fecha, lista);
+		Venta venta = new Venta(fecha, lista);
 		lista.forEach(detalle -> 
 			catalogo.get(detalle.getCodigo()).
 			subtractStock(detalle.getCantidad())

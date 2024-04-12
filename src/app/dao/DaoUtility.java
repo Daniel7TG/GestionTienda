@@ -127,6 +127,36 @@ public class DaoUtility {
 	}
 	
 	
+//	public static <T> List<T> textToObj(){
+//		Field[] fields = clazz.getDeclaredFields();
+//		Object[][] matriz = new Object[list.size()][fields.length];
+//		for(int i = 0; i < list.size(); i++) {
+//			for(int j = 0; j < fields.length; j++) {
+//				try {
+//					matriz[i][j] = getGetter(fields[j], clazz).invoke((list.get(i)));
+//				} catch (IllegalArgumentException |IllegalAccessException |InvocationTargetException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return matriz;		
+//	}
+//	
+//	public static <T> Object[][] anyToString(List<T> list, Class cl){
+//	}
+//	
+//	
+//	public static Method getGetter(Field field, Class clazz) {
+//		String methodName = "get" + capitalizeCammel(field.getName());
+//		Method method = null;
+//		try {
+//			method = clazz.getMethod(methodName);
+//		} catch (NoSuchMethodException | SecurityException e) {
+//			e.printStackTrace();
+//		}
+//		return method;
+//	}
+	
 	public static void main(String[] args) {
 		
 	}

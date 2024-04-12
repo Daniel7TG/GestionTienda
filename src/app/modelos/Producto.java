@@ -3,12 +3,10 @@ package app.modelos;
 
 /**
  * @author odtgo
- *
  */
 public class Producto {
-
 	private String codigoBarras;
-	private String nombre;
+	private String nombre;	
 	private String marca;
 	private String tipo;
 	private String contenido;
@@ -17,7 +15,6 @@ public class Producto {
 	private int stockMaximo;
 	private int stockMinimo;
 	private String descripcion;
-	
 	private double precioVenta;
 	private double stockActual;
 		

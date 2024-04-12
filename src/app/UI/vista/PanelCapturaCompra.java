@@ -12,19 +12,22 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 
+import app.abstractClasses.Detalles;
 import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
-import app.modelos.Proveedores;
+import app.modelos.HistorialCompra;
+import app.util.TableModel;
 import app.util.Util;
 
 import java.time.*;
 
 import static mx.edu.tecnm.zitacuaro.sistemas.modelo.Utileria.visualizar;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -59,7 +62,7 @@ public class PanelCapturaCompra extends JPanel {
 
 	private JTextField codigoField;
 	private JTextField totalField;
-	private JTable table;
+	private JTable productsTable;
 
 	private JTextField precioSpin;
 	private JSpinner cantidadSpin;			//private JTextField cantidadSpin; 
@@ -70,14 +73,14 @@ public class PanelCapturaCompra extends JPanel {
 	private JLabel lbTotal;
 
 
-	private Proveedores proveedores;
+	private HistorialCompra proveedores;
 	private Catalogo catalogo;
 	private Insets separation;
 	private Font fontLabel;
 	private Font fontFunc;
 
-	private JScrollPane tableScroll;
-	private DefaultTableModel model;
+	private TableModel model;
+	private Object[][] data = new Object[0][0];
 	private String[] columnNames = {"Codigo",
 			"Cantidad",
 			"Precio", 
@@ -85,7 +88,9 @@ public class PanelCapturaCompra extends JPanel {
 	private List<String> headers = List.of("Registro de compra", LocalDate.now().toString());
 	private JButton confirmarButton;
 
-	public PanelCapturaCompra(Catalogo catalogo, Proveedores proveedores) {
+	private JScrollPane tablePanel;
+
+	public PanelCapturaCompra(Catalogo catalogo, HistorialCompra proveedores) {
 
 		this.catalogo = catalogo;
 		this.proveedores = proveedores;
@@ -203,24 +208,20 @@ public class PanelCapturaCompra extends JPanel {
 		add(lbTotal, gbc_lbTotal);
 
 
-		Object[][] data = Util.anyToString(listaDetalles);
-		model = new DefaultTableModel(data, columnNames) {
-			@Override
-			public boolean isCellEditable(int row, int column){
-				return false;
-			}
-		};
-		model.setDataVector(data, columnNames);				
-		table = new JTable(model);
-		table.setRowHeight(30);
-		tableScroll = new JScrollPane(table);		
-		tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		tablePanel = new JScrollPane();
+		productsTable = new JTable();
+		model = new TableModel(productsTable, data, columnNames);
+		productsTable.setModel(model);
+		tablePanel.setViewportView(productsTable);
+
+		
 		GridBagConstraints gbc_tableScroll = new GridBagConstraints();
 		gbc_tableScroll.fill = GridBagConstraints.BOTH;
 		gbc_tableScroll.gridy = 0;
 		gbc_tableScroll.gridx = 2;
 		gbc_tableScroll.gridheight = 6;
-		add(tableScroll, gbc_tableScroll);
+		add(tablePanel, gbc_tableScroll);
 
 
 
@@ -306,14 +307,7 @@ public class PanelCapturaCompra extends JPanel {
 
 
 	private void actualizarTabla() {
-		Object[][] data = Util.anyToString(listaDetalles);
-		DefaultTableModel newModel = new DefaultTableModel(data, columnNames) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		table.setModel(newModel);
+		model.update(Util.anyToString(listaDetalles, Detalles.class));
 	}
 
 
@@ -342,13 +336,13 @@ public class PanelCapturaCompra extends JPanel {
 	
 	public void guardarCompra() {
 		
-		double total = listaDetalles.stream().mapToDouble(DetallesCompra::getTotal).sum();
+//		double total = listaDetalles.stream().mapToDouble(DetallesCompra::getTotal).sum();
 		listaDetalles.forEach(detalles -> 
 			catalogo.get(detalles.getCodigo()) 
 			.addStock(detalles.getCantidad())	
 		);
 		LocalDate fecha = LocalDate.now();
-		Compra compra = new Compra(total, fecha.toString(), listaDetalles);
+		Compra compra = new Compra(fecha.toString(), listaDetalles);
 		proveedores.add(compra);
 		showTicket(listaDetalles);
 		listaDetalles.clear();

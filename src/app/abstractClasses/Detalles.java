@@ -46,6 +46,7 @@ public abstract class Detalles {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		return codigo.equals(((Detalles)obj).codigo);			

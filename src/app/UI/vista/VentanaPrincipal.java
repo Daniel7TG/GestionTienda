@@ -24,9 +24,9 @@ import javax.swing.JPanel;
 
 import app.interfaces.Funcionable;
 import app.modelos.Catalogo;
-import app.modelos.Clientes;
+import app.modelos.HistorialVenta;
 import app.modelos.Producto;
-import app.modelos.Proveedores;
+import app.modelos.HistorialCompra;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -61,9 +61,10 @@ public class VentanaPrincipal extends JFrame {
 	private PanelMenuProductos panelMenuProductos;
 	private PanelOpciones panelOpciones;
 	private PanelListadoProductos listadoProductosPane;
-
+	private PanelConsultaProductos consultaProductosPane;
+	
 	// Clientes
-	private Clientes clientes;
+	private HistorialVenta clientes;
 	private JMenuItem cMenuVenta;
 	private PanelMenuVenta panelMenuVenta;
 	private PanelCapturaVenta capturaVentaPane;
@@ -73,7 +74,7 @@ public class VentanaPrincipal extends JFrame {
 	// Fin Clientes
 	
 	// Proveedores
-	private Proveedores proveedores;
+	private HistorialCompra proveedores;
 	private PanelMenuCompra panelMenuCompra;
 	private JButton registrarCompButton;
 	private JButton listarCompButton;
@@ -119,14 +120,14 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal() {
 		font = new Font("Montserrat", Font.BOLD, 13);
 		catalogo = new Catalogo();
-		proveedores = new Proveedores();
-		clientes = new Clientes();
+		proveedores = new HistorialCompra();
+		clientes = new HistorialVenta();
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
 			public void paint(Graphics g){
-//				ImageIcon img = new ImageIcon("resources/img/GatoC.jpg");
-//				g.drawImage(img.getImage(), 0, 0, getWidth(), getHeight(), this);
-//				setOpaque(false);
+				ImageIcon img = new ImageIcon("resources/img/fondo.jpeg");
+				g.drawImage(img.getImage(), 0, 0, getWidth(), getHeight(), this);
+				setOpaque(false);
 				super.paint(g);
 			}
 		};
@@ -345,6 +346,9 @@ public class VentanaPrincipal extends JFrame {
 		});
 	
 		consultarButton = panelMenuProductos.getConsultarButton();
+		consultarButton.addActionListener(e->{
+			consProdFunc();
+		});
 		eliminarButton = panelMenuProductos.getEliminarButton();
 		modificarButton = panelMenuProductos.getModificarButton();
 		
@@ -404,6 +408,22 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 	
+	public void consProdFunc() {
+		consultaProductosPane = new PanelConsultaProductos(catalogo);
+		panelEncabezados = new PanelEncabezados("Consultar Productos");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
+		
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(e->{
+			cancelButton(panelEncabezados, panelMenuProductos, consultaProductosPane, panelOpciones);
+		});
+		
+		panelEncabezados.add(consultaProductosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuProductos , false);
+		revalidate();				
+	}
 	
 	// Utilidades
 	

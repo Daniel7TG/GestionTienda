@@ -65,6 +65,20 @@ public class Producto {
 	public Producto() {
 	}
 	
+	public String getMainData() {
+		return String.format("%s_%s_%s_%s", nombre, marca, contenido, unidadDeMedida);
+	}
+	public void setMainData(String data) {
+		String[] dataList = data.split("_");
+		System.out.println(dataList.length);
+		this.codigoBarras = "null";
+		if(dataList.length < 4) return;
+		this.nombre = dataList[0];
+		this.marca = dataList[1];
+		this.contenido = dataList[2];
+		this.unidadDeMedida = dataList[3];
+	}
+	
 //	@Override
 //	protected void finalize() throws Throwable {
 //		System.out.println("finalize");
@@ -172,7 +186,7 @@ public class Producto {
 				+ "]";
 	}
 	public boolean equals(Object o) {
-		return this.codigoBarras.equals(((Producto)o).codigoBarras);
+		return this.codigoBarras.equals(((Producto)o).codigoBarras) | this.getMainData().equals(((Producto)o).getMainData());
 	}
 	
 	

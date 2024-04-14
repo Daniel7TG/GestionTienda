@@ -1,0 +1,10 @@
+1234567890123	Leche Entera	La Vaquita	Lacteos	1	Litros	Bolsa	50	5	Leche entera, rica en calcio	1.99
+2345678901234	Pan Blanco	Bimbo	Panaderia	500	Gramos	Bolsa	30	3	Pan blanco, suave y fresco	2.50
+3456789012345	Arroz Blanco	Luchetti	Cereales	1	Kilogramos	Bolsa	40	4	Arroz blanco de grano largo	3.75
+4567890123456	Frijoles Negros	La Costeña	Legumbres	500	Gramos	Lata	20	2	Frijoles negros precocidos	1.50
+5678901234567	Aceite de Oliva	Borges	Aceites	1	Litros	Botella	25	2	Aceite de oliva virgen extra	8.99
+6789012345678	Pasta de Tomate	Ciro	Salsa	200	Gramos	Frasco	35	3	Pasta de tomate concentrado	0.99
+7890123456789	Sal de Mesa	Salvo	Salados	1	Kilogramo	Bolsa	60	6	Sal de mesa fina	0.75
+8901234567890	Yogur Natural	Danone	Lacteos	500	Gramos	Envase	40	4	Yogur natural sin azúcar	1.25
+9012345678901	Papel Higiénico	Soriana	Higiene	4	Piezas	Paquete	50	5	Papel higiénico suave y absorbente	3.49
+0123456789012	Cereal de Maíz	Kellogg's	Cereales	750	Gramos	Caja	45	4	Cereal de maíz con vitaminas	4.25

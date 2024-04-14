@@ -12,6 +12,7 @@ public interface Funcionable<T> {
 	void add(T obj);
 	T get(int posicion);
 	T get(String id);
+	T get(T obj);
 	int getIndex(T obj);
 	int getIndex(String id);
 	void remove(T obj);

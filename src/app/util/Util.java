@@ -151,7 +151,7 @@ public class Util {
 	
 	
 	// agregar ticketHeader como array de strings para formatear 
-	public static String generateTicket(ArrayList<? extends Detalles> detailsList, Catalogo catalogo,  List<String> headers) {
+	public static String generateTicket(List<? extends Detalles> detailsList, Catalogo catalogo,  List<String> headers) {
 		StringBuilder ticket = new StringBuilder("<html>");
 		int space = 60; 
 		ticket.append( centerText(headers.get(0), space, true));

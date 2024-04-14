@@ -54,6 +54,10 @@ public class TableModel extends DefaultTableModel {
 		return columns[column];
 	}
 	
+	public String getIdRow(int row) {
+		return String.valueOf(data[row][0]);
+	}
+	
 	public void configurarTabla(int ...columnWeights) {
 		SwingUtilities.invokeLater(()->{
 			int parcialWeights = table.getWidth() / Arrays.stream(columnWeights).sum();

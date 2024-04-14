@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.interfaces.Funcionable;
+import app.modelos.Compra;
 import app.modelos.Venta;
 import app.util.Util;
 
@@ -39,13 +40,16 @@ public class HistorialVenta implements Funcionable<Venta>{
 	}
 
 	@Override
-	/**
-	 * @deprecated
-	 **/
-	public Venta get(String id) {
-		return null;
+	public Venta get(String folio) {
+		Venta venta = new Venta(folio);
+		int index = contenedor.indexOf(venta);
+		return index == -1 ? null : contenedor.get(index); 
+	}	
+	@Override
+	public Venta get(Venta obj) {
+		int index = contenedor.indexOf(obj);
+		return index == -1 ? null : contenedor.get(index); 
 	}
-
 	@Override
 	public int getIndex(Venta obj) {
 		return contenedor.indexOf(obj);

@@ -107,6 +107,13 @@ public class Catalogo implements Funcionable<Producto> {
 	public int getSize() {
 		return contenedor.size();
 	}
+
+
+	@Override
+	public Producto get(Producto obj) {
+		int index = contenedor.indexOf(obj);
+		return index == -1 ? null : contenedor.get(index); 
+	}
 	
 	
 	

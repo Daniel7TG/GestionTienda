@@ -20,8 +20,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import app.modelos.Producto;
-import app.modelos.Vehiculo;
-import app.modelos.VehiculoType;
 
 
 public class DaoUtility {
@@ -129,15 +127,18 @@ public class DaoUtility {
 	public static List<String> getPresentaciones(){
 		return getTextContent("resources/raw/presentaciones.txt");
 	}
+	public static List<Producto> getProductos(){
+		return getProductos("resources/raw/productos.txt");
+	}
 	
-	public static List<Producto> getVehicles(String url) {
+	public static List<Producto> getProductos(String url) {
 		List<String> data = readFile(url);
 		if(data.size() > 0) {
-			List<Producto> autos = new ArrayList<Producto>();
+			List<Producto> prods = new ArrayList<Producto>();
 		for(int i = 0; i < data.size(); i++) {
-			autos.add(createProducto(data.get(i)));
+			prods.add(createProducto(data.get(i)));
 		}
-		return autos;
+		return prods;
 		}else {
 			return null;
 		}

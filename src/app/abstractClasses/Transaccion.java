@@ -1,6 +1,7 @@
 package app.abstractClasses;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import app.modelos.DetallesCompra;
@@ -10,7 +11,7 @@ public class Transaccion<D extends Detalles> {
 	private String folio;
 	private double total;
 	private String fecha;
-	private ArrayList<D> detalles;
+	private List<D> detalles;
 //	private String hora;
 	
 	/**
@@ -18,7 +19,7 @@ public class Transaccion<D extends Detalles> {
 	 * @param fecha
 	 * @param detalles
 	 */
-	public Transaccion(double total, String fecha, ArrayList<D> detalles) {
+	public Transaccion(double total, String fecha, List<D> detalles) {
 		this.total = total;
 		this.fecha = fecha;
 		this.detalles = new ArrayList<D>();
@@ -26,12 +27,16 @@ public class Transaccion<D extends Detalles> {
 		this.folio = UUID.randomUUID().toString().substring(0, 15);
 	}
 
-	public Transaccion(String fecha, ArrayList<D> detalles) {
+	public Transaccion(String fecha, List<D> detalles) {
 		this.total = detalles.stream().mapToDouble(D::getTotal).sum();
 		this.fecha = fecha;
 		this.detalles = new ArrayList<D>();
 		this.detalles.addAll(detalles);
 		this.folio = UUID.randomUUID().toString().substring(0, 15);
+	}
+	
+	public Transaccion(String folio) {
+		this.folio = folio;
 	}
 
 	public String getFolio() {
@@ -58,7 +63,7 @@ public class Transaccion<D extends Detalles> {
 		this.fecha = fecha;
 	}
 
-	public ArrayList<D> getDetalles() {
+	public List<D> getDetalles() {
 		return detalles;
 	}
 

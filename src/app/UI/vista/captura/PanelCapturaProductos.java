@@ -576,13 +576,13 @@ public class PanelCapturaProductos extends JPanel {
 	}
 	
 
-	static class FocusField implements ActionListener {
+	public static class FocusField implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			((JTextField)e.getSource()).transferFocus();
 		}
 	}
-	static class FocusBox implements ItemListener {
+	public static class FocusBox implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			((JComboBox<?>)e.getSource()).transferFocus();

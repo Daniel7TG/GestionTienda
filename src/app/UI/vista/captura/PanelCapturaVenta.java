@@ -43,7 +43,7 @@ public class PanelCapturaVenta extends JPanel {
 	
 	private HistorialVenta clientes;
 	private Catalogo catalogo;
-	private ArrayList<DetallesVenta> lista;
+	private List<DetallesVenta> lista;
 	private JPanel topPanel;
 	private JSpinner cantidadSpin;
 	private JButton agregarButton;
@@ -164,7 +164,7 @@ public class PanelCapturaVenta extends JPanel {
 	}
 	
 	
-	public void showTicket(ArrayList<DetallesVenta> lista) {
+	public void showTicket(List<DetallesVenta> lista) {
 		JFrame ticketFrame = new JFrame();
 		ticketFrame.setBounds(0, 0, 500, 750);
 		JLabel textTicket = new JLabel(Util.generateTicket(lista, catalogo, headers), JLabel.CENTER);

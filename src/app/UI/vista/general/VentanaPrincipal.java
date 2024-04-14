@@ -34,6 +34,7 @@ import app.UI.vista.menus.PanelMenuCompra;
 import app.UI.vista.menus.PanelMenuProductos;
 import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
+import app.dao.DaoUtility;
 import app.interfaces.Funcionable;
 import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
@@ -142,6 +143,9 @@ public class VentanaPrincipal extends JFrame {
 		historialCompra = new HistorialCompra();
 		historialVenta = new HistorialVenta();
 		proveedores = new Proveedores();
+		
+		// Datos de ejemplo
+		DaoUtility.getProductos().forEach(catalogo::add);
 		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override

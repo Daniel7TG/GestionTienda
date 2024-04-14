@@ -2,10 +2,10 @@ package app.abstractClasses;
 
 public abstract class Detalles {
 	
-	protected String codigo;
-	protected int cantidad;
-	protected double precio;
-	protected double total;
+	private String codigo;
+	private int cantidad;
+	private double precio;
+	private double total;
 	
 	/**
 	 * @param codigo

@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.interfaces.Funcionable;
 import app.modelos.Compra;
+import app.modelos.Producto;
 import app.util.Util;
 
 public class HistorialCompra implements Funcionable<Compra>{
@@ -36,8 +37,15 @@ public class HistorialCompra implements Funcionable<Compra>{
 	}
 
 	@Override
-	public Compra get(String id) {
-		return null;
+	public Compra get(String folio) {
+		Compra compra = new Compra(folio);
+		int index = contenedor.indexOf(compra);
+		return index == -1 ? null : contenedor.get(index); 
+	}	
+	@Override
+	public Compra get(Compra obj) {
+		int index = contenedor.indexOf(obj);
+		return index == -1 ? null : contenedor.get(index); 
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.List;
 import app.interfaces.Funcionable;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
+import app.modelos.Venta;
 import app.util.Util;
 
 public class Proveedores implements Funcionable<Proveedor>{
@@ -43,6 +44,11 @@ public class Proveedores implements Funcionable<Proveedor>{
 	@Override
 	public Proveedor get(String id) {
 		return contenedor.get(getIndex(id));
+	}
+	@Override
+	public Proveedor get(Proveedor obj) {
+		int index = contenedor.indexOf(obj);
+		return index == -1 ? null : contenedor.get(index); 
 	}
 
 	@Override

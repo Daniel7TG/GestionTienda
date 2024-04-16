@@ -230,6 +230,7 @@ public class PanelCapturaCompra extends JPanel {
 		panelProducto.add(lblName, gbc_lblName);
 
 		radByCode = new JRadioButton("Buscar por Codigo");
+		radByCode.setSelected(true);
 		GridBagConstraints gbc_radByCode = new GridBagConstraints();
 		gbc_radByCode.fill = GridBagConstraints.HORIZONTAL;
 		gbc_radByCode.insets = new Insets(0, 0, 5, 0);
@@ -547,6 +548,8 @@ public class PanelCapturaCompra extends JPanel {
 			gbc_radByCode,
 			gbc_radByName
 		});
+		
+		setActionCode();
 	}
 
 
@@ -678,7 +681,7 @@ public class PanelCapturaCompra extends JPanel {
 	private void autoCompleteFields(Proveedor proveedor) {
 		fieldNombre.setText(proveedor.getNombre() + " " + proveedor.getApellido());			
 		fieldTelefono.setText(proveedor.getTelefono());			
-		lblProdDetalles.setText(proveedor.toString());
+		lblProvDetalles.setText(proveedor.getDomicilio().toString());
 		repaint();
 	}
 	

@@ -43,7 +43,8 @@ public class Proveedores implements Funcionable<Proveedor>{
 
 	@Override
 	public Proveedor get(String id) {
-		return contenedor.get(getIndex(id));
+		int index = getIndex(id);
+		return index != -1 ? contenedor.get(index) : null;
 	}
 	@Override
 	public Proveedor get(Proveedor obj) {

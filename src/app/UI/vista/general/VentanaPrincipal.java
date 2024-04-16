@@ -27,6 +27,9 @@ import app.UI.vista.captura.PanelCapturaProductos;
 import app.UI.vista.captura.PanelCapturaProveedor;
 import app.UI.vista.captura.PanelCapturaVenta;
 import app.UI.vista.consulta.PanelConsultaProductos;
+import app.UI.vista.eliminar.PanelEliminarProductos;
+import app.UI.vista.general.PanelEncabezados;
+import app.UI.vista.general.PanelOpciones;
 import app.UI.vista.listado.PanelListadoCompras;
 import app.UI.vista.listado.PanelListadoProductos;
 import app.UI.vista.listado.PanelListadoVentas;
@@ -76,6 +79,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelOpciones panelOpciones;
 	private PanelListadoProductos listadoProductosPane;
 	private PanelConsultaProductos consultaProductosPane;
+	private PanelEliminarProductos panelEliminarProductos;
 	
 	// Clientes
 	private HistorialVenta historialVenta;
@@ -157,7 +161,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		};
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaPrincipal.class.getResource("/img/GatoC.jpg")));
+//		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaPrincipal.class.getResource("/img/GatoC.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 450);
 		setExtendedState(MAXIMIZED_BOTH);
@@ -482,6 +486,8 @@ public class VentanaPrincipal extends JFrame {
 		enableButtons(panelMenuProductos , false);
 		revalidate();				
 	}
+	
+
 	
 	// Utilidades
 	

@@ -24,4 +24,5 @@ public interface Funcionable<T> {
 	boolean isEmpty();
 	
 	
+	
 }

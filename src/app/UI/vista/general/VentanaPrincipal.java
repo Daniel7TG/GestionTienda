@@ -37,6 +37,7 @@ import app.UI.vista.menus.PanelMenuCompra;
 import app.UI.vista.menus.PanelMenuProductos;
 import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
+import app.UI.vista.modificar.PanelModificarProductos;
 import app.dao.DaoUtility;
 import app.interfaces.Funcionable;
 import app.modelos.Producto;
@@ -79,7 +80,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelOpciones panelOpciones;
 	private PanelListadoProductos listadoProductosPane;
 	private PanelConsultaProductos consultaProductosPane;
-	private PanelEliminarProductos panelEliminarProductos;
+	private PanelEliminarProductos eliminarProductosPane;
 	
 	// Clientes
 	private HistorialVenta historialVenta;
@@ -125,6 +126,9 @@ public class VentanaPrincipal extends JFrame {
 	private Font font;
 
 	private JButton confirmarButton;
+
+	private PanelModificarProductos modificarProductosPane;
+
 
 	
 	public static void main(String[] args) {
@@ -412,7 +416,14 @@ public class VentanaPrincipal extends JFrame {
 			consProdFunc();
 		});
 		eliminarButton = panelMenuProductos.getEliminarButton();
+		eliminarButton.addActionListener(e->{
+			elimProdFunc();
+		});
+		
 		modificarButton = panelMenuProductos.getModificarButton();
+		modificarButton.addActionListener(e->{
+			modProdFunc();
+		});
 		
 		listarButton = panelMenuProductos.getListarButton();
 		listarButton.addActionListener(e->{
@@ -502,6 +513,25 @@ public class VentanaPrincipal extends JFrame {
 			cancelButton(panelEncabezados, panelMenuProductos, eliminarProductosPane, panelOpciones);
 		});
 		panelEncabezados.add(eliminarProductosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuProductos , false);
+		revalidate();				
+	}
+	public void modProdFunc() {
+		modificarProductosPane = new PanelModificarProductos(catalogo);
+		panelEncabezados = new PanelEncabezados("Modificar Productos");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH, "Modificar", "Cancelar");
+		
+		guardarButton = panelOpciones.getCancelarButton();
+		guardarButton.addActionListener(e->{
+			modificarProductosPane.modificarProducto();
+		});
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(e->{
+			cancelButton(panelEncabezados, panelMenuProductos, modificarProductosPane, panelOpciones);
+		});
+		panelEncabezados.add(modificarProductosPane, BorderLayout.CENTER);
 		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuProductos , false);

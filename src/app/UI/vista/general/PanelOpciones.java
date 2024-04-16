@@ -39,7 +39,7 @@ public class PanelOpciones extends JPanel {
 	public PanelOpciones(Component lastElement, int optNum, String firstText, String secondText, String thirdText) {	
 		setBackground(Color.decode("#d0e2ed"));
 		
-		guardarButton = new JButton("Guardar");
+		guardarButton = new JButton(firstText);
 		guardarButton.setFocusPainted(false);
 		guardarButton.setRolloverSelectedIcon(new ImageIcon(PanelOpciones.class.getResource("/img/selectedConfirm.png")));
 		guardarButton.setSelectedIcon(new ImageIcon(PanelOpciones.class.getResource("/img/selectedConfirm.png")));
@@ -64,7 +64,7 @@ public class PanelOpciones extends JPanel {
 		});
 
 		
-		confirmarButton = new JButton("Confirmar");
+		confirmarButton = new JButton(thirdText);
 		confirmarButton.setFocusPainted(false);
 		confirmarButton.setRolloverSelectedIcon(new ImageIcon(PanelOpciones.class.getResource("/img/selectedConfirm.png")));
 		confirmarButton.setSelectedIcon(new ImageIcon(PanelOpciones.class.getResource("/img/selectedConfirm.png")));
@@ -89,7 +89,7 @@ public class PanelOpciones extends JPanel {
 		});
 		
 		
-		cancelarButton = new JButton("Cancelar");
+		cancelarButton = new JButton(secondText);
 		cancelarButton.setFocusPainted(false);
 		cancelarButton.setSelectedIcon(new ImageIcon(PanelOpciones.class.getResource("/img/selectedCancel.png")));
 		cancelarButton.setContentAreaFilled(false);

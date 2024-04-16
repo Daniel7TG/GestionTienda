@@ -506,8 +506,17 @@ public class PanelModificarProductos extends JPanel {
 
 	}
 	
-	
+	public void modificarProducto() {
+		/**
+		 * 
+		 * 
+		 * funcion modificar
+		 * 
+		 * 
+		 */
+	}
     
+	
     
 	private void autoCompleteFields(Producto producto, boolean code) {
 		if(code) {

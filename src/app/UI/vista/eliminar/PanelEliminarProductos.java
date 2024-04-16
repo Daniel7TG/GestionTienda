@@ -507,8 +507,8 @@ public class PanelEliminarProductos extends JPanel {
 	}
 	
 	
-    private void eliminarProducto() {
-    	Producto producto = catalogo.
+    public void eliminarProducto() {
+//    	Producto producto = catalogo.
     	
     }
     

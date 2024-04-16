@@ -8,6 +8,7 @@ import javax.swing.JTable;
 import app.UI.vista.captura.PanelCapturaProductos.FocusBox;
 import app.UI.vista.captura.PanelCapturaProductos.FocusField;
 import app.components.TextFieldSuggestion;
+import app.interfaces.Funcionable;
 import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 import app.util.TableModel;
@@ -79,7 +80,7 @@ import javax.swing.JRadioButton;
 public class PanelConsultaProductos extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Catalogo catalogo;
+	private Funcionable<Producto> catalogo;
 	private TextFieldSuggestion codigoBarrasField;
 	private TextFieldSuggestion nombreField;
 	private JTextField marcaField;
@@ -112,19 +113,9 @@ public class PanelConsultaProductos extends JPanel {
 			"Precio",
 			"Cantidad",
 			};
+	private final boolean BY_CODE = true, BY_NAME = false; 
+	
 
-	Function<JTextField, String[]> filterByName = field -> {
-		return catalogo.getList().stream()
-				.map(Producto::getMainData)
-				.filter(name -> name.toLowerCase().startsWith(field.getText().toLowerCase()))
-				.toArray(String[]::new);
-	};
-	Function<JTextField, String[]> filterByCode = field -> {
-		return catalogo.getList().stream()
-				.map(Producto::getCodigoBarras)
-				.filter(code -> code.startsWith(field.getText()))
-				.toArray(String[]::new);
-	};
 	
 	
 	KeyListener codeKeyListener = new KeyAdapter() {
@@ -140,13 +131,13 @@ public class PanelConsultaProductos extends JPanel {
 		public void removeUpdate(DocumentEvent e) {
 			Producto p = catalogo.get(codigoBarrasField.getText());
 			if(p != null) {
-				autoCompleteFields(p);
+				autoCompleteFields(p, BY_CODE);
 			}
 		}
 		public void insertUpdate(DocumentEvent e) {
 			Producto p = catalogo.get(codigoBarrasField.getText());
 			if(p != null) {
-				autoCompleteFields(p);
+				autoCompleteFields(p, BY_CODE);
 			}
 		}		
 	};
@@ -159,7 +150,7 @@ public class PanelConsultaProductos extends JPanel {
 			p.setMainData(nombreField.getText());
 			Producto producto = catalogo.get(p);
 			if(producto != null) {
-				autoCompleteFieldsN(producto);
+				autoCompleteFields(producto, BY_NAME);
 			}
 		}
 		public void insertUpdate(DocumentEvent e) {
@@ -167,7 +158,7 @@ public class PanelConsultaProductos extends JPanel {
 			p.setMainData(nombreField.getText());
 			Producto producto = catalogo.get(p);
 			if(producto != null) {
-				autoCompleteFieldsN(producto);
+				autoCompleteFields(producto, BY_NAME);
 			}
 		}
 	};
@@ -176,7 +167,7 @@ public class PanelConsultaProductos extends JPanel {
 	private JRadioButton byNameBtn;
 
 	
-	public PanelConsultaProductos(Catalogo catalogo) {
+	public PanelConsultaProductos(Funcionable<Producto> catalogo) {
 		this.catalogo = catalogo;
 
 		focusField = new FocusField();
@@ -203,7 +194,7 @@ public class PanelConsultaProductos extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if(table.getSelectedRow() != -1) {
 					Producto p = catalogo.get(table.getSelectedRow());
-					autoCompleteFieldsN(p);
+					autoCompleteFields(p, BY_NAME);
 				}
 			}
 		});
@@ -259,7 +250,7 @@ public class PanelConsultaProductos extends JPanel {
 		gbc_codigoDeBarras.gridy = 1;
 		add(codigoDeBarras, gbc_codigoDeBarras);
 		
-		codigoBarrasField = new TextFieldSuggestion(filterByCode);
+		codigoBarrasField = new TextFieldSuggestion(Util.getCodeFilter(catalogo));
 		GridBagConstraints gbc_codigoBarrasField = new GridBagConstraints();
 		gbc_codigoBarrasField.insets = new Insets(0, 0, 5, 5);
 		gbc_codigoBarrasField.fill = GridBagConstraints.BOTH;
@@ -277,7 +268,7 @@ public class PanelConsultaProductos extends JPanel {
 		add(nombre, gbc_nombre);
 		
 		
-		nombreField = new TextFieldSuggestion(filterByName);
+		nombreField = new TextFieldSuggestion(Util.getNameFilter(catalogo));
 		GridBagConstraints gbc_nombreField = new GridBagConstraints();
 		gbc_nombreField.insets = new Insets(0, 0, 5, 5);
 		gbc_nombreField.fill = GridBagConstraints.BOTH;
@@ -518,9 +509,15 @@ public class PanelConsultaProductos extends JPanel {
 	
     
     
-	private void autoCompleteFields(Producto producto) {
-//		codigoBarrasField.setText(producto.getCodigoBarras());
-		nombreField.setText(producto.getNombre());
+	private void autoCompleteFields(Producto producto, boolean code) {
+		if(code) {
+			nombreField.setText(producto.getNombre());			
+		} else {
+			codigoBarrasField.setText(producto.getCodigoBarras());			
+			SwingUtilities.invokeLater(()->{			
+				nombreField.setText(producto.getNombre());
+			});
+		}
 		marcaField.setText(producto.getMarca());
 		contenidoField.setText(producto.getContenido());
 		descripcionField.setText(producto.getDescripcion());
@@ -532,24 +529,6 @@ public class PanelConsultaProductos extends JPanel {
 		precioField.setText(String.valueOf(producto.getPrecioVenta()));
 		repaint();
 	}
-	private void autoCompleteFieldsN(Producto producto) {
-		codigoBarrasField.setText(producto.getCodigoBarras());
-		SwingUtilities.invokeLater(()->{			
-			nombreField.setText(producto.getNombre());
-		});
-		marcaField.setText(producto.getMarca());
-		contenidoField.setText(producto.getContenido());
-		descripcionField.setText(producto.getDescripcion());
-		maximoBox.setSelectedItem(producto.getStockMaximo());
-		minimoBox.setSelectedItem(producto.getStockMinimo());
-		tipoBox.setSelectedItem(producto.getTipo());
-		medidaBox.setSelectedItem(producto.getUnidadDeMedida());
-		presentacionBox.setSelectedItem(producto.getPresentacion());
-		precioField.setText(String.valueOf(producto.getPrecioVenta()));
-		repaint();
-	}
-
-
 
 
 	public void style(Component[] components, GridBagConstraints[] constraints) {		
@@ -568,7 +547,6 @@ public class PanelConsultaProductos extends JPanel {
 	}
 	
 	public void removeActionCode() {
-//		Arrays.stream(codigoBarrasField.getKeyListeners()).forEach(System.out::println);
 		codigoBarrasField.removeKeyListener(codeKeyListener);
 		codigoBarrasField.getDocument().removeDocumentListener(codeTextListener);
 		codigoBarrasField.setEnabled(false);
@@ -580,7 +558,6 @@ public class PanelConsultaProductos extends JPanel {
 		clearComponents();
 	}
 	public void removeActionName() {
-//		Arrays.stream(nombreField.getKeyListeners()).forEach(System.out::println);
 		nombreField.getDocument().removeDocumentListener(nameTextListener);
 		nombreField.setEnabled(false);
 	}

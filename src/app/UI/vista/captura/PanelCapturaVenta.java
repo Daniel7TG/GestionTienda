@@ -150,12 +150,10 @@ public class PanelCapturaVenta extends JPanel {
 	
 	public void guardarVenta() {
 		if(lista.size() == 0) return;
-		double total = lista.stream().mapToDouble(DetallesVenta::getTotal).sum();
-		String fecha = LocalDate.now().toString();
+		LocalDate fecha = LocalDate.now();
 		Venta venta = new Venta(fecha, lista);
 		lista.forEach(detalle -> 
-			catalogo.get(detalle.getCodigo()).
-			subtractStock(detalle.getCantidad())
+			catalogo.get(detalle.getCodigo()).subtractStock(detalle.getCantidad())
 		);
 		clientes.add(venta);
 		showTicket(lista);

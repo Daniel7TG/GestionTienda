@@ -70,7 +70,6 @@ public class Producto {
 	}
 	public void setMainData(String data) {
 		String[] dataList = data.split("_");
-		System.out.println(dataList.length);
 		this.codigoBarras = "null";
 		if(dataList.length < 4) return;
 		this.nombre = dataList[0];

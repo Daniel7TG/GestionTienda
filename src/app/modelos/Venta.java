@@ -1,5 +1,6 @@
 package app.modelos;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import app.abstractClasses.Transaccion;
 
 public class Venta extends Transaccion<DetallesVenta>{
 
-	public Venta(String fecha, List<DetallesVenta> detalles) {
+	public Venta(LocalDate fecha, List<DetallesVenta> detalles) {
 		super(fecha, detalles);
 	}
 

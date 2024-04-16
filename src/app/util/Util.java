@@ -10,20 +10,23 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import app.abstractClasses.Detalles;
+import app.interfaces.Funcionable;
 import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
+import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 
 public class Util {
 
 	public static final String RUTAIMG = "C:\\Users\\odtgo\\Desktop\\javaPrograma\\img";	
-
+	
 	public static String capitalizeCammel(String text) {
 		if(text.length() == 0 ) return "";
 		return text.substring(0, 1).toUpperCase() + text.substring(1, text.length());		
@@ -139,7 +142,6 @@ public class Util {
 	}
 	
 	
-	// Sobrecargar metodo para hacerlo con detalles compra 
 	private static String formatAny(int space, String...elementos) {
 		StringBuilder finalText = new StringBuilder("<pre>");
 		int division = space/elementos.length;
@@ -150,7 +152,6 @@ public class Util {
 	}
 	
 	
-	// agregar ticketHeader como array de strings para formatear 
 	public static String generateTicket(List<? extends Detalles> detailsList, Catalogo catalogo,  List<String> headers) {
 		StringBuilder ticket = new StringBuilder("<html>");
 		int space = 60; 
@@ -161,14 +162,27 @@ public class Util {
 		ticket.append("*".repeat(space));
 		ticket.append(formatAny(space, "Codigo", "Nombre", "Cantidad", "Precio", "Total"));
 		detailsList.forEach(detail -> ticket.append(formatProduct(detail, catalogo, space)));
-		ticket.append(formatAny(space, "Total:", 
-				"", 
-				String.valueOf(detailsList.stream().mapToInt(Detalles::getCantidad).sum()), 
-				"", 
+		ticket.append(formatAny(space, "Total:", "", 
+				String.valueOf(detailsList.stream().mapToInt(Detalles::getCantidad).sum()), "", 
 				String.valueOf(detailsList.stream().mapToDouble(Detalles::getTotal).sum())));
 		return String.valueOf(ticket) + "<html/>";
 	}
 
+	
+	public static Function<JTextField, String[]> getNameFilter(Funcionable<Producto> catalogo){
+		return field -> 
+				catalogo.getList().stream()
+				.map(Producto::getMainData)
+				.filter(name -> name.toLowerCase().startsWith(field.getText().toLowerCase()))
+				.toArray(String[]::new);
+	}
+	public static Function<JTextField, String[]> getCodeFilter(Funcionable<Producto> catalogo){
+		return field -> 
+				catalogo.getList().stream()
+				.map(Producto::getCodigoBarras)
+				.filter(code -> code.startsWith(field.getText()))
+				.toArray(String[]::new);
+	}	
 	
 	public static class FocusField implements ActionListener {
 		@Override

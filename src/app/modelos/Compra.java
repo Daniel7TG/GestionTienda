@@ -1,5 +1,6 @@
 package app.modelos;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,10 +12,10 @@ public class Compra extends Transaccion<DetallesCompra>{
 
 	private String rfc;
 
-	public Compra(String fecha, List<DetallesCompra> detalles) {
+	public Compra(LocalDate fecha, List<DetallesCompra> detalles) {
 		super(fecha, detalles);
 	}
-	public Compra(String fecha, List<DetallesCompra> detalles, String rfc) {
+	public Compra(LocalDate fecha, List<DetallesCompra> detalles, String rfc) {
 		super(fecha, detalles);
 		this.rfc = rfc;
 	}

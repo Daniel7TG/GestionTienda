@@ -1,5 +1,6 @@
 package app.abstractClasses;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +11,7 @@ public class Transaccion<D extends Detalles> {
 
 	private String folio;
 	private double total;
-	private String fecha;
+	private LocalDate fecha;
 	private List<D> detalles;
 //	private String hora;
 	
@@ -19,7 +20,7 @@ public class Transaccion<D extends Detalles> {
 	 * @param fecha
 	 * @param detalles
 	 */
-	public Transaccion(double total, String fecha, List<D> detalles) {
+	public Transaccion(double total, LocalDate fecha, List<D> detalles) {
 		this.total = total;
 		this.fecha = fecha;
 		this.detalles = new ArrayList<D>();
@@ -27,7 +28,7 @@ public class Transaccion<D extends Detalles> {
 		this.folio = UUID.randomUUID().toString().substring(0, 15);
 	}
 
-	public Transaccion(String fecha, List<D> detalles) {
+	public Transaccion(LocalDate fecha, List<D> detalles) {
 		this.total = detalles.stream().mapToDouble(D::getTotal).sum();
 		this.fecha = fecha;
 		this.detalles = new ArrayList<D>();
@@ -55,11 +56,11 @@ public class Transaccion<D extends Detalles> {
 		this.total = total;
 	}
 
-	public String getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
@@ -78,7 +79,7 @@ public class Transaccion<D extends Detalles> {
 		
 	@Override
 	public boolean equals(Object obj) {
-		return folio.equals(((Transaccion)obj).folio);
+		return folio.equals(((Transaccion<? extends Detalles>)obj).folio);
 	}
 	
 }

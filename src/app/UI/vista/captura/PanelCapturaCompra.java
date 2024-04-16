@@ -14,6 +14,7 @@ import javax.swing.text.JTextComponent;
 
 import app.UI.vista.general.PanelOpciones;
 import app.abstractClasses.Detalles;
+import app.components.TextFieldSuggestion;
 import app.interfaces.Funcionable;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
@@ -129,7 +130,7 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_tableScroll.gridheight = 7;
 		add(tablePanel, gbc_tableScroll);
 		
-		codigoField = new JTextField();
+		codigoField = new TextFieldSuggestion(Util.getCodeFilter(catalogo));
 		codigoField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -362,7 +363,7 @@ public class PanelCapturaCompra extends JPanel {
 		.addStock(detalles.getCantidad())	
 				);
 		LocalDate fecha = LocalDate.now();
-		Compra compra = new Compra(fecha.toString(), listaDetalles);
+		Compra compra = new Compra(fecha, listaDetalles);
 		historialCompra.add(compra);
 		showTicket(listaDetalles);
 		listaDetalles.clear();

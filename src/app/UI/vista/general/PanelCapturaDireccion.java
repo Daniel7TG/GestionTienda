@@ -220,6 +220,7 @@ public class PanelCapturaDireccion extends JPanel {
 		 lbEstado,
 		 lbCodigoPostal
 		});
+
 	}
 	
 	

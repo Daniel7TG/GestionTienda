@@ -193,6 +193,8 @@ public class PanelCapturaProveedor extends JPanel {
 		  fieldNombre,
 		  fieldApellido
 		});
+		
+		
 	}
 
 	public void style(Component[] components) {				
@@ -213,9 +215,11 @@ public class PanelCapturaProveedor extends JPanel {
 			JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacio");
 		} else if(rfcField.getText().isBlank() & rfcField.getText().length() == 13) {
 			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacio");		
+		} else if(proveedores.exists(rfcField.getText())) {
+			JOptionPane.showMessageDialog(null, "Ya existe este proveedor");
 		} else if(telefonoField.getText().isBlank() & telefonoField.getText().length() == 10) {
 			JOptionPane.showMessageDialog(null, "El campo de telefono no puede estar vacio");				
-		} else if(panelDireccion.isValidDirection()) {
+		} else if(!panelDireccion.isValidDirection()) {
 			
 		} else {			
 			Proveedor proveedor = new Proveedor(razonField.getText(), fieldNombre.getText(), fieldApellido.getText(), rfcField.getText(), telefonoField.getText(), panelDireccion.getDireccion());
@@ -234,6 +238,8 @@ public class PanelCapturaProveedor extends JPanel {
 		razonField.setText("");
 		rfcField.setText("");
 		telefonoField.setText("");
+		fieldNombre.setText("");
+		fieldApellido.setText("");
 		panelDireccion.vaciarComponentes();
 	}
 

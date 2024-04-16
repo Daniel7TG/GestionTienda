@@ -3,6 +3,7 @@ package app.UI.vista.general;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -55,26 +56,26 @@ public class PanelCapturaDireccion extends JPanel {
 		fontFunc = new Font("Montserrat", Font.PLAIN, 13);
 		FocusField focusField = new FocusField();
 		FocusBox focusBox = new FocusBox();
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createCompoundBorder(),
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
 				"Formulario Domicilio", TitledBorder.LEFT, TitledBorder.ABOVE_TOP, titleLabel));
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
 		gridBagLayout.rowHeights = new int[] {0, 45, 0, 45, 0, 45, 0, 45, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		lbNumero = new JLabel("Numero");
 		GridBagConstraints gbc_lbNumero = new GridBagConstraints();
-		gbc_lbNumero.insets = new Insets(0, 0, 5, 5);
+		gbc_lbNumero.insets = new Insets(10, 0, 0, 0);
 		gbc_lbNumero.gridx = 0;
 		gbc_lbNumero.gridy = 0;
 		add(lbNumero, gbc_lbNumero);
 		
 		lbCalle = new JLabel("Calle");
 		GridBagConstraints gbc_lbCalle = new GridBagConstraints();
-		gbc_lbCalle.insets = new Insets(0, 0, 5, 0);
+		gbc_lbCalle.insets = new Insets(10, 0, 5, 0);
 		gbc_lbCalle.gridx = 1;
 		gbc_lbCalle.gridy = 0;
 		add(lbCalle, gbc_lbCalle);
@@ -90,7 +91,7 @@ public class PanelCapturaDireccion extends JPanel {
 			}
 		});
 		GridBagConstraints gbc_numeroField = new GridBagConstraints();
-		gbc_numeroField.insets = new Insets(0, 0, 5, 5);
+		gbc_numeroField.insets = new Insets(10, 10, 10, 10);
 		gbc_numeroField.fill = GridBagConstraints.BOTH;
 		gbc_numeroField.gridx = 0;
 		gbc_numeroField.gridy = 1;
@@ -100,7 +101,7 @@ public class PanelCapturaDireccion extends JPanel {
 		calleField = new JTextField();
 		calleField.addActionListener(focusField);
 		GridBagConstraints gbc_calleField = new GridBagConstraints();
-		gbc_calleField.insets = new Insets(0, 0, 5, 0);
+		gbc_calleField.insets = new Insets(10, 10, 10, 10);
 		gbc_calleField.fill = GridBagConstraints.BOTH;
 		gbc_calleField.gridx = 1;
 		gbc_calleField.gridy = 1;
@@ -109,14 +110,14 @@ public class PanelCapturaDireccion extends JPanel {
 		
 		lbOrientacion = new JLabel("Orientacion");
 		GridBagConstraints gbc_lbOrientacion = new GridBagConstraints();
-		gbc_lbOrientacion.insets = new Insets(0, 0, 5, 5);
+		gbc_lbOrientacion.insets = new Insets(10, 0, 0, 0);
 		gbc_lbOrientacion.gridx = 0;
 		gbc_lbOrientacion.gridy = 2;
 		add(lbOrientacion, gbc_lbOrientacion);
 		
 		lbColonia = new JLabel("Colonia");
 		GridBagConstraints gbc_lbColonia = new GridBagConstraints();
-		gbc_lbColonia.insets = new Insets(0, 0, 5, 0);
+		gbc_lbColonia.insets = new Insets(10, 0, 0, 0);
 		gbc_lbColonia.gridx = 1;
 		gbc_lbColonia.gridy = 2;
 		add(lbColonia, gbc_lbColonia);
@@ -128,7 +129,7 @@ public class PanelCapturaDireccion extends JPanel {
 		orientacionBox.addItem(Orientacion.PONIENTE);
 		orientacionBox.addItem(Orientacion.SUR);
 		GridBagConstraints gbc_orientacionBox = new GridBagConstraints();
-		gbc_orientacionBox.insets = new Insets(0, 0, 5, 5);
+		gbc_orientacionBox.insets = new Insets(10, 10, 10, 10);
 		gbc_orientacionBox.fill = GridBagConstraints.BOTH;
 		gbc_orientacionBox.gridx = 0;
 		gbc_orientacionBox.gridy = 3;
@@ -137,7 +138,7 @@ public class PanelCapturaDireccion extends JPanel {
 		coloniaField = new JTextField();
 		coloniaField.addActionListener(focusField);
 		GridBagConstraints gbc_coloniaField = new GridBagConstraints();
-		gbc_coloniaField.insets = new Insets(0, 0, 5, 0);
+		gbc_coloniaField.insets = new Insets(10, 1, 10, 10);
 		gbc_coloniaField.fill = GridBagConstraints.BOTH;
 		gbc_coloniaField.gridx = 1;
 		gbc_coloniaField.gridy = 3;
@@ -146,14 +147,14 @@ public class PanelCapturaDireccion extends JPanel {
 		
 		lbCiudad = new JLabel("Ciudad");
 		GridBagConstraints gbc_lbCiudad = new GridBagConstraints();
-		gbc_lbCiudad.insets = new Insets(0, 0, 5, 5);
+		gbc_lbCiudad.insets = new Insets(10, 0, 0, 5);
 		gbc_lbCiudad.gridx = 0;
 		gbc_lbCiudad.gridy = 4;
 		add(lbCiudad, gbc_lbCiudad);
 		
 		lbEstado = new JLabel("Estado");
 		GridBagConstraints gbc_lbEstado = new GridBagConstraints();
-		gbc_lbEstado.insets = new Insets(0, 0, 5, 0);
+		gbc_lbEstado.insets = new Insets(10, 0, 0, 0);
 		gbc_lbEstado.gridx = 1;
 		gbc_lbEstado.gridy = 4;
 		add(lbEstado, gbc_lbEstado);
@@ -161,7 +162,7 @@ public class PanelCapturaDireccion extends JPanel {
 		ciudadField = new JTextField();
 		ciudadField.addActionListener(focusField);
 		GridBagConstraints gbc_ciudadField = new GridBagConstraints();
-		gbc_ciudadField.insets = new Insets(0, 0, 5, 5);
+		gbc_ciudadField.insets = new Insets(10, 10, 10, 10);
 		gbc_ciudadField.fill = GridBagConstraints.BOTH;
 		gbc_ciudadField.gridx = 0;
 		gbc_ciudadField.gridy = 5;
@@ -171,7 +172,7 @@ public class PanelCapturaDireccion extends JPanel {
 		estadoField = new JTextField();
 		estadoField.addActionListener(focusField);
 		GridBagConstraints gbc_estadoField = new GridBagConstraints();
-		gbc_estadoField.insets = new Insets(0, 0, 5, 0);
+		gbc_estadoField.insets = new Insets(10, 10, 10, 10);
 		gbc_estadoField.fill = GridBagConstraints.BOTH;
 		gbc_estadoField.gridx = 1;
 		gbc_estadoField.gridy = 5;
@@ -180,7 +181,7 @@ public class PanelCapturaDireccion extends JPanel {
 		
 		lbCodigoPostal = new JLabel("Codigo Postal");
 		GridBagConstraints gbc_lbCodigoPostal = new GridBagConstraints();
-		gbc_lbCodigoPostal.insets = new Insets(0, 0, 5, 5);
+		gbc_lbCodigoPostal.insets = new Insets(10, 0, 5, 5);
 		gbc_lbCodigoPostal.gridx = 0;
 		gbc_lbCodigoPostal.gridy = 6;
 		add(lbCodigoPostal, gbc_lbCodigoPostal);
@@ -196,7 +197,7 @@ public class PanelCapturaDireccion extends JPanel {
 			}
 		});
 		GridBagConstraints gbc_codigoPostalField = new GridBagConstraints();
-		gbc_codigoPostalField.insets = new Insets(0, 0, 0, 5);
+		gbc_codigoPostalField.insets = new Insets(10, 10, 10, 10);
 		gbc_codigoPostalField.fill = GridBagConstraints.BOTH;
 		gbc_codigoPostalField.gridx = 0;
 		gbc_codigoPostalField.gridy = 7;
@@ -219,7 +220,6 @@ public class PanelCapturaDireccion extends JPanel {
 		 lbEstado,
 		 lbCodigoPostal
 		});
-		
 	}
 	
 	
@@ -232,6 +232,24 @@ public class PanelCapturaDireccion extends JPanel {
 		}	
 	}
 	
+	public boolean isValidDirection() {
+		if(numeroField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La direccion debe tener un numero");
+		}else if(calleField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La direccion debe tener una calle");
+		}else if(coloniaField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La direccion debe tener una colonia");
+		}else if(ciudadField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La direccion debe tener una ciudad");
+		}else if(estadoField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La direccion debe tener un estado");
+		}else if(codigoPostalField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La direccion debe tener codigo postal");
+		} else {
+			return true;
+		}
+		return false;
+	}
 	
 	public Domicilio getDireccion() {
 		return new Domicilio(

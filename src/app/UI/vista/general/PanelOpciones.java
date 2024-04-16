@@ -28,6 +28,15 @@ public class PanelOpciones extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelOpciones(Component lastElement, int optNum) {
+		this(lastElement, optNum, "Guardar", "Cancelar", "Confirmar");				
+	}
+	public PanelOpciones(Component lastElement, int optNum, String firstText) {
+		this(lastElement, optNum, firstText, "Cancelar", "Confirmar");		
+	}
+	public PanelOpciones(Component lastElement, int optNum, String firstText, String secondText) {
+		this(lastElement, optNum, firstText, secondText, "Confirmar");
+	}
+	public PanelOpciones(Component lastElement, int optNum, String firstText, String secondText, String thirdText) {	
 		setBackground(Color.decode("#d0e2ed"));
 		
 		guardarButton = new JButton("Guardar");

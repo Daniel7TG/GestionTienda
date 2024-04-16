@@ -36,6 +36,11 @@ public class Domicilio {
 	public Domicilio() {
 	}
 	
+	@Override
+	public String toString() {
+		return String.join(", ", calle, colonia, ciudad, estado);
+	}
+	
 	
 	
 }

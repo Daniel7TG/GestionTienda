@@ -221,7 +221,6 @@ public class PanelConsultaProductos extends JPanel {
 		add(byCodeBtn, gbc_byCodeBtn);
 		byCodeBtn.addActionListener(e ->{
 			setActionCode();
-			removeActionName();
 		});
 		
 		byNameBtn = new JRadioButton("Buscar Por Nombre");
@@ -233,7 +232,6 @@ public class PanelConsultaProductos extends JPanel {
 		add(byNameBtn, gbc_byNameBtn);
 		byNameBtn.addActionListener(e ->{
 			setActionName();
-			removeActionCode();
 		});
 
 		ButtonGroup searchGroup = new ButtonGroup();
@@ -502,7 +500,6 @@ public class PanelConsultaProductos extends JPanel {
 		);
 		
 		setActionCode();
-		removeActionName();
 
 	}
 	
@@ -530,6 +527,22 @@ public class PanelConsultaProductos extends JPanel {
 		repaint();
 	}
 
+	public void setActionName() {
+		codigoBarrasField.removeKeyListener(codeKeyListener);
+		codigoBarrasField.getDocument().removeDocumentListener(codeTextListener);
+		codigoBarrasField.setEnabled(false);
+		nombreField.getDocument().addDocumentListener(nameTextListener);
+		nombreField.setEnabled(true);
+		clearComponents();
+	}
+	public void setActionCode() {
+		codigoBarrasField.addKeyListener(codeKeyListener);
+		codigoBarrasField.getDocument().addDocumentListener(codeTextListener);
+		codigoBarrasField.setEnabled(true);
+		nombreField.getDocument().removeDocumentListener(nameTextListener);
+		nombreField.setEnabled(false);
+		clearComponents();
+	}
 
 	public void style(Component[] components, GridBagConstraints[] constraints) {		
 		for(GridBagConstraints constraint : constraints) {
@@ -546,26 +559,6 @@ public class PanelConsultaProductos extends JPanel {
 		add(components[i], constraints[i]);
 	}
 	
-	public void removeActionCode() {
-		codigoBarrasField.removeKeyListener(codeKeyListener);
-		codigoBarrasField.getDocument().removeDocumentListener(codeTextListener);
-		codigoBarrasField.setEnabled(false);
-	}
-	public void setActionCode() {
-		codigoBarrasField.addKeyListener(codeKeyListener);
-		codigoBarrasField.getDocument().addDocumentListener(codeTextListener);
-		codigoBarrasField.setEnabled(true);
-		clearComponents();
-	}
-	public void removeActionName() {
-		nombreField.getDocument().removeDocumentListener(nameTextListener);
-		nombreField.setEnabled(false);
-	}
-	public void setActionName() {
-		nombreField.getDocument().addDocumentListener(nameTextListener);
-		nombreField.setEnabled(true);
-		clearComponents();
-	}
 	public void clearComponents() {
 		codigoBarrasField.setText("");
 		nombreField.setText("");

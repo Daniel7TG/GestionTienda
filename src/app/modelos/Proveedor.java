@@ -4,18 +4,24 @@ public class Proveedor {
 	
 	private String rfc;
 	private String razonSocial;
+	private String nombre;
+	private String apellido;
 	private Domicilio domicilio;
 	private String telefono;
 	
 	/**
 	 * @param razonSocial
+	 * @param nombre
+	 * @param apellido
 	 * @param rfc
 	 * @param telefono
 	 * @param domicilio
 	 */
-	public Proveedor(String razonSocial, String rfc, String telefono, Domicilio domicilio) {
+	public Proveedor(String razonSocial, String nombre, String apellido, String rfc, String telefono, Domicilio domicilio) {
 		this.razonSocial = razonSocial;
 		this.rfc = rfc;
+		this.nombre = nombre;
+		this.apellido = apellido;
 		this.telefono = telefono;
 		this.domicilio = domicilio;
 	}
@@ -50,7 +56,19 @@ public class Proveedor {
 	public void setDomicilio(Domicilio domicilio) {
 		this.domicilio = domicilio;
 	}
-
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getApellido() {
+		return apellido;
+	}
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		return rfc.equals(((Proveedor)obj).rfc);

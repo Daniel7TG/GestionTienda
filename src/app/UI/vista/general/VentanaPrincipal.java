@@ -482,6 +482,27 @@ public class VentanaPrincipal extends JFrame {
 		enableButtons(panelMenuProductos , false);
 		revalidate();				
 	}
+
+	
+	public void elimProdFunc() {
+		eliminarProductosPane = new PanelEliminarProductos(catalogo);
+		panelEncabezados = new PanelEncabezados("Eliminar Productos");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH, "Eliminar", "Cancelar");
+		
+		guardarButton = panelOpciones.getCancelarButton();
+		guardarButton.addActionListener(e->{
+			eliminarProductosPane.eliminarProducto();
+		});
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(e->{
+			cancelButton(panelEncabezados, panelMenuProductos, eliminarProductosPane, panelOpciones);
+		});
+		panelEncabezados.add(eliminarProductosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuProductos , false);
+		revalidate();				
+	}
 	
 	// Utilidades
 	

@@ -116,7 +116,8 @@ public class TextFieldSuggestion extends JTextField implements WindowFocusListen
 		}
 	}
 	private void hideList() {
-		showing = false;
+		if(showing == false) return;
+		showing = false;	
 		list.setVisible(false);			
 		scp.setVisible(false);	
 		popup.hide();

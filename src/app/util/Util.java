@@ -21,6 +21,7 @@ import app.interfaces.Funcionable;
 import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
+import app.modelos.Proveedor;
 import app.modelos.containers.Catalogo;
 
 public class Util {
@@ -182,6 +183,13 @@ public class Util {
 				.map(Producto::getCodigoBarras)
 				.filter(code -> code.startsWith(field.getText()))
 				.toArray(String[]::new);
+	}	
+	public static Function<JTextField, String[]> getRfcFilter(Funcionable<Proveedor> proveedores){
+		return field -> 
+			proveedores.getList().stream()
+			.map(Proveedor::getRfc)
+			.filter(rfc -> rfc.startsWith(field.getText()))
+			.toArray(String[]::new);
 	}	
 	
 	public static class FocusField implements ActionListener {

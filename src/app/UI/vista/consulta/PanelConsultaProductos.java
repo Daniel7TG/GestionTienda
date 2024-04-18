@@ -75,6 +75,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.JToggleButton;
+import javax.swing.ListSelectionModel;
 import javax.swing.JRadioButton;
 
 public class PanelConsultaProductos extends JPanel {
@@ -189,16 +190,20 @@ public class PanelConsultaProductos extends JPanel {
 		Object[][] data = catalogo.getData();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(table.getSelectedRow() != -1) {
-					Producto p = catalogo.get(table.getSelectedRow());
-					autoCompleteFields(p, BY_NAME);
-				}
-			}
-		});
+//		table.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseReleased(MouseEvent e) {
+//				if(table.getSelectedRow() != -1) {
+//				}
+//			}
+//		});
 		table.setModel(model);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getSelectionModel().addListSelectionListener(e->{
+			Producto p = catalogo.get(table.getSelectedRow());
+			autoCompleteFields(p, BY_NAME);
+		});
+		
 		model.configurarTabla(4, 4, 3, 3, 2, 3, 3, 2, 2, 4, 2, 2);
 		table.setRowHeight(30);
 		JScrollPane tableScroll = new JScrollPane(table);		

@@ -3,11 +3,11 @@ package app.modelos;
 public class Proveedor {
 	
 	private String rfc;
-	private String razonSocial;
 	private String nombre;
 	private String apellido;
-	private Domicilio domicilio;
+	private String razonSocial;
 	private String telefono;
+	private Domicilio domicilio;
 	
 	/**
 	 * @param razonSocial

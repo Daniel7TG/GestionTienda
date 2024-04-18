@@ -14,6 +14,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusEvent.Cause;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Optional;
 
 import javax.swing.BorderFactory;
@@ -55,7 +57,7 @@ import static mx.edu.tecnm.zitacuaro.sistemas.modelo.Utileria.*;
 import java.awt.Insets;
 
 @SuppressWarnings("serial")
-public class VentanaPrincipal extends JFrame {
+public class VentanaPrincipal extends JFrame implements WindowListener {
 
 	private Catalogo catalogo;
 
@@ -151,6 +153,7 @@ public class VentanaPrincipal extends JFrame {
 		historialCompra = new HistorialCompra();
 		historialVenta = new HistorialVenta();
 		proveedores = new Proveedores();
+		this.addWindowListener(this);
 		
 		// Datos de ejemplo
 		DaoUtility.getProductos().forEach(catalogo::add);
@@ -329,7 +332,7 @@ public class VentanaPrincipal extends JFrame {
 	private void regProvFunc() {
 		capturaProveedorPane = new PanelCapturaProveedor(proveedores);
 		panelEncabezados = new PanelEncabezados("Registro de Proveedores");
-		panelOpciones = new PanelOpciones(capturaProveedorPane, PanelOpciones.BOTH);
+		panelOpciones = new PanelOpciones(capturaProveedorPane.getLastItem(), PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
 		cancelarButton = panelOpciones.getCancelarButton();
 		
@@ -569,7 +572,37 @@ public class VentanaPrincipal extends JFrame {
 		panelMenuVenta = null;
 		repaint();
 	}
+
 	
+	private void guardarProductos() {
+		DaoUtility.saveFileTxt(catalogo.getList(), "raw/productos");
+		DaoUtility.saveFileTxt(proveedores.getList(), "raw/proveedores");
+		DaoUtility.saveFileTxt(historialCompra.getList(), "raw/compras", "rfc");
+		DaoUtility.saveFileTxt(historialVenta.getList(), "raw/ventas");
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+	}
+	@Override
+	public void windowClosing(WindowEvent e) {
+		guardarProductos();
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	}
+	@Override
+	public void windowActivated(WindowEvent e) {
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	}
 	
 	
 	

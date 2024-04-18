@@ -168,7 +168,7 @@ public class PanelCapturaCompra extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{2.0, 2.0, 3.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{3.0, 3.0, 4.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 3.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 
@@ -184,7 +184,7 @@ public class PanelCapturaCompra extends JPanel {
 		GridBagLayout gbl_panelProducto = new GridBagLayout();
 		gbl_panelProducto.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_panelProducto.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_panelProducto.columnWeights = new double[]{2.0, 2.0, 1.0, Double.MIN_VALUE};
+		gbl_panelProducto.columnWeights = new double[]{3.0, 3.0, 1.0, Double.MIN_VALUE};
 		gbl_panelProducto.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		panelProducto.setLayout(gbl_panelProducto);
 
@@ -237,6 +237,9 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_radByCode.gridx = 2;
 		gbc_radByCode.gridy = 0;
 		panelProducto.add(radByCode, gbc_radByCode);
+		radByCode.addActionListener(e ->{
+			setActionCode();
+		});
 
 		radByName = new JRadioButton("Buscar por Nombre");
 		GridBagConstraints gbc_radByName = new GridBagConstraints();
@@ -245,7 +248,10 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_radByName.gridx = 2;
 		gbc_radByName.gridy = 1;
 		panelProducto.add(radByName, gbc_radByName);
-
+		radByName.addActionListener(e ->{
+			setActionName();
+		});
+		
 		ButtonGroup group = new ButtonGroup();
 		group.add(radByCode);
 		group.add(radByName);
@@ -259,6 +265,7 @@ public class PanelCapturaCompra extends JPanel {
 		panelProducto.add(lblProd, gbc_lblProd);
 
 		lblProdDetalles = new JLabel(" ");
+		lblProdDetalles.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblProdDetalles = new GridBagConstraints();
 		gbc_lblProdDetalles.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblProdDetalles.gridwidth = 2;
@@ -399,7 +406,7 @@ public class PanelCapturaCompra extends JPanel {
 
 		lblProvDetalles = new JLabel(" ");
 		GridBagConstraints gbc_lblProvDetalles = new GridBagConstraints();
-		gbc_lblProvDetalles.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblProvDetalles.anchor = GridBagConstraints.WEST;
 		gbc_lblProvDetalles.gridwidth = 2;
 		gbc_lblProvDetalles.insets = new Insets(0, 0, 0, 5);
 		gbc_lblProvDetalles.gridx = 1;
@@ -580,6 +587,7 @@ public class PanelCapturaCompra extends JPanel {
 
 
 	public void guardarCompra() {
+		if(listaDetalles.size()<=0) return;
 		listaDetalles.forEach(detalles -> 
 			catalogo.get(detalles.getCodigo()).addStock(detalles.getCantidad())	
 		);
@@ -613,6 +621,8 @@ public class PanelCapturaCompra extends JPanel {
 
 
 	private void registrarProducto() {
+		if(!isValidCompra()) return;
+		
 		String codigo = fieldCodigoP.getText();
 		double precio = Double.parseDouble(precioField.getText());
 		int cantidad = (int) cantidadSpin.getValue();
@@ -685,6 +695,23 @@ public class PanelCapturaCompra extends JPanel {
 		repaint();
 	}
 	
+	
+	public boolean isValidCompra() {
+		if(fieldNombre.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El campo de nombre no debe estar vacio");
+		} else if(fieldCodigoP.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "Debe indicar un producto");
+		} else if(fieldRfc.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "Debe indicar un proveedor");
+		} else if((Integer)cantidadSpin.getValue() <= 0) {
+			JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor a 0");
+		} else if(precioField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El precio no puede estar vacio");
+		} else {
+			return true;
+		}
+		return false;
+	}
 
 	public void setActionName() {
 		fieldCodigoP.getDocument().removeDocumentListener(codeTextListener);

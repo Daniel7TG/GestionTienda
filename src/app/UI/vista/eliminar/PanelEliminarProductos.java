@@ -7,6 +7,7 @@ import javax.swing.JTable;
 
 import app.UI.vista.captura.PanelCapturaProductos.FocusBox;
 import app.UI.vista.captura.PanelCapturaProductos.FocusField;
+import app.abstractClasses.Detalles;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Funcionable;
 import app.modelos.Producto;
@@ -511,37 +512,28 @@ public class PanelEliminarProductos extends JPanel {
 
     	String codigoBarras = codigoBarrasField.getText();
     	String nombre = nombreField.getText();
-    	
+    
     	if(!codigoBarras.isEmpty()) {
-    		eliminarProductoPorCodigo(codigoBarras);
-    	}else if(!nombre.isEmpty()) {
-    		eliminarProductoPorNombre(nombre);
+    		eliminarProducto(codigoBarras);
+        	updateTable();
     	}else {
     		visualizar("Ingresa el código o nombre del producto");
     	}
     	
     }
     
-    private void eliminarProductoPorCodigo(String codigoBarras) {
+    private void eliminarProducto(String codigoBarras) {
     	Producto p = catalogo.get(codigoBarras);
     	if(p != null) {
     		catalogo.remove(p);
-    		visualizar("El producto: " + codigoBarras + "Ha sido eliminado");
+    		visualizar("El producto: " + codigoBarras + " fue eliminado");
     		clearComponents();
     	}else {
-    		visualizar("Producto con el codigo: " + codigoBarras + "No encontrado");
+    		visualizar("Producto con el codigo: " + codigoBarras + " no encontrado");
     	}
+    	repaint();
     }
     
-    public void eliminarProductoPorNombre(String nombreString) {
-    	Producto p = catalogo.get(nombreString);
-    	if(p != null) {
-    		catalogo.remove(p);
-    		visualizar("El producto con el nombre: " + nombreString + "Ha sido eliminado");
-    	}else {
-    		visualizar("Producto con el nombre: " + nombreString + "No encontrado");
-    	}
-    }
     
 	private void autoCompleteFields(Producto producto, boolean code) {
 		if(code) {
@@ -613,4 +605,13 @@ public class PanelEliminarProductos extends JPanel {
 		descripcionField.setText("");
 		precioField.setText("0.0");
 	}
+	
+	public void updateTable	() {
+		model.update(Util.anyToString(catalogo.getList()));
+		repaint();
+	}
 }
+
+
+
+

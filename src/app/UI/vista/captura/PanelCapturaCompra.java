@@ -554,7 +554,7 @@ public class PanelCapturaCompra extends JPanel {
 
 
 
-	private void actualizarTabla() {
+	private void actualizarTabla() { 
 		model.update(Util.anyToString(listaDetalles, Detalles.class));
 	}
 

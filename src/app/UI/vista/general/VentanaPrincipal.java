@@ -504,7 +504,7 @@ public class VentanaPrincipal extends JFrame {
 		panelEncabezados = new PanelEncabezados("Eliminar Productos");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH, "Eliminar", "Cancelar");
 		
-		guardarButton = panelOpciones.getCancelarButton();
+		guardarButton = panelOpciones.getGuardarButton();
 		guardarButton.addActionListener(e->{
 			eliminarProductosPane.eliminarProducto();
 		});
@@ -569,6 +569,7 @@ public class VentanaPrincipal extends JFrame {
 		panelMenuVenta = null;
 		repaint();
 	}
+	
 	
 	
 	

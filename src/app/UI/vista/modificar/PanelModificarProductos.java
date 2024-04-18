@@ -112,12 +112,12 @@ public class PanelModificarProductos extends JPanel {
 			"Descripcion",
 			"Precio",
 			"Cantidad",
-			};
+	};
 	private final boolean BY_CODE = true, BY_NAME = false; 
-	
 
-	
-	
+
+
+
 	KeyListener codeKeyListener = new KeyAdapter() {
 		@Override
 		public void keyTyped(KeyEvent e) {
@@ -141,8 +141,8 @@ public class PanelModificarProductos extends JPanel {
 			}
 		}		
 	};
-	
-	
+
+
 	DocumentListener nameTextListener = new DocumentListener() {
 		public void changedUpdate(DocumentEvent e) {}
 		public void removeUpdate(DocumentEvent e) {
@@ -162,20 +162,31 @@ public class PanelModificarProductos extends JPanel {
 			}
 		}
 	};
-	
+
 	private JRadioButton byCodeBtn;
 	private JRadioButton byNameBtn;
 
-	
+
 	public PanelModificarProductos(Funcionable<Producto> catalogo) {
 		this.catalogo = catalogo;
+
+		/////////////////////
+
+		JButton modificarButton = new JButton("Modificar");
+		modificarButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				modificarProducto();
+			}
+		});
+		//////////////////
 
 		focusField = new FocusField();
 		focusBox = new FocusBox();
 		separation = new Insets(15, 5, 5, 0);
 		fontLabel = new Font("Montserrat", Font.PLAIN, 16);
 		fontFunc = new Font("Montserrat", Font.PLAIN, 13);
-		
+
 		setBorder(new EmptyBorder(20, 20, 0, 20));
 		setBackground(CONTENT.color);
 
@@ -185,7 +196,7 @@ public class PanelModificarProductos extends JPanel {
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 0.0};
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 3.0, 15.0};
 		setLayout(gridBagLayout);
-		
+
 		Object[][] data = catalogo.getData();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
@@ -209,8 +220,8 @@ public class PanelModificarProductos extends JPanel {
 		gbc_table.gridx = 0;
 		gbc_table.gridy = 8;
 		add(tableScroll, gbc_table);
-		
-		
+
+
 		byCodeBtn = new JRadioButton("Buscar Por Codigo");
 		byCodeBtn.setSelected(true);
 		GridBagConstraints gbc_byCodeBtn = new GridBagConstraints();
@@ -223,7 +234,7 @@ public class PanelModificarProductos extends JPanel {
 			setActionCode();
 			removeActionName();
 		});
-		
+
 		byNameBtn = new JRadioButton("Buscar Por Nombre");
 		GridBagConstraints gbc_byNameBtn = new GridBagConstraints();
 		gbc_byNameBtn.anchor = GridBagConstraints.EAST;
@@ -239,8 +250,8 @@ public class PanelModificarProductos extends JPanel {
 		ButtonGroup searchGroup = new ButtonGroup();
 		searchGroup.add(byCodeBtn);
 		searchGroup.add(byNameBtn);		
-        
-		
+
+
 		JLabel codigoDeBarras = new JLabel("Codigo de Barras");
 		GridBagConstraints gbc_codigoDeBarras = new GridBagConstraints();
 		gbc_codigoDeBarras.insets = new Insets(0, 0, 5, 5);
@@ -249,7 +260,7 @@ public class PanelModificarProductos extends JPanel {
 		gbc_codigoDeBarras.gridx = 0;
 		gbc_codigoDeBarras.gridy = 1;
 		add(codigoDeBarras, gbc_codigoDeBarras);
-		
+
 		codigoBarrasField = new TextFieldSuggestion(Util.getCodeFilter(catalogo));
 		GridBagConstraints gbc_codigoBarrasField = new GridBagConstraints();
 		gbc_codigoBarrasField.insets = new Insets(0, 0, 5, 5);
@@ -257,7 +268,7 @@ public class PanelModificarProductos extends JPanel {
 		gbc_codigoBarrasField.gridx = 1;
 		gbc_codigoBarrasField.gridy = 1;
 		add(codigoBarrasField, gbc_codigoBarrasField);
-		
+
 		JLabel nombre = new JLabel("Nombre");
 		GridBagConstraints gbc_nombre = new GridBagConstraints();
 		gbc_nombre.insets = new Insets(0, 0, 5, 5);
@@ -266,8 +277,8 @@ public class PanelModificarProductos extends JPanel {
 		gbc_nombre.gridx = 2;
 		gbc_nombre.gridy = 1;
 		add(nombre, gbc_nombre);
-		
-		
+
+
 		nombreField = new TextFieldSuggestion(Util.getNameFilter(catalogo));
 		GridBagConstraints gbc_nombreField = new GridBagConstraints();
 		gbc_nombreField.insets = new Insets(0, 0, 5, 5);
@@ -285,7 +296,7 @@ public class PanelModificarProductos extends JPanel {
 		gbc_marca.gridx = 0;
 		gbc_marca.gridy = 2;
 		add(marca, gbc_marca);
-		
+
 		marcaField = new JTextField();
 		GridBagConstraints gbc_marcaField = new GridBagConstraints();
 		gbc_marcaField.insets = new Insets(0, 0, 5, 5);
@@ -295,7 +306,7 @@ public class PanelModificarProductos extends JPanel {
 		add(marcaField, gbc_marcaField);
 		marcaField.setColumns(10);
 		marcaField.addActionListener(focusField);
-		
+
 		JLabel tipo = new JLabel("Tipo");
 		GridBagConstraints gbc_tipo = new GridBagConstraints();
 		gbc_tipo.insets = new Insets(0, 0, 5, 5);
@@ -304,17 +315,17 @@ public class PanelModificarProductos extends JPanel {
 		gbc_tipo.gridx = 2;
 		gbc_tipo.gridy = 2;
 		add(tipo, gbc_tipo);
-		
+
 		tipoBox = new JComboBox<String>();
 		tipoBox.addItemListener(focusBox);
-		
+
 		GridBagConstraints gbc_tipoBox = new GridBagConstraints();
 		gbc_tipoBox.insets = new Insets(0, 0, 5, 5);
 		gbc_tipoBox.fill = GridBagConstraints.BOTH;
 		gbc_tipoBox.gridx = 3;
 		gbc_tipoBox.gridy = 2;
 		add(tipoBox, gbc_tipoBox);
-		
+
 		JLabel contenido = new JLabel("Contenido");
 		GridBagConstraints gbc_contenido = new GridBagConstraints();
 		gbc_contenido.insets = new Insets(0, 0, 5, 5);
@@ -323,7 +334,7 @@ public class PanelModificarProductos extends JPanel {
 		gbc_contenido.gridx = 0;
 		gbc_contenido.gridy = 3;
 		add(contenido, gbc_contenido);
-		
+
 		contenidoField = new JTextField();
 		GridBagConstraints gbc_contenidoField = new GridBagConstraints();
 		gbc_contenidoField.insets = new Insets(0, 0, 5, 5);
@@ -334,7 +345,7 @@ public class PanelModificarProductos extends JPanel {
 		contenidoField.setColumns(10);
 		contenidoField.addActionListener(focusField);
 
-		
+
 		JLabel unidadDeMedida = new JLabel("Unidad de Medida");
 		GridBagConstraints gbc_unidadDeMedida = new GridBagConstraints();
 		gbc_unidadDeMedida.insets = new Insets(0, 0, 5, 5);
@@ -343,7 +354,7 @@ public class PanelModificarProductos extends JPanel {
 		gbc_unidadDeMedida.gridx = 2;
 		gbc_unidadDeMedida.gridy = 3;
 		add(unidadDeMedida, gbc_unidadDeMedida);
-		
+
 		medidaBox = new JComboBox<String>();
 		GridBagConstraints gbc_medidaBox = new GridBagConstraints();
 		gbc_medidaBox.insets = new Insets(0, 0, 5, 5);
@@ -353,7 +364,7 @@ public class PanelModificarProductos extends JPanel {
 		add(medidaBox, gbc_medidaBox);
 		medidaBox.addItemListener(focusBox);
 
-		
+
 		JLabel presentacion = new JLabel("Presentacion");
 		GridBagConstraints gbc_presentacion = new GridBagConstraints();
 		gbc_presentacion.insets = new Insets(0, 0, 5, 5);
@@ -371,7 +382,7 @@ public class PanelModificarProductos extends JPanel {
 		add(presentacionBox, gbc_presentacionBox);
 		presentacionBox.addItemListener(focusBox);
 
-		
+
 		JLabel precio = new JLabel("Precio de Venta");
 		GridBagConstraints gbc_precio = new GridBagConstraints();
 		gbc_precio.insets = new Insets(0, 0, 5, 5);
@@ -387,8 +398,8 @@ public class PanelModificarProductos extends JPanel {
 		gbc_precioField.gridx = 3;
 		gbc_precioField.gridy = 4;
 		add(precioField, gbc_precioField);
-		
-		
+
+
 		JLabel stockMaximo = new JLabel("Stock Maximo");
 		GridBagConstraints gbc_stockMaximo = new GridBagConstraints();
 		gbc_stockMaximo.insets = new Insets(0, 0, 5, 5);
@@ -397,7 +408,7 @@ public class PanelModificarProductos extends JPanel {
 		gbc_stockMaximo.gridx = 0;
 		gbc_stockMaximo.gridy = 5;
 		add(stockMaximo, gbc_stockMaximo);
-		
+
 		maximoBox = new JComboBox<Integer>();
 		GridBagConstraints gbc_maximoBox = new GridBagConstraints();
 		gbc_maximoBox.insets = new Insets(0, 0, 5, 5);
@@ -407,7 +418,7 @@ public class PanelModificarProductos extends JPanel {
 		add(maximoBox, gbc_maximoBox);
 		maximoBox.addItemListener(focusBox);
 		Stream.of(range(100)).forEach(i -> maximoBox.addItem(i));
-		
+
 		JLabel stockMinimo = new JLabel("Stock Minimo");
 		GridBagConstraints gbc_stockMinimo = new GridBagConstraints();
 		gbc_stockMinimo.insets = new Insets(0, 0, 5, 5);
@@ -416,7 +427,7 @@ public class PanelModificarProductos extends JPanel {
 		gbc_stockMinimo.gridx = 2;
 		gbc_stockMinimo.gridy = 5;
 		add(stockMinimo, gbc_stockMinimo);
-		
+
 		minimoBox = new JComboBox<Integer>();
 		GridBagConstraints gbc_minimoBox = new GridBagConstraints();
 		gbc_minimoBox.insets = new Insets(0, 0, 5, 5);
@@ -443,13 +454,13 @@ public class PanelModificarProductos extends JPanel {
 		gbc_descripcionField.gridy = 7;
 		add(descripcionField, gbc_descripcionField);
 		descripcionField.setColumns(10);
-		
-		
+
+
 		getMedidas().forEach(i -> medidaBox.addItem(i));
 		getTipos().forEach(i -> tipoBox.addItem(i));
 		getPresentaciones().forEach(i -> presentacionBox.addItem(i));
-	
-		
+
+
 		style(new Component[] {
 				codigoBarrasField,
 				nombreField,
@@ -499,25 +510,47 @@ public class PanelModificarProductos extends JPanel {
 				gbc_descripcion,
 				gbc_precio
 		}
-		);
-		
+				);
+
 		setActionCode();
 		removeActionName();
 
 	}
-	
+
 	public void modificarProducto() {
-		/**
-		 * 
-		 * 
-		 * funcion modificar
-		 * 
-		 * 
-		 */
+		int selectedRow = table.getSelectedRow(); 
+		if (selectedRow != -1) { // aingnifica que la fila no fue seleccionada
+			
+			Producto prodModificar = catalogo.get(selectedRow);
+
+
+
+			prodModificar.setNombre(nombreField.getText());
+			prodModificar.setMarca(marcaField.getText());
+			prodModificar.setTipo((String) tipoBox.getSelectedItem());
+			prodModificar.setContenido(contenidoField.getText());
+			prodModificar.setUnidadDeMedida((String) medidaBox.getSelectedItem());
+			prodModificar.setPresentacion((String) presentacionBox.getSelectedItem());
+			prodModificar.setStockMaximo((Integer) maximoBox.getSelectedItem());
+			prodModificar.setStockMinimo((Integer) minimoBox.getSelectedItem());
+			prodModificar.setDescripcion(descripcionField.getText());
+			prodModificar.setPrecioVenta(Double.parseDouble(precioField.getText()));
+
+			catalogo.update(prodModificar, selectedRow);
+
+			visualizar("Se modifico el producto");
+
+
+		} else {
+			visualizar("Selecciona el producto a modificar");
+
+		}
+		
 	}
-    
-	
-    
+
+
+
+
 	private void autoCompleteFields(Producto producto, boolean code) {
 		if(code) {
 			nombreField.setText(producto.getNombre());			
@@ -544,7 +577,7 @@ public class PanelModificarProductos extends JPanel {
 		for(GridBagConstraints constraint : constraints) {
 			constraint.insets = separation;
 		}
-		
+
 		for(Component c : components) {
 			if(c.getClass().getName().equals("javax.swing.JLabel")) {
 				c.setFont(fontLabel);
@@ -552,9 +585,9 @@ public class PanelModificarProductos extends JPanel {
 			else c.setFont(fontFunc);	
 		}
 		for(int i = 0; i < components.length; i++)
-		add(components[i], constraints[i]);
+			add(components[i], constraints[i]);
 	}
-	
+
 	public void removeActionCode() {
 		codigoBarrasField.removeKeyListener(codeKeyListener);
 		codigoBarrasField.getDocument().removeDocumentListener(codeTextListener);
@@ -587,5 +620,11 @@ public class PanelModificarProductos extends JPanel {
 		minimoBox.setSelectedIndex(0);
 		descripcionField.setText("");
 		precioField.setText("0.0");
+	}
+
+
+	public void updateTable	() {
+		model.update(Util.anyToString(catalogo.getList()));
+		repaint();
 	}
 }

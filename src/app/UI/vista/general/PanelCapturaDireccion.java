@@ -11,11 +11,13 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Paint;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JTextField;
 import javax.swing.Painter;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -24,6 +26,7 @@ import app.modelos.Domicilio;
 import app.util.Util;
 import app.util.Util.FocusBox;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 
@@ -264,6 +267,13 @@ public class PanelCapturaDireccion extends JPanel {
 				);
 	}
 
+	public void setPreItem(JTextField c) {
+		c.addActionListener(e->{
+			SwingUtilities.invokeLater(()->{
+				numeroField.requestFocus();				
+			});
+		});
+	}
 	
 	public Component getLastItem() {
 		return codigoPostalField;

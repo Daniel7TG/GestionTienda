@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,6 +21,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import app.modelos.Producto;
+import app.util.Util;
 
 
 public class DaoUtility {
@@ -102,6 +104,53 @@ public class DaoUtility {
 	}
 	
 	
+	public static <T> String anyToString(List<T> list, String ...fields){
+		if( list.size() == 0 ) return "";
+		Class clazz = list.get(0).getClass();
+		return anyToString(list, clazz, fields);
+	}
+	public static <T> String anyToString(List<T> list, Class cl, String ...extraFields){
+		StringBuilder finalString = new StringBuilder();
+		Class clazz = cl;
+		Field[] fields = clazz.getDeclaredFields();
+		if(extraFields.length > 0) {
+			Field[] extraField = 
+			Arrays.stream(extraFields)
+			.map(t -> {
+					try {return clazz.getDeclaredField(t);}
+					catch (NoSuchFieldException | SecurityException e) {e.printStackTrace();}
+					return null;
+				})
+			.toArray(Field[]::new);
+		    Field[] newFields = Arrays.copyOf(fields, fields.length + extraField.length);
+		    System.arraycopy(extraField, 0, newFields, fields.length, extraField.length);
+		    fields = newFields;
+		}
+		
+		for(int i = 0; i < list.size(); i++) {
+			for(int j = 0; j < fields.length; j++) {
+				try {
+					finalString.append(getGetter(fields[j], clazz).invoke((list.get(i))) + "\t");
+				} catch (IllegalArgumentException |IllegalAccessException |InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+			finalString.append("\n");
+		}
+		return finalString.toString();
+	}
+	public static Method getGetter(Field field, Class clazz) {
+		String methodName = "get" + Util.capitalizeCammel(field.getName());
+		Method method = null;
+		try {
+			method = clazz.getMethod(methodName);
+		} catch (NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+		}
+		return method;
+	}
+	
+	
 	public static void writeFile(String content, String filename) {
 		File file = new File("resources/%s.txt".formatted(filename));
 		try {
@@ -111,6 +160,16 @@ public class DaoUtility {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
+	}
+	
+	
+	
+	public static <T> void saveFileTxt(List<T> list, String name, String...extraFields) {
+		if(list.isEmpty())
+			writeFile("", name);
+		else 
+			writeFile(anyToString(list, list.get(0).getClass(), extraFields ), name);
+	
 	}
 	
 	
@@ -130,6 +189,15 @@ public class DaoUtility {
 	public static List<Producto> getProductos(){
 		return getProductos("resources/raw/productos.txt");
 	}
+//	public static List<Proveedor> getProveedores(){
+//		return getProveedores("resources/raw/productos.txt");
+//	}
+//	public static List<Compra> getCompras(){
+//		return getCompras("resources/raw/productos.txt");
+//	}
+//	public static List<Venta> getVentas(){
+//		return getVentas("resources/raw/productos.txt");
+//	}
 	
 	public static List<Producto> getProductos(String url) {
 		List<String> data = readFile(url);

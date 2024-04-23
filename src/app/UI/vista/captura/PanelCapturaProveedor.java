@@ -3,9 +3,12 @@ package app.UI.vista.captura;
 import javax.swing.JPanel;
 
 import app.UI.vista.general.PanelCapturaDireccion;
+import app.abstractClasses.Detalles;
 import app.modelos.Proveedor;
 import app.modelos.containers.Proveedores;
 import app.util.Util.FocusField;
+import app.util.TableModel;
+import app.util.Util;
 import app.util.Util.FocusBox;
 
 import java.awt.GridBagLayout;
@@ -25,6 +28,9 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class PanelCapturaProveedor extends JPanel {
 
@@ -43,19 +49,30 @@ public class PanelCapturaProveedor extends JPanel {
 	private JLabel lblApellido;
 	private JTextField fieldNombre;
 	private JTextField fieldApellido;
+	private JScrollPane tablePanel;
+	private JTable productsTable;
+	private TableModel model;
+	private Object[][] data = new Object[0][0];
+	private String[] columnNames = {"RFC",
+			"Nombre",
+			"Apellido", 
+			"Razón Social",
+			"Teléfono",
+			"Dirección"
+			};
 	
 	public PanelCapturaProveedor(Proveedores proveedores) {
 		fontLabel = new Font("Montserrat", Font.PLAIN, 16);
 		fontFunc = new Font("Montserrat", Font.PLAIN, 13);
 		this.proveedores = proveedores;
 		FocusField focusField = new FocusField();
-		setBorder(BorderFactory.createEmptyBorder(50, 20, 50, 20));
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{45, 65, 45, 65, 45, 65, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{35, 65, 35, 65, 35, 65, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 6.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		lbRfc = new JLabel("RFC");
@@ -85,11 +102,10 @@ public class PanelCapturaProveedor extends JPanel {
 			}
 		});
 		panelDireccion = new PanelCapturaDireccion();
-		
 		GridBagConstraints gbc_direccion = new GridBagConstraints();
 		gbc_direccion.gridheight = 7;
 		gbc_direccion.fill = GridBagConstraints.BOTH;
-		gbc_direccion.insets = new Insets(20, 0, 20, 0);
+		gbc_direccion.insets = new Insets(10, 0, 10, 0);
 		gbc_direccion.gridx = 2;
 		gbc_direccion.gridy = 0;
 		gbc_direccion.gridwidth = 2;
@@ -181,6 +197,22 @@ public class PanelCapturaProveedor extends JPanel {
 		gbc_lblNombre.gridy = 2;
 		add(lblNombre, gbc_lblNombre);
 		
+		tablePanel = new JScrollPane();
+		productsTable = new JTable();
+		data = proveedores.getData();
+		model = new TableModel(productsTable, data, columnNames);
+		model.configurarTabla(1, 1, 1, 1, 1, 3);
+		productsTable.setModel(model);
+		tablePanel.setViewportView(productsTable);
+		
+		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
+		gbc_tablePanel.gridwidth = 4;
+		gbc_tablePanel.insets = new Insets(0, 0, 0, 5);
+		gbc_tablePanel.fill = GridBagConstraints.BOTH;
+		gbc_tablePanel.gridx = 0;
+		gbc_tablePanel.gridy = 7;
+		add(tablePanel, gbc_tablePanel);
+		
 		style(new Component[] {
 		  rfcField,
 		  razonField,
@@ -195,8 +227,12 @@ public class PanelCapturaProveedor extends JPanel {
 		});
 		
 		
+		SwingUtilities.invokeLater(()->{			
+			rfcField.requestFocusInWindow();
+			panelDireccion.setPreItem(telefonoField);
+		});		
 	}
-
+	
 	public void style(Component[] components) {				
 		for(Component c : components) {
 			if(c instanceof JLabel) {
@@ -207,7 +243,11 @@ public class PanelCapturaProveedor extends JPanel {
 	}
 	
 	public void guardarProveedor() {
-		if(razonField.getText().isBlank()) {
+		if(rfcField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacio");			
+		} else if(rfcField.getText().length() != 13) {
+			JOptionPane.showMessageDialog(null, "El campo de rfc debe tener 13 dígitos");			
+		} else if(razonField.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "El campo de razon no puede estar vacio");
 		} else if(fieldNombre.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacio");
@@ -217,15 +257,19 @@ public class PanelCapturaProveedor extends JPanel {
 			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacio");		
 		} else if(proveedores.exists(rfcField.getText())) {
 			JOptionPane.showMessageDialog(null, "Ya existe este proveedor");
-		} else if(telefonoField.getText().isBlank() & telefonoField.getText().length() == 10) {
+		} else if(telefonoField.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "El campo de telefono no puede estar vacio");				
-		} else if(!panelDireccion.isValidDirection()) {
-			
-		} else {			
+		} else if(!panelDireccion.isValidDirection()) {} 
+		else {			
 			Proveedor proveedor = new Proveedor(razonField.getText(), fieldNombre.getText(), fieldApellido.getText(), rfcField.getText(), telefonoField.getText(), panelDireccion.getDireccion());
 			proveedores.add(proveedor);
 			vaciarComponentes();
+			updateTable();
 		}
+	}
+	
+	private void updateTable() {
+		model.update(proveedores.getData());
 	}
 	
 	

@@ -22,12 +22,14 @@ public class Compra extends Transaccion<DetallesCompra>{
 	public Compra(String folio) {
 		super(folio);
 	}
-
+	
 	public String getRfc() {
 		return rfc;
 	}
 	public void setRfc(String rfc) {
 		this.rfc = rfc;
 	}
+	
+	
 	
 }

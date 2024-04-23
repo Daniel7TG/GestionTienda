@@ -8,4 +8,3 @@
 8901234567890	Yogur Natural	Danone	Lacteos	500	Gramos	Envase	40	4	Yogur natural sin azúcar	1.25	0.0	
 9012345678901	Papel Higiénico	Soriana	Higiene	4	Piezas	Paquete	50	5	Papel higiénico suave y absorbente	3.49	0.0	
 0123456789012	Cereal de Maíz	Kellogg's	Cereales	750	Gramos	Caja	45	4	Cereal de maíz con vitaminas	4.25	0.0	
-0000000000000	Chocolate	Turin	Alimentos	100	Gramos	Barra	9	0	Chocolate verde semiamargo sin azúcar	19.9	0.0	

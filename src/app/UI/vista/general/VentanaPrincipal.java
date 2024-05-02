@@ -7,13 +7,6 @@ import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusEvent.Cause;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Optional;
@@ -30,8 +23,6 @@ import app.UI.vista.captura.PanelCapturaProveedor;
 import app.UI.vista.captura.PanelCapturaVenta;
 import app.UI.vista.consulta.PanelConsultaProductos;
 import app.UI.vista.eliminar.PanelEliminarProductos;
-import app.UI.vista.general.PanelEncabezados;
-import app.UI.vista.general.PanelOpciones;
 import app.UI.vista.listado.PanelListadoCompras;
 import app.UI.vista.listado.PanelListadoProductos;
 import app.UI.vista.listado.PanelListadoVentas;
@@ -41,7 +32,6 @@ import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
 import app.UI.vista.modificar.PanelModificarProductos;
 import app.dao.DaoUtility;
-import app.interfaces.Funcionable;
 import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 import app.modelos.containers.HistorialCompra;
@@ -51,10 +41,7 @@ import app.modelos.containers.Proveedores;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import java.awt.Toolkit;
 
-import static mx.edu.tecnm.zitacuaro.sistemas.modelo.Utileria.*;
-import java.awt.Insets;
 
 @SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame implements WindowListener {
@@ -526,7 +513,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		panelEncabezados = new PanelEncabezados("Modificar Productos");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH, "Modificar", "Cancelar");
 		
-		guardarButton = panelOpciones.getCancelarButton();
+		guardarButton = panelOpciones.getGuardarButton();
 		guardarButton.addActionListener(e->{
 			modificarProductosPane.modificarProducto();
 		});
@@ -548,9 +535,9 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	public void cancelButton(JPanel parent, JPanel menu, JPanel...panels) {
 		contentPane.remove(parent);
 		parent = null;
-		for(JPanel panel : panels) {
-			panel = null;
-		}
+//		for(JPanel panel : panels) {
+//			panel = null;
+//		}
 		enableButtons(menu, true);
 		repaint();
 		System.gc();

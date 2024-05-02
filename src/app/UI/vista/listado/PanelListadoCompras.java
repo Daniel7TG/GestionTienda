@@ -7,6 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import app.abstractClasses.Transaccion;
+import app.modelos.Compra;
 import app.modelos.containers.HistorialCompra;
 import app.modelos.containers.HistorialVenta;
 import app.util.TableModel;
@@ -20,7 +21,8 @@ public class PanelListadoCompras extends JPanel {
 	private String[] columnNames = {"Folio",
 			"Total",
 			"Fecha",
-			"Detalles"};
+			"Detalles",
+			"RFC"};
 	private HistorialCompra proveedores;
 	private JScrollPane tableScroll;
 	
@@ -30,10 +32,10 @@ public class PanelListadoCompras extends JPanel {
 
 		this.proveedores = proveedores;		
 		table = new JTable();
-		model = new TableModel(table, proveedores.getList(), columnNames, Transaccion.class);
+		model = new TableModel(table, proveedores.getList(), columnNames, Transaccion.class, Compra.class);
 		table.setModel(model);
 		model.renderListColumn(3);
-		model.configurarTabla(2, 2, 2, 6);
+		model.configurarTabla(2, 2, 2, 6, 2);
 		tableScroll = new JScrollPane(table);		
 		tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(tableScroll);

@@ -244,25 +244,26 @@ public class PanelCapturaProveedor extends JPanel {
 	
 	public void guardarProveedor() {
 		if(rfcField.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacio");			
+			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacío");			
 		} else if(rfcField.getText().length() != 13) {
 			JOptionPane.showMessageDialog(null, "El campo de rfc debe tener 13 dígitos");			
 		} else if(razonField.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de razon no puede estar vacio");
+			JOptionPane.showMessageDialog(null, "El campo de razón no puede estar vacío");
 		} else if(fieldNombre.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacio");
+			JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacío");
 		} else if(fieldApellido.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacio");
+			JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacío");
 		} else if(rfcField.getText().isBlank() & rfcField.getText().length() == 13) {
 			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacio");		
 		} else if(proveedores.exists(rfcField.getText())) {
 			JOptionPane.showMessageDialog(null, "Ya existe este proveedor");
 		} else if(telefonoField.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de telefono no puede estar vacio");				
+			JOptionPane.showMessageDialog(null, "El campo de teléfono no puede estar vacío");				
 		} else if(!panelDireccion.isValidDirection()) {} 
 		else {			
 			Proveedor proveedor = new Proveedor(razonField.getText(), fieldNombre.getText(), fieldApellido.getText(), rfcField.getText(), telefonoField.getText(), panelDireccion.getDireccion());
 			proveedores.add(proveedor);
+			JOptionPane.showMessageDialog(null, "Proveedor registrado correctamente");
 			vaciarComponentes();
 			updateTable();
 		}

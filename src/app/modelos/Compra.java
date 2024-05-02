@@ -29,6 +29,12 @@ public class Compra extends Transaccion<DetallesCompra>{
 	public void setRfc(String rfc) {
 		this.rfc = rfc;
 	}
+	@Override
+	public String toString() {
+		return super.toString() + "Compra [rfc=" + rfc + "]";
+	}
+	
+
 	
 	
 	

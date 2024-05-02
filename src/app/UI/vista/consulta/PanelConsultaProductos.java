@@ -452,7 +452,17 @@ public class PanelConsultaProductos extends JPanel {
 		getTipos().forEach(i -> tipoBox.addItem(i));
 		getPresentaciones().forEach(i -> presentacionBox.addItem(i));
 	
-		
+		marcaField.setEditable(false);
+		contenidoField.setEditable(false);
+		descripcionField.setEditable(false);
+		maximoBox.setEnabled(false);
+		minimoBox.setEnabled(false);
+		tipoBox.setEnabled(false);
+		medidaBox.setEnabled(false);
+		presentacionBox.setEnabled(false);
+		descripcionField.setEditable(false);
+		precioField.setEditable(false);
+
 		style(new Component[] {
 				codigoBarrasField,
 				nombreField,

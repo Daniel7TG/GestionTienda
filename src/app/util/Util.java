@@ -9,7 +9,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import javax.swing.ImageIcon;
@@ -64,6 +66,42 @@ public class Util {
 		return numArray;
 	}
 
+	
+	
+	public static <T> Object[][] getClassFields(List<T> list, Class<?>...classes){
+
+		Map<Class<?>, Field[]> map = new HashMap<>();
+		int columnSize = 0;
+		for(Class<?> clazz : classes) {
+			Field[] fields = clazz.getDeclaredFields();
+			columnSize += fields.length;
+			map.put(clazz, fields);
+		}
+		
+		return anyToStringMap(list, map, columnSize, classes);
+		
+	}
+	
+	public static <T> Object[][] anyToStringMap(List<T> list, Map<Class<?>, Field[]> fields, int size, Class<?> ...classes){
+		if( list.size() == 0 ) return new String[0][0];
+		
+		Object[][] matriz = new Object[list.size()][size];
+		for(int i = 0; i < list.size(); i++) {
+			int actualColumn = 0;
+			for(Class<?> clazz : classes) {
+				Field[] fieldActual = fields.get(clazz);
+				for(int j = 0; j < fieldActual.length; j++, actualColumn++) {
+					try {
+						matriz[i][actualColumn] = getGetter(fieldActual[j], clazz).invoke((list.get(i)));
+					} catch (IllegalArgumentException |IllegalAccessException |InvocationTargetException e) {
+						e.printStackTrace();
+					}					
+				}
+			}
+		}
+		return matriz;
+	}
+	
 	
 	public static <T> Object[][] anyToString(List<T> list){
 		if( list.size() == 0 ) return new String[0][0];

@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import app.interfaces.Service;
+import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 import app.util.TableModel;
 
@@ -30,10 +32,10 @@ public class PanelListadoProductos extends JPanel {
 			};
 	private JScrollPane tableScroll;
 	
-	public PanelListadoProductos(Catalogo catalogo) {
+	public PanelListadoProductos(Service<Producto> catalogo) {
 		setLayout(new GridLayout(1, 1, 0, 0));
 
-		Object[][] data = catalogo.getData();
+		Object[][] data = catalogo.getMatrix();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
 		table.setModel(model);

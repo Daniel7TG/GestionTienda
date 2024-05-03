@@ -1,0 +1,4 @@
+Nombre1	a	ciudad1
+Nombre2	b	otra ciudad
+Nombre3	c	tercera
+Nomber4	d	ultima

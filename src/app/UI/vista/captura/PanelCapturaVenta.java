@@ -14,6 +14,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 import app.abstractClasses.Detalles;
+import app.interfaces.Service;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Venta;
@@ -42,7 +43,7 @@ public class PanelCapturaVenta extends JPanel {
 	private TableModel model;
 	
 	private HistorialVenta clientes;
-	private Catalogo catalogo;
+	private Service<Producto> catalogo;
 	private List<DetallesVenta> lista;
 	private JPanel topPanel;
 	private JSpinner cantidadSpin;
@@ -55,7 +56,7 @@ public class PanelCapturaVenta extends JPanel {
 	};
 	private List<String> headers = List.of("Tienda", "Sucursal Zitacuaro", "Telefono: 55-5555-5555", "RFC: ", LocalDate.now().toString());
 	
-	public PanelCapturaVenta(Catalogo catalogo, HistorialVenta clientes) {
+	public PanelCapturaVenta(Service<Producto> catalogo, HistorialVenta clientes) {
 		setLayout(new BorderLayout(0, 0));
 		this.clientes = clientes;
 		this.catalogo = catalogo;

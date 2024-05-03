@@ -9,6 +9,7 @@ import app.UI.vista.captura.PanelCapturaProductos.FocusBox;
 import app.UI.vista.captura.PanelCapturaProductos.FocusField;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
 import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 import app.util.TableModel;
@@ -81,7 +82,7 @@ import javax.swing.JRadioButton;
 public class PanelConsultaProductos extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Funcionable<Producto> catalogo;
+	private Service<Producto> catalogo;
 	private TextFieldSuggestion codigoBarrasField;
 	private TextFieldSuggestion nombreField;
 	private JTextField marcaField;
@@ -147,17 +148,13 @@ public class PanelConsultaProductos extends JPanel {
 	DocumentListener nameTextListener = new DocumentListener() {
 		public void changedUpdate(DocumentEvent e) {}
 		public void removeUpdate(DocumentEvent e) {
-			Producto p = new Producto();
-			p.setMainData(nombreField.getText());
-			Producto producto = catalogo.get(p);
+			Producto producto = catalogo.getByData(nombreField.getText());
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
 			}
 		}
 		public void insertUpdate(DocumentEvent e) {
-			Producto p = new Producto();
-			p.setMainData(nombreField.getText());
-			Producto producto = catalogo.get(p);
+			Producto producto = catalogo.getByData(nombreField.getText());
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
 			}
@@ -168,7 +165,7 @@ public class PanelConsultaProductos extends JPanel {
 	private JRadioButton byNameBtn;
 
 	
-	public PanelConsultaProductos(Funcionable<Producto> catalogo) {
+	public PanelConsultaProductos(Service<Producto> catalogo) {
 		this.catalogo = catalogo;
 
 		focusField = new FocusField();
@@ -187,21 +184,20 @@ public class PanelConsultaProductos extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 3.0, 15.0};
 		setLayout(gridBagLayout);
 		
-		Object[][] data = catalogo.getData();
+		Object[][] data = catalogo.getMatrix();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
-//		table.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseReleased(MouseEvent e) {
-//				if(table.getSelectedRow() != -1) {
-//				}
-//			}
-//		});
+
 		table.setModel(model);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.getSelectionModel().addListSelectionListener(e->{
-			Producto p = catalogo.get(table.getSelectedRow());
-			autoCompleteFields(p, BY_NAME);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(table.getSelectedRow() != -1) {
+					Producto p = catalogo.get((String)table.getValueAt(table.getSelectedRow(), 0) );
+					autoCompleteFields(p, BY_NAME);
+				}
+			}
 		});
 		
 		model.configurarTabla(4, 4, 3, 3, 2, 3, 3, 2, 2, 4, 2, 2);
@@ -452,7 +448,17 @@ public class PanelConsultaProductos extends JPanel {
 		getTipos().forEach(i -> tipoBox.addItem(i));
 		getPresentaciones().forEach(i -> presentacionBox.addItem(i));
 	
-		
+		marcaField.setEditable(false);
+		contenidoField.setEditable(false);
+		descripcionField.setEditable(false);
+		maximoBox.setEnabled(false);
+		minimoBox.setEnabled(false);
+		tipoBox.setEnabled(false);
+		medidaBox.setEnabled(false);
+		presentacionBox.setEnabled(false);
+		descripcionField.setEditable(false);
+		precioField.setEditable(false);
+
 		style(new Component[] {
 				codigoBarrasField,
 				nombreField,

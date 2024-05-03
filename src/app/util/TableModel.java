@@ -22,6 +22,13 @@ public class TableModel extends DefaultTableModel {
 	String[] columns;
 	int size;
 	
+	public TableModel(JTable table, List data, String[] columns, Class ...clazz) {
+		this.table = table;
+		this.data = Util.getClassFields(data, clazz);
+		this.columns = columns;		
+		this.size = this.data.length;
+		setDataVector(this.data, columns);
+	}
 	public TableModel(JTable table, List data, String[] columns, Class clazz) {
 		this.table = table;
 		this.data = Util.anyToString(data, clazz);

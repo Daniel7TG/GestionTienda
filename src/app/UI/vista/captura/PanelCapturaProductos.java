@@ -23,6 +23,7 @@ import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
 import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 import app.util.TableModel;
@@ -40,6 +41,7 @@ import static app.util.Util.*;
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
@@ -83,12 +85,13 @@ public class PanelCapturaProductos extends JPanel {
 	private JComboBox<String> presentacionBox;
 	private FocusField focusField;
 	private FocusBox focusBox;
+	private ValidateUnderscore validateUnderscore;
 	private Font fontLabel;
 	private Font fontFunc;
 	private Insets separation;
 	private JTable table;
 
-	private Catalogo catalogo;
+	private Service<Producto> catalogo;
 	private TableModel model;
 	private String[] columnNames = {"Codigo",
 			"Nombre",
@@ -108,10 +111,11 @@ public class PanelCapturaProductos extends JPanel {
 	 * @param catalogo 
 	 */
 	@SuppressWarnings("serial")
-	public PanelCapturaProductos(Catalogo catalogo) {
+	public PanelCapturaProductos(Service<Producto> catalogo) {
 		this.catalogo = catalogo;
 		focusField = new FocusField();
 		focusBox = new FocusBox();
+		validateUnderscore = new ValidateUnderscore();
 		separation = new Insets(15, 5, 5, 0);
 		fontLabel = new Font("Montserrat", Font.PLAIN, 16);
 		fontFunc = new Font("Montserrat", Font.PLAIN, 13);
@@ -184,6 +188,7 @@ public class PanelCapturaProductos extends JPanel {
 		gbc_nombreField.gridy = 0;
 		add(nombreField, gbc_nombreField);
 		nombreField.setColumns(10);
+		nombreField.addKeyListener(validateUnderscore);
 		
 		nombreField.addActionListener(e->{
 			String gotNombre = nombreField.getText();
@@ -245,6 +250,7 @@ public class PanelCapturaProductos extends JPanel {
 		gbc_marcaField.gridy = 1;
 		add(marcaField, gbc_marcaField);
 		marcaField.setColumns(10);
+		marcaField.addKeyListener(validateUnderscore);
 		marcaField.addActionListener(focusField);
 		
 		JLabel tipo = new JLabel("Tipo");
@@ -283,6 +289,7 @@ public class PanelCapturaProductos extends JPanel {
 		gbc_contenidoField.gridy = 2;
 		add(contenidoField, gbc_contenidoField);
 		contenidoField.setColumns(10);
+		contenidoField.addKeyListener(validateUnderscore);
 		contenidoField.addActionListener(focusField);
 
 		
@@ -404,7 +411,7 @@ public class PanelCapturaProductos extends JPanel {
 		add(descripcionField, gbc_descripcionField);
 		descripcionField.setColumns(10);
 		
-		Object[][] data = catalogo.getData();
+		Object[][] data = catalogo.getMatrix();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
 		table.setModel(model);
@@ -550,7 +557,7 @@ public class PanelCapturaProductos extends JPanel {
 	
 	
 	public void actualizarTabla() {
-		model.update(catalogo.getData());
+		model.update(catalogo.getMatrix());
 	}
 	
 	
@@ -576,6 +583,19 @@ public class PanelCapturaProductos extends JPanel {
 	}
 	
 
+	public static class ValidateUnderscore implements KeyListener {
+		@Override
+		public void keyTyped(KeyEvent e) {
+			if(e.getKeyChar() == '_') e.consume();
+		}
+		@Override
+		public void keyPressed(KeyEvent e) {
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+		}
+	}
+	
 	public static class FocusField implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

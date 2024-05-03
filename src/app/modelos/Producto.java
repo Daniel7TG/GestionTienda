@@ -16,7 +16,7 @@ public class Producto {
 	private int stockMinimo;
 	private String descripcion;
 	private double precioVenta;
-	private double stockActual;
+	private int stockActual;
 		
 	/**
 	 * @param codigoBarras
@@ -170,10 +170,10 @@ public class Producto {
 	public void setPrecioVenta(double precioVenta) {
 		this.precioVenta = precioVenta;
 	}
-	public double getStockActual() {
+	public int getStockActual() {
 		return stockActual;
 	}
-	public void setStockActual(double stockActual) {
+	public void setStockActual(int stockActual) {
 		this.stockActual = stockActual;
 	}
 

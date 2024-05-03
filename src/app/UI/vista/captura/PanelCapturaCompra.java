@@ -17,6 +17,7 @@ import app.UI.vista.general.PanelOpciones;
 import app.abstractClasses.Detalles;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
@@ -41,6 +42,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JSpinner;
 import java.awt.Insets;
+import java.awt.RenderingHints.Key;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -73,9 +75,9 @@ public class PanelCapturaCompra extends JPanel {
 	private JPanel panelProducto;
 	private JPanel panelProveedor;
 
-	private HistorialCompra historialCompra;
-	private Proveedores proveedores;
-	private Catalogo catalogo;
+	private Service<Compra> historialCompra;
+	private Service<Proveedor> proveedores;
+	private Service<Producto> catalogo;
 	private Insets separation;
 	private Font fontLabel;
 	private Font fontFunc;
@@ -86,7 +88,8 @@ public class PanelCapturaCompra extends JPanel {
 	private String[] columnNames = {"Codigo",
 			"Cantidad",
 			"Precio", 
-	"Total"};
+	"Total", 
+	};
 	private List<String> headers = List.of("Registro de compra", LocalDate.now().toString());
 
 	private JLabel lbPrecio;
@@ -123,12 +126,14 @@ public class PanelCapturaCompra extends JPanel {
 			Producto p = catalogo.get(fieldCodigoP.getText());
 			if(p != null) {
 				autoCompleteFields(p, BY_CODE);
+				buscarProductoCodigo(fieldCodigoP.getText());
 			}
 		}
 		public void insertUpdate(DocumentEvent e) {
 			Producto p = catalogo.get(fieldCodigoP.getText());
 			if(p != null) {
 				autoCompleteFields(p, BY_CODE);
+				buscarProductoCodigo(fieldCodigoP.getText());
 			}
 		}		
 	};
@@ -142,6 +147,7 @@ public class PanelCapturaCompra extends JPanel {
 			Producto producto = catalogo.get(p);
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
+				buscarProductoCodigo(fieldCodigoP.getText());
 			}
 		}
 		public void insertUpdate(DocumentEvent e) {
@@ -150,11 +156,12 @@ public class PanelCapturaCompra extends JPanel {
 			Producto producto = catalogo.get(p);
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
+				buscarProductoCodigo(fieldCodigoP.getText());
 			}
 		}
 	};
 
-	public PanelCapturaCompra(Catalogo catalogo, HistorialCompra historialCompra, Proveedores proveedores) {
+	public PanelCapturaCompra(Service<Producto> catalogo, Service<Compra> historialCompra, Service<Proveedor> proveedores) {
 
 		this.catalogo = catalogo;
 		this.historialCompra = historialCompra;
@@ -179,7 +186,7 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_panelProducto.insets = new Insets(5, 5, 5, 5);
 		gbc_panelProducto.fill = GridBagConstraints.BOTH;
 		gbc_panelProducto.gridx = 0;
-		gbc_panelProducto.gridy = 0;
+		gbc_panelProducto.gridy = 3;
 		add(panelProducto, gbc_panelProducto);
 		GridBagLayout gbl_panelProducto = new GridBagLayout();
 		gbl_panelProducto.columnWidths = new int[]{0, 0, 0, 0};
@@ -322,7 +329,7 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_panelProveedor.insets = new Insets(5, 5, 5, 5);
 		gbc_panelProveedor.fill = GridBagConstraints.BOTH;
 		gbc_panelProveedor.gridx = 0;
-		gbc_panelProveedor.gridy = 3;
+		gbc_panelProveedor.gridy = 0;
 		add(panelProveedor, gbc_panelProveedor);
 		GridBagLayout gbl_panelProveedor = new GridBagLayout();
 		gbl_panelProveedor.columnWidths = new int[]{0, 0, 0, 0};
@@ -386,7 +393,8 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_fieldNombre.gridy = 1;
 		panelProveedor.add(fieldNombre, gbc_fieldNombre);
 		fieldNombre.setColumns(10);
-
+		fieldNombre.setEditable(false);
+		
 		fieldTelefono = new JTextField();
 		GridBagConstraints gbc_fieldTelefono = new GridBagConstraints();
 		gbc_fieldTelefono.insets = new Insets(0, 0, 5, 0);
@@ -395,6 +403,7 @@ public class PanelCapturaCompra extends JPanel {
 		gbc_fieldTelefono.gridy = 1;
 		panelProveedor.add(fieldTelefono, gbc_fieldTelefono);
 		fieldTelefono.setColumns(10);
+		fieldTelefono.setEditable(false);
 
 		lblProv = new JLabel("Proveedor:");
 		GridBagConstraints gbc_lblProv = new GridBagConstraints();
@@ -449,14 +458,19 @@ public class PanelCapturaCompra extends JPanel {
 
 		precioField.addKeyListener(new KeyAdapter() { 
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(!(precioField.getText() + e.getKeyChar()).matches("^[0-9]+(\\.[0-9]*)?$") ) {
+			public void keyTyped(KeyEvent e) {
+				if(!(precioField.getText() + e.getKeyChar()).matches("^[0-9]+(\\.[0-9]+)?$") 
+						& e.getKeyCode() != KeyEvent.VK_DELETE) {
 					e.consume();
 				} 
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {				
 				if(!precioField.getText().isEmpty()) {
 					totalField.setText(String.valueOf(Double.valueOf(precioField.getText()) * (Integer)cantidadSpin.getValue()));					
 				}
-			}
+			};
+			
 		});
 
 		lbFecha = new JLabel("Fecha");
@@ -592,11 +606,14 @@ public class PanelCapturaCompra extends JPanel {
 			catalogo.get(detalles.getCodigo()).addStock(detalles.getCantidad())	
 		);
 		LocalDate fecha = LocalDate.now();
-		Compra compra = new Compra(fecha, listaDetalles);
-		historialCompra.add(compra);
+		String rfc = fieldRfc.getText();
+		Compra compra = new Compra(fecha, listaDetalles, rfc);
+		historialCompra.save(compra);
 		showTicket(listaDetalles);
 		listaDetalles.clear();
 		actualizarTabla();
+		clearProveedor();
+		
 	}
 
 
@@ -649,7 +666,7 @@ public class PanelCapturaCompra extends JPanel {
 		actualizarTabla();
 		clearCantidad();
 		clearProducto();
-		clearProveedor();
+		lockProveedor();
 	}
 
 	public void showTicket(ArrayList<DetallesCompra> lista) {
@@ -686,8 +703,12 @@ public class PanelCapturaCompra extends JPanel {
 			});
 		}
 		lblProdDetalles.setText(producto.getMainData());
+		
+		
 		repaint();
 	}
+	
+	
 	private void autoCompleteFields(Proveedor proveedor) {
 		fieldNombre.setText(proveedor.getNombre() + " " + proveedor.getApellido());			
 		fieldTelefono.setText(proveedor.getTelefono());			
@@ -698,7 +719,7 @@ public class PanelCapturaCompra extends JPanel {
 	
 	public boolean isValidCompra() {
 		if(fieldNombre.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de nombre no debe estar vacio");
+			JOptionPane.showMessageDialog(null, "El campo de proveedor no debe estar vacio");
 		} else if(fieldCodigoP.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "Debe indicar un producto");
 		} else if(fieldRfc.getText().isBlank()) {
@@ -742,6 +763,13 @@ public class PanelCapturaCompra extends JPanel {
 		fieldRfc.setText("");
 		fieldTelefono.setText("");
 		lblProvDetalles.setText("");
+		unlockProveedor();
+	}
+	private void lockProveedor() {		
+		fieldRfc.setEditable(false);
+	}
+	private void unlockProveedor() {		
+		fieldRfc.setEditable(true);
 	}
 	
 

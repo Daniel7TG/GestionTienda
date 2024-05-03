@@ -7,13 +7,6 @@ import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusEvent.Cause;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Optional;
@@ -30,8 +23,6 @@ import app.UI.vista.captura.PanelCapturaProveedor;
 import app.UI.vista.captura.PanelCapturaVenta;
 import app.UI.vista.consulta.PanelConsultaProductos;
 import app.UI.vista.eliminar.PanelEliminarProductos;
-import app.UI.vista.general.PanelEncabezados;
-import app.UI.vista.general.PanelOpciones;
 import app.UI.vista.listado.PanelListadoCompras;
 import app.UI.vista.listado.PanelListadoProductos;
 import app.UI.vista.listado.PanelListadoVentas;
@@ -41,25 +32,27 @@ import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
 import app.UI.vista.modificar.PanelModificarProductos;
 import app.dao.DaoUtility;
-import app.interfaces.Funcionable;
+import app.interfaces.Service;
+import app.modelos.Compra;
 import app.modelos.Producto;
+import app.modelos.Proveedor;
 import app.modelos.containers.Catalogo;
 import app.modelos.containers.HistorialCompra;
 import app.modelos.containers.HistorialVenta;
 import app.modelos.containers.Proveedores;
+import app.modelos.services.ComprasServiceImp;
+import app.modelos.services.ProductosServiceImp;
+import app.modelos.services.ProveedoresServiceImp;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import java.awt.Toolkit;
 
-import static mx.edu.tecnm.zitacuaro.sistemas.modelo.Utileria.*;
-import java.awt.Insets;
 
 @SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame implements WindowListener {
 
-	private Catalogo catalogo;
+	private Service<Producto> catalogo;
 
 	private JMenuBar barra;
 	
@@ -95,9 +88,9 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	// Fin Clientes
 	
 	// Proveedores
-	private Proveedores proveedores;
+	private Service<Proveedor> proveedores;
 	
-	private HistorialCompra historialCompra;
+	private Service<Compra> historialCompra;
 	private PanelMenuCompra panelMenuCompra;
 	private JButton registrarCompButton;
 	private JButton listarCompButton;
@@ -149,14 +142,14 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 
 	public VentanaPrincipal() {
 		font = new Font("Montserrat", Font.BOLD, 13);
-		catalogo = new Catalogo();
-		historialCompra = new HistorialCompra();
+		catalogo = new ProductosServiceImp();
+		historialCompra = new ComprasServiceImp();
 		historialVenta = new HistorialVenta();
-		proveedores = new Proveedores();
+		proveedores = new ProveedoresServiceImp();
 		this.addWindowListener(this);
 		
 		// Datos de ejemplo
-		DaoUtility.getProductos().forEach(catalogo::add);
+//		DaoUtility.getProductos().forEach(catalogo::save);
 		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
@@ -451,7 +444,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		guardarButton.addActionListener(ec -> {
 			Optional<Producto> p = capturaProductosPane.getProducto();
 			if (p.isPresent()) {
-				catalogo.add(p.get());
+				catalogo.save(p.get());
 				capturaProductosPane.actualizarTabla();
 			}
 		});
@@ -526,7 +519,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		panelEncabezados = new PanelEncabezados("Modificar Productos");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH, "Modificar", "Cancelar");
 		
-		guardarButton = panelOpciones.getCancelarButton();
+		guardarButton = panelOpciones.getGuardarButton();
 		guardarButton.addActionListener(e->{
 			modificarProductosPane.modificarProducto();
 		});
@@ -548,9 +541,9 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	public void cancelButton(JPanel parent, JPanel menu, JPanel...panels) {
 		contentPane.remove(parent);
 		parent = null;
-		for(JPanel panel : panels) {
-			panel = null;
-		}
+//		for(JPanel panel : panels) {
+//			panel = null;
+//		}
 		enableButtons(menu, true);
 		repaint();
 		System.gc();
@@ -575,10 +568,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 
 	
 	private void guardarProductos() {
-		DaoUtility.saveFileTxt(catalogo.getList(), "raw/productos");
-		DaoUtility.saveFileTxt(proveedores.getList(), "raw/proveedores");
-		DaoUtility.saveFileTxt(historialCompra.getList(), "raw/compras", "rfc");
-		DaoUtility.saveFileTxt(historialVenta.getList(), "raw/ventas");
+//		DaoUtility.saveFileTxt(catalogo.getAll(), "raw/productos");
+//		DaoUtility.saveFileTxt(proveedores.getList(), "raw/proveedores");
+//		DaoUtility.saveFileTxt(historialCompra.getList(), "raw/compras", "rfc");
+//		DaoUtility.saveFileTxt(historialVenta.getList(), "raw/ventas");
 	}
 
 	@Override

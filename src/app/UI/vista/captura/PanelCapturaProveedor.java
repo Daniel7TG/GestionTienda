@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import app.UI.vista.general.PanelCapturaDireccion;
 import app.abstractClasses.Detalles;
+import app.interfaces.Service;
 import app.modelos.Proveedor;
 import app.modelos.containers.Proveedores;
 import app.util.Util.FocusField;
@@ -35,7 +36,7 @@ import javax.swing.JTable;
 public class PanelCapturaProveedor extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	Proveedores proveedores;
+	private Service<Proveedor> proveedores;
 	private JTextField rfcField;
 	private JTextField razonField;
 	private JTextField telefonoField;
@@ -61,7 +62,7 @@ public class PanelCapturaProveedor extends JPanel {
 			"Dirección"
 			};
 	
-	public PanelCapturaProveedor(Proveedores proveedores) {
+	public PanelCapturaProveedor(Service<Proveedor> proveedores) {
 		fontLabel = new Font("Montserrat", Font.PLAIN, 16);
 		fontFunc = new Font("Montserrat", Font.PLAIN, 13);
 		this.proveedores = proveedores;
@@ -199,7 +200,7 @@ public class PanelCapturaProveedor extends JPanel {
 		
 		tablePanel = new JScrollPane();
 		productsTable = new JTable();
-		data = proveedores.getData();
+		data = proveedores.getMatrix();
 		model = new TableModel(productsTable, data, columnNames);
 		model.configurarTabla(1, 1, 1, 1, 1, 3);
 		productsTable.setModel(model);
@@ -244,32 +245,33 @@ public class PanelCapturaProveedor extends JPanel {
 	
 	public void guardarProveedor() {
 		if(rfcField.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacio");			
+			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacío");			
 		} else if(rfcField.getText().length() != 13) {
 			JOptionPane.showMessageDialog(null, "El campo de rfc debe tener 13 dígitos");			
 		} else if(razonField.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de razon no puede estar vacio");
+			JOptionPane.showMessageDialog(null, "El campo de razón no puede estar vacío");
 		} else if(fieldNombre.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacio");
+			JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacío");
 		} else if(fieldApellido.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacio");
+			JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacío");
 		} else if(rfcField.getText().isBlank() & rfcField.getText().length() == 13) {
 			JOptionPane.showMessageDialog(null, "El campo de rfc no puede estar vacio");		
 		} else if(proveedores.exists(rfcField.getText())) {
 			JOptionPane.showMessageDialog(null, "Ya existe este proveedor");
 		} else if(telefonoField.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de telefono no puede estar vacio");				
+			JOptionPane.showMessageDialog(null, "El campo de teléfono no puede estar vacío");				
 		} else if(!panelDireccion.isValidDirection()) {} 
 		else {			
 			Proveedor proveedor = new Proveedor(razonField.getText(), fieldNombre.getText(), fieldApellido.getText(), rfcField.getText(), telefonoField.getText(), panelDireccion.getDireccion());
-			proveedores.add(proveedor);
+			proveedores.save(proveedor);
+			JOptionPane.showMessageDialog(null, "Proveedor registrado correctamente");
 			vaciarComponentes();
 			updateTable();
 		}
 	}
 	
 	private void updateTable() {
-		model.update(proveedores.getData());
+		model.update(proveedores.getMatrix());
 	}
 	
 	

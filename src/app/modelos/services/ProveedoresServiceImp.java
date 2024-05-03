@@ -1,88 +1,105 @@
 package app.modelos.services;
 
+import static app.dao.database.UtilityDB.getDataBaseParameters;
+
 import java.util.List;
 
+import app.dao.database.Database;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
+import app.modelos.repositories.ProductosRepository;
+import app.modelos.repositories.ProveedoresRepository;
+import app.records.DBRecord;
 
 public class ProveedoresServiceImp implements Service<Proveedor> {
 
+	
+	private Database database;
+	private ProveedoresRepository repository;
+	
+	public ProveedoresServiceImp(){
+		initDatabase();
+	}
+	
+	private void initDatabase() {
+		DBRecord record = getDataBaseParameters();
+		String name = record.dataBase();
+		String driver = record.driver();
+		String password = record.password();
+		String protocolo = record.protocolo();
+		String usuario = record.usuario();
+		
+		database = Database.newInstance(name, usuario, password, protocolo, driver);
+		if(database.doConnection()) 
+			repository = new ProveedoresRepository(database.getConnection()); 	
+		else 
+			System.exit(0);		
+	}
+	
+	
 	@Override
 	public boolean exists(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		return repository.exists(id);
 	}
 
 	@Override
 	public boolean exists(Proveedor obj) {
-		// TODO Auto-generated method stub
-		return false;
+		return repository.exists(obj.getRfc());
 	}
 
 	@Override
-	public int save(Proveedor obj) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int save(Proveedor obj){
+		return repository.save(obj);
 	}
 
 	@Override
 	public Proveedor get(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.get(id);
 	}
 
 	@Override
 	public Proveedor get(Proveedor obj) {
-		// TODO Auto-generated method stub
-		return null;
+		return get(obj.getRfc());
 	}
 
 	@Override
 	public Proveedor getByData(String obj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean remove(Proveedor obj) {
-		// TODO Auto-generated method stub
-		return false;
+		return remove(obj.getRfc());
 	}
 
 	@Override
 	public boolean remove(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		return repository.remove(id);
 	}
 
 	@Override
 	public boolean set(Proveedor obj) {
-		// TODO Auto-generated method stub
-		return false;
+		return repository.set(obj);
 	}
 
 	@Override
 	public List<Proveedor> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		return repository.getAll();
+		}
 
 	@Override
 	public Object[][] getMatrix() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.getMatrix();
 	}
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return repository.getSize();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return repository.isEmpty();				
 	}
 
 }

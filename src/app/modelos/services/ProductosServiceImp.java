@@ -11,7 +11,7 @@ import app.modelos.repositories.ProductosRepository;
 import app.records.DBRecord;
 
 public class ProductosServiceImp implements Service<Producto> {
-	
+	 
 	
 	private Database database;
 	private ProductosRepository repository;

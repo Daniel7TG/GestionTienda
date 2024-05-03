@@ -17,6 +17,7 @@ import app.UI.vista.general.PanelOpciones;
 import app.abstractClasses.Detalles;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
@@ -74,9 +75,9 @@ public class PanelCapturaCompra extends JPanel {
 	private JPanel panelProducto;
 	private JPanel panelProveedor;
 
-	private HistorialCompra historialCompra;
-	private Proveedores proveedores;
-	private Catalogo catalogo;
+	private Service<Compra> historialCompra;
+	private Service<Proveedor> proveedores;
+	private Service<Producto> catalogo;
 	private Insets separation;
 	private Font fontLabel;
 	private Font fontFunc;
@@ -160,7 +161,7 @@ public class PanelCapturaCompra extends JPanel {
 		}
 	};
 
-	public PanelCapturaCompra(Catalogo catalogo, HistorialCompra historialCompra, Proveedores proveedores) {
+	public PanelCapturaCompra(Service<Producto> catalogo, Service<Compra> historialCompra, Service<Proveedor> proveedores) {
 
 		this.catalogo = catalogo;
 		this.historialCompra = historialCompra;
@@ -607,7 +608,7 @@ public class PanelCapturaCompra extends JPanel {
 		LocalDate fecha = LocalDate.now();
 		String rfc = fieldRfc.getText();
 		Compra compra = new Compra(fecha, listaDetalles, rfc);
-		historialCompra.add(compra);
+		historialCompra.save(compra);
 		showTicket(listaDetalles);
 		listaDetalles.clear();
 		actualizarTabla();

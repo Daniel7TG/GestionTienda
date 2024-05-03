@@ -1,7 +1,4 @@
-3456789012345	Arroz Blanco	Luchetti	Cereales	Kilogramos	Bolsa	A	40	4	Arroz blanco de grano largo	3.75	0.0	
-6789012345678	Pasta de Tomate	Ciro	Salsa	Gramos	Frasco	A	35	3	Pasta de tomate concentrado	0.99	0.0	
-7890123456789	Sal 	Salvos	Alimentos	Kilogramos	Bolsa	A	60	6	Sal de mesa fina	0.75	0.0	
-8901234567890	Yogur Natural	Danone	Lacteos	Gramos	Envase	A	40	4	Yogur natural sin azúcar	1.25	0.0	
-9012345678901	Papel Higiénico	Soriana	Higiene	Piezas	Paquete	A	50	5	Papel higiénico suave y absorbente	3.49	0.0	
-0123456789012	Cereal de Maíz	Kellogg's	Cereales	Gramos	Caja	A	45	4	Cereal de maíz con vitaminas	4.25	0.0	
-0000000000000	Chocolate	Turin	Alimentos	Gramos	Barra	A	9	0	Chocolate verde semiamargo sin azúcar	19.9	0.0	
+0000000000000	NOMBRE	AAAAAAA	Alimentos	10.00	Mililitros	Lata 	25	0	nueva descripcion	0.0	0	
+0000000000001	segundo	marca	Alimentos	10.00	Mililitros	Lata 	9	0	descipcion	0.0	0	
+0000000000002	a	qa	Alimentos	0.00	Mililitros	Lata 	9	0	d	0.0	0	
+9000000000000	121	12	Alimentos	12.00	Mililitros	Lata 	6	0	adw	0.0	0	

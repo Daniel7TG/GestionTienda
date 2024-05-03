@@ -9,7 +9,7 @@ import app.modelos.DetallesCompra;
 
 public class Transaccion<D extends Detalles> {
 
-	private String folio;
+	private int folio;
 	private double total;
 	private LocalDate fecha;
 	private List<D> detalles;
@@ -25,7 +25,7 @@ public class Transaccion<D extends Detalles> {
 		this.fecha = fecha;
 		this.detalles = new ArrayList<D>();
 		this.detalles.addAll(detalles);
-		this.folio = UUID.randomUUID().toString().substring(0, 15);
+//		this.folio = UUID.randomUUID().toString().substring(0, 15);
 	}
 
 	public Transaccion(LocalDate fecha, List<D> detalles) {
@@ -33,18 +33,21 @@ public class Transaccion<D extends Detalles> {
 		this.fecha = fecha;
 		this.detalles = new ArrayList<D>();
 		this.detalles.addAll(detalles);
-		this.folio = UUID.randomUUID().toString().substring(0, 15);
+//		this.folio = UUID.randomUUID().toString().substring(0, 15);
 	}
 	
-	public Transaccion(String folio) {
+	public Transaccion(int folio) {
 		this.folio = folio;
 	}
 
-	public String getFolio() {
+	public Transaccion() {
+	}
+
+	public int getFolio() {
 		return folio;
 	}
 
-	public void setFolio(String folio) {
+	public void setFolio(int folio) {
 		this.folio = folio;
 	}
 
@@ -79,7 +82,9 @@ public class Transaccion<D extends Detalles> {
 		
 	@Override
 	public boolean equals(Object obj) {
-		return folio.equals(((Transaccion<? extends Detalles>)obj).folio);
+		if(obj instanceof Transaccion<?> tr)
+			return folio == tr.folio;
+		return false;
 	}
 	
 }

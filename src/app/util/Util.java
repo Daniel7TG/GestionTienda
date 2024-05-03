@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 
 import app.abstractClasses.Detalles;
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
 import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
@@ -171,7 +172,7 @@ public class Util {
 	}
 	
 	
-	public static String formatProduct(Detalles v, Catalogo cat, int space) {
+	public static String formatProduct(Detalles v, Service<Producto> cat, int space) {
 		return formatProducto(space, 
 				v.getCodigo(), 
 				cat.get(v.getCodigo()).getNombre(), 
@@ -191,7 +192,7 @@ public class Util {
 	}
 	
 	
-	public static String generateTicket(List<? extends Detalles> detailsList, Catalogo catalogo,  List<String> headers) {
+	public static String generateTicket(List<? extends Detalles> detailsList, Service<Producto> catalogo,  List<String> headers) {
 		StringBuilder ticket = new StringBuilder("<html>");
 		int space = 60; 
 		ticket.append( centerText(headers.get(0), space, true));
@@ -208,23 +209,23 @@ public class Util {
 	}
 
 	
-	public static Function<JTextField, String[]> getNameFilter(Funcionable<Producto> catalogo){
+	public static Function<JTextField, String[]> getNameFilter(Service<Producto> catalogo){
 		return field -> 
-				catalogo.getList().stream()
+				catalogo.getAll().stream()
 				.map(Producto::getMainData)
 				.filter(name -> name.toLowerCase().startsWith(field.getText().toLowerCase()))
 				.toArray(String[]::new);
 	}
-	public static Function<JTextField, String[]> getCodeFilter(Funcionable<Producto> catalogo){
+	public static Function<JTextField, String[]> getCodeFilter(Service<Producto> catalogo){
 		return field -> 
-				catalogo.getList().stream()
+				catalogo.getAll().stream()
 				.map(Producto::getCodigoBarras)
 				.filter(code -> code.startsWith(field.getText()))
 				.toArray(String[]::new);
 	}	
-	public static Function<JTextField, String[]> getRfcFilter(Funcionable<Proveedor> proveedores){
+	public static Function<JTextField, String[]> getRfcFilter(Service<Proveedor> proveedores){
 		return field -> 
-			proveedores.getList().stream()
+			proveedores.getAll().stream()
 			.map(Proveedor::getRfc)
 			.filter(rfc -> rfc.startsWith(field.getText()))
 			.toArray(String[]::new);

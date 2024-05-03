@@ -6,18 +6,17 @@ import java.util.List;
 
 import app.dao.database.Database;
 import app.interfaces.Service;
-import app.modelos.Producto;
-import app.modelos.repositories.ProductosRepository;
+import app.modelos.Compra;
+import app.modelos.repositories.ComprasRepository;
 import app.records.DBRecord;
 
-public class ProductosServiceImp implements Service<Producto> {
-	
-	
+public class ComprasServiceImp implements Service<Compra> {
+
 	private Database database;
-	private ProductosRepository repository;
+	private ComprasRepository repository;
 	
 	
-	public ProductosServiceImp(){
+	public ComprasServiceImp(){
 		initDatabase();
 	}
 
@@ -32,11 +31,11 @@ public class ProductosServiceImp implements Service<Producto> {
 		
 		database = Database.newInstance(name, usuario, password, protocolo, driver);
 		if(database.doConnection()) 
-			repository = new ProductosRepository(database.getConnection());
+			repository = new ComprasRepository(database.getConnection());
 		else 
 			System.exit(0);		
 	}
-	
+
 	
 	@Override
 	public boolean exists(String id) {
@@ -44,48 +43,42 @@ public class ProductosServiceImp implements Service<Producto> {
 	}
 
 	@Override
-	public boolean exists(Producto obj) {
-		return exists(obj.getCodigoBarras());
+	public boolean exists(Compra obj) {
+		return repository.exists(String.valueOf(obj.getFolio()));
 	}
 
 	@Override
-	public int save(Producto obj) {
-		return repository.save(obj);		
+	public int save(Compra compra) {
+		return repository.save(compra);
 	}
 
-
 	@Override
-	public Producto get(String id) {
+	public Compra get(String id) {
 		return repository.get(id);
 	}
 
 	@Override
-	public Producto get(Producto obj) {
-		return get(obj.getCodigoBarras());
+	public Compra get(Compra obj) {
+		return repository.get(String.valueOf(obj.getFolio()));
 	}
-	
-	public Producto getByData(String data) {
-		return repository.getByData(data);
-	}
-
 
 	@Override
-	public boolean remove(Producto obj) {
-		return remove(obj.getCodigoBarras());
+	public boolean remove(Compra obj) {
+		return repository.remove(String.valueOf(obj.getFolio()));
 	}
 
 	@Override
 	public boolean remove(String id) {
-		return repository.remove(id);
+		return repository.remove(String.valueOf(id));
 	}
 
 	@Override
-	public boolean set(Producto obj) {
+	public boolean set(Compra obj) {
 		return repository.set(obj);
 	}
 
 	@Override
-	public List<Producto> getAll() {
+	public List<Compra> getAll() {
 		return repository.getAll();
 	}
 
@@ -102,6 +95,13 @@ public class ProductosServiceImp implements Service<Producto> {
 	@Override
 	public boolean isEmpty() {
 		return repository.isEmpty();
+	}
+
+
+	@Override
+	@Deprecated
+	public Compra getByData(String obj) {
+		return null;
 	}
 
 }

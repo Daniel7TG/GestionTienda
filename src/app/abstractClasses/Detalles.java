@@ -6,6 +6,7 @@ public abstract class Detalles {
 	private int cantidad;
 	private double precio;
 	private double total;
+	private String folio;
 	
 	/**
 	 * @param codigo
@@ -19,6 +20,16 @@ public abstract class Detalles {
 		this.cantidad = cantidad;
 		this.total = precio*cantidad;
 	}
+
+	public Detalles(String codigo, double precio, int cantidad, String folio) {
+		this.codigo = codigo;
+		this.precio = precio;
+		this.cantidad = cantidad;
+		this.total = precio*cantidad;
+		this.folio = folio;
+	}
+	
+	
 	public Detalles(String codigo) {
 		this.codigo = codigo;
 	}
@@ -46,6 +57,12 @@ public abstract class Detalles {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
+	public String getFolio() {
+		return folio;
+	}	
+	public void setFolio(String folio) {
+		this.folio = folio;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -56,6 +73,7 @@ public abstract class Detalles {
 		return "Detalles [codigo=" + codigo + ", cantidad=" + cantidad + ", precio=" + precio + ", total=" + total
 				+ "]";
 	}
+
 	
 	
 	

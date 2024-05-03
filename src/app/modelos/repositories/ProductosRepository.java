@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.interfaces.CRUDRepository;
-import app.interfaces.Funcionable;
 import app.modelos.Producto;
 import app.util.Util;
 
@@ -43,11 +42,6 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 		return false;
 	}
 
-	@Override
-	public boolean exists(Producto obj) {
-		return exists(obj.getCodigoBarras());
-	}
-
 	
 	@Override
 	public int save(Producto producto) {
@@ -73,7 +67,7 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return result;		
+		return result;
 	}
 	
 
@@ -89,17 +83,27 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 		} catch (SQLException e) {}
 		return null;
 	}
-
-	@Override
-	public Producto get(Producto obj) {
-		return get(obj.getCodigoBarras());
+	
+	
+	public Producto getByData(String data) {
+		String sql = "SELECT * FROM producto WHERE nombre = ? AND marca = ? AND contenido = ? AND medida = ?";
+		String[] args = data.split("_");
+		if(args.length == 4)
+		try {
+			pStatement = connection.prepareStatement(sql);
+			pStatement.setString(1, args[0]);
+			pStatement.setString(2, args[1]);
+			pStatement.setDouble(3, Double.valueOf(args[2]));
+			pStatement.setString(4, args[3]);
+			resultSet = pStatement.executeQuery();
+			if(resultSet.next())
+				return moveToProduct(resultSet);
+		} catch (SQLException e) {}
+		
+		return null;	
 	}
 
 
-	@Override
-	public boolean remove(Producto obj) {
-		return remove(obj.getCodigoBarras());
-	}
 
 	@Override
 	public boolean remove(String id) {

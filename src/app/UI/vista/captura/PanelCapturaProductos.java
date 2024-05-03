@@ -23,6 +23,7 @@ import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
 import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 import app.util.TableModel;
@@ -90,7 +91,7 @@ public class PanelCapturaProductos extends JPanel {
 	private Insets separation;
 	private JTable table;
 
-	private Catalogo catalogo;
+	private Service<Producto> catalogo;
 	private TableModel model;
 	private String[] columnNames = {"Codigo",
 			"Nombre",
@@ -110,7 +111,7 @@ public class PanelCapturaProductos extends JPanel {
 	 * @param catalogo 
 	 */
 	@SuppressWarnings("serial")
-	public PanelCapturaProductos(Catalogo catalogo) {
+	public PanelCapturaProductos(Service<Producto> catalogo) {
 		this.catalogo = catalogo;
 		focusField = new FocusField();
 		focusBox = new FocusBox();
@@ -410,7 +411,7 @@ public class PanelCapturaProductos extends JPanel {
 		add(descripcionField, gbc_descripcionField);
 		descripcionField.setColumns(10);
 		
-		Object[][] data = catalogo.getData();
+		Object[][] data = catalogo.getMatrix();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
 		table.setModel(model);
@@ -556,7 +557,7 @@ public class PanelCapturaProductos extends JPanel {
 	
 	
 	public void actualizarTabla() {
-		model.update(catalogo.getData());
+		model.update(catalogo.getMatrix());
 	}
 	
 	

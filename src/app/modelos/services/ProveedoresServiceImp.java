@@ -1,0 +1,88 @@
+package app.modelos.services;
+
+import java.util.List;
+
+import app.interfaces.Service;
+import app.modelos.Proveedor;
+
+public class ProveedoresServiceImp implements Service<Proveedor> {
+
+	@Override
+	public boolean exists(String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean exists(Proveedor obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int save(Proveedor obj) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Proveedor get(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Proveedor get(Proveedor obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Proveedor getByData(String obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean remove(Proveedor obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean remove(String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean set(Proveedor obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<Proveedor> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object[][] getMatrix() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

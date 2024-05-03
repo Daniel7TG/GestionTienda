@@ -19,10 +19,13 @@ public class Compra extends Transaccion<DetallesCompra>{
 		super(fecha, detalles);
 		this.rfc = rfc;
 	}
-	public Compra(String folio) {
+	public Compra(int folio) {
 		super(folio);
 	}
 	
+	public Compra() {
+		super();
+	}
 	public String getRfc() {
 		return rfc;
 	}

@@ -32,11 +32,17 @@ import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
 import app.UI.vista.modificar.PanelModificarProductos;
 import app.dao.DaoUtility;
+import app.interfaces.Service;
+import app.modelos.Compra;
 import app.modelos.Producto;
+import app.modelos.Proveedor;
 import app.modelos.containers.Catalogo;
 import app.modelos.containers.HistorialCompra;
 import app.modelos.containers.HistorialVenta;
 import app.modelos.containers.Proveedores;
+import app.modelos.services.ComprasServiceImp;
+import app.modelos.services.ProductosServiceImp;
+import app.modelos.services.ProveedoresServiceImp;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -46,7 +52,7 @@ import javax.swing.JMenuItem;
 @SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame implements WindowListener {
 
-	private Catalogo catalogo;
+	private Service<Producto> catalogo;
 
 	private JMenuBar barra;
 	
@@ -82,9 +88,9 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	// Fin Clientes
 	
 	// Proveedores
-	private Proveedores proveedores;
+	private Service<Proveedor> proveedores;
 	
-	private HistorialCompra historialCompra;
+	private Service<Compra> historialCompra;
 	private PanelMenuCompra panelMenuCompra;
 	private JButton registrarCompButton;
 	private JButton listarCompButton;
@@ -136,14 +142,14 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 
 	public VentanaPrincipal() {
 		font = new Font("Montserrat", Font.BOLD, 13);
-		catalogo = new Catalogo();
-		historialCompra = new HistorialCompra();
+		catalogo = new ProductosServiceImp();
+		historialCompra = new ComprasServiceImp();
 		historialVenta = new HistorialVenta();
-		proveedores = new Proveedores();
+		proveedores = new ProveedoresServiceImp();
 		this.addWindowListener(this);
 		
 		// Datos de ejemplo
-		DaoUtility.getProductos().forEach(catalogo::add);
+//		DaoUtility.getProductos().forEach(catalogo::save);
 		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
@@ -438,7 +444,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		guardarButton.addActionListener(ec -> {
 			Optional<Producto> p = capturaProductosPane.getProducto();
 			if (p.isPresent()) {
-				catalogo.add(p.get());
+				catalogo.save(p.get());
 				capturaProductosPane.actualizarTabla();
 			}
 		});
@@ -562,10 +568,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 
 	
 	private void guardarProductos() {
-		DaoUtility.saveFileTxt(catalogo.getList(), "raw/productos");
-		DaoUtility.saveFileTxt(proveedores.getList(), "raw/proveedores");
-		DaoUtility.saveFileTxt(historialCompra.getList(), "raw/compras", "rfc");
-		DaoUtility.saveFileTxt(historialVenta.getList(), "raw/ventas");
+//		DaoUtility.saveFileTxt(catalogo.getAll(), "raw/productos");
+//		DaoUtility.saveFileTxt(proveedores.getList(), "raw/proveedores");
+//		DaoUtility.saveFileTxt(historialCompra.getList(), "raw/compras", "rfc");
+//		DaoUtility.saveFileTxt(historialVenta.getList(), "raw/ventas");
 	}
 
 	@Override

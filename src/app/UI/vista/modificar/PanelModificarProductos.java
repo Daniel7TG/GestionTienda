@@ -9,6 +9,7 @@ import app.UI.vista.captura.PanelCapturaProductos.FocusBox;
 import app.UI.vista.captura.PanelCapturaProductos.FocusField;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
 import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 import app.util.TableModel;
@@ -80,7 +81,7 @@ import javax.swing.JRadioButton;
 public class PanelModificarProductos extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Funcionable<Producto> catalogo;
+	private Service<Producto> catalogo;
 	private TextFieldSuggestion codigoBarrasField;
 	private TextFieldSuggestion nombreField;
 	private JTextField marcaField;
@@ -146,17 +147,13 @@ public class PanelModificarProductos extends JPanel {
 	DocumentListener nameTextListener = new DocumentListener() {
 		public void changedUpdate(DocumentEvent e) {}
 		public void removeUpdate(DocumentEvent e) {
-			Producto p = new Producto();
-			p.setMainData(nombreField.getText());
-			Producto producto = catalogo.get(p);
+			Producto producto = catalogo.getByData(nombreField.getText());
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
 			}
 		}
 		public void insertUpdate(DocumentEvent e) {
-			Producto p = new Producto();
-			p.setMainData(nombreField.getText());
-			Producto producto = catalogo.get(p);
+			Producto producto = catalogo.getByData(nombreField.getText());
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
 			}
@@ -167,7 +164,7 @@ public class PanelModificarProductos extends JPanel {
 	private JRadioButton byNameBtn;
 
 
-	public PanelModificarProductos(Funcionable<Producto> catalogo) {
+	public PanelModificarProductos(Service<Producto> catalogo) {
 		this.catalogo = catalogo;
 
 		/////////////////////
@@ -197,14 +194,14 @@ public class PanelModificarProductos extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 3.0, 15.0};
 		setLayout(gridBagLayout);
 
-		Object[][] data = catalogo.getData();
+		Object[][] data = catalogo.getMatrix();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(table.getSelectedRow() != -1) {
-					Producto p = catalogo.get(table.getSelectedRow());
+					Producto p = catalogo.get((String)table.getValueAt(table.getSelectedRow(), 0) );
 					autoCompleteFields(p, BY_NAME);
 				}
 			}
@@ -518,13 +515,10 @@ public class PanelModificarProductos extends JPanel {
 	}
 
 	public void modificarProducto() {
-		int selectedRow = table.getSelectedRow(); 
-		if (selectedRow != -1) { // aingnifica que la fila no fue seleccionada
-			
-			Producto prodModificar = catalogo.get(selectedRow);
+		Producto prodModificar = catalogo.get(codigoBarrasField.getText());
 
-
-
+		if(prodModificar != null) {
+			prodModificar.setCodigoBarras(codigoBarrasField.getText());
 			prodModificar.setNombre(nombreField.getText());
 			prodModificar.setMarca(marcaField.getText());
 			prodModificar.setTipo((String) tipoBox.getSelectedItem());
@@ -534,18 +528,16 @@ public class PanelModificarProductos extends JPanel {
 			prodModificar.setStockMaximo((Integer) maximoBox.getSelectedItem());
 			prodModificar.setStockMinimo((Integer) minimoBox.getSelectedItem());
 			prodModificar.setDescripcion(descripcionField.getText());
-			prodModificar.setPrecioVenta(Double.parseDouble(precioField.getText()));
+			prodModificar.setPrecioVenta(Double.parseDouble(precioField.getText()));			
 
-			catalogo.update(prodModificar, selectedRow);
-
+			catalogo.set(prodModificar);
 			visualizar("Se modifico el producto");
-
-
-		} else {
-			visualizar("Selecciona el producto a modificar");
-
+			updateTable();
 		}
-		
+		else {
+			visualizar("Selecciona el producto a modificar");
+		}
+
 	}
 
 
@@ -624,7 +616,7 @@ public class PanelModificarProductos extends JPanel {
 
 
 	public void updateTable	() {
-		model.update(Util.anyToString(catalogo.getList()));
+		model.update(Util.anyToString(catalogo.getAll()));
 		repaint();
 	}
 }

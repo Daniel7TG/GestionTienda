@@ -10,6 +10,7 @@ import app.UI.vista.captura.PanelCapturaProductos.FocusField;
 import app.abstractClasses.Detalles;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
 import app.modelos.Producto;
 import app.modelos.containers.Catalogo;
 import app.util.TableModel;
@@ -81,7 +82,7 @@ import javax.swing.JRadioButton;
 public class PanelEliminarProductos extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Funcionable<Producto> catalogo;
+	private Service<Producto> catalogo;
 	private TextFieldSuggestion codigoBarrasField;
 	private TextFieldSuggestion nombreField;
 	private JTextField marcaField;
@@ -147,28 +148,25 @@ public class PanelEliminarProductos extends JPanel {
 	DocumentListener nameTextListener = new DocumentListener() {
 		public void changedUpdate(DocumentEvent e) {}
 		public void removeUpdate(DocumentEvent e) {
-			Producto p = new Producto();
-			p.setMainData(nombreField.getText());
-			Producto producto = catalogo.get(p);
+			Producto producto = catalogo.getByData(nombreField.getText());
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
 			}
 		}
 		public void insertUpdate(DocumentEvent e) {
-			Producto p = new Producto();
-			p.setMainData(nombreField.getText());
-			Producto producto = catalogo.get(p);
+			Producto producto = catalogo.getByData(nombreField.getText());
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
 			}
 		}
 	};
 	
+	
 	private JRadioButton byCodeBtn;
 	private JRadioButton byNameBtn;
 
 	
-	public PanelEliminarProductos(Funcionable<Producto> catalogo) {
+	public PanelEliminarProductos(Service<Producto> catalogo) {
 		this.catalogo = catalogo;
 
 		focusField = new FocusField();
@@ -187,14 +185,14 @@ public class PanelEliminarProductos extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 3.0, 15.0};
 		setLayout(gridBagLayout);
 		
-		Object[][] data = catalogo.getData();
+		Object[][] data = catalogo.getMatrix();
 		table = new JTable();
 		model = new TableModel(table, data, columnNames);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(table.getSelectedRow() != -1) {
-					Producto p = catalogo.get(table.getSelectedRow());
+					Producto p = catalogo.get((String)table.getValueAt(table.getSelectedRow(), 0) );
 					autoCompleteFields(p, BY_NAME);
 				}
 			}
@@ -451,6 +449,18 @@ public class PanelEliminarProductos extends JPanel {
 		getPresentaciones().forEach(i -> presentacionBox.addItem(i));
 	
 		
+		marcaField.setEditable(false);
+		contenidoField.setEditable(false);
+		descripcionField.setEditable(false);
+		maximoBox.setEnabled(false);
+		minimoBox.setEnabled(false);
+		tipoBox.setEnabled(false);
+		medidaBox.setEnabled(false);
+		presentacionBox.setEnabled(false);
+		descripcionField.setEditable(false);
+		precioField.setEditable(false);
+		
+		
 		style(new Component[] {
 				codigoBarrasField,
 				nombreField,
@@ -607,7 +617,7 @@ public class PanelEliminarProductos extends JPanel {
 	}
 	
 	public void updateTable	() {
-		model.update(Util.anyToString(catalogo.getList()));
+		model.update(Util.anyToString(catalogo.getAll()));
 		repaint();
 	}
 }

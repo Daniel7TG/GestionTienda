@@ -185,23 +185,6 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 	}
 
 	
-	private Producto moveToProduct(ResultSet result) {
-		Producto product = new Producto();
-		try {
-			product.setCodigoBarras(result.getString("codigo_barras"));
-			product.setNombre(result.getString("nombre"));
-			product.setMarca(result.getString("marca"));
-			product.setTipo(result.getString("tipo"));
-			product.setContenido(result.getString("contenido"));
-			product.setUnidadDeMedida(result.getString("medida"));
-			product.setStockMaximo(result.getInt("stock_maximo"));
-			product.setStockMinimo(result.getInt("stock_minimo"));
-			product.setPresentacion(result.getString("presentacion"));
-			product.setDescripcion(result.getString("descripcion"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return product;
-	}
+
 
 }

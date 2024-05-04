@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import app.interfaces.CRUDRepository;
@@ -33,8 +34,14 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 	
 	@Override
 	public boolean exists(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		String sql = "SELECT * FROM domicilio WHERE id = ?";
+		try {
+			pStatement = connection.prepareStatement(sql);
+			pStatement.setString(1, id);
+			resultSet = pStatement.executeQuery();
+			return resultSet.next();
+		} catch (SQLException e) {}
+		return false;	
 	}
 
 	@Override
@@ -69,7 +76,7 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 	
 	@Override
 	public Domicilio get(String id) {
-		String sql = "SELECT * FROM proveedor JOIN domicilio ON proveedores.domicilio = domicilio.id WHERE rfc = ?";
+		String sql = "SELECT * FROM domicilio WHERE id = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
@@ -77,24 +84,55 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 			if(resultSet.next())
 				return MoveResult.toAddress(resultSet);
 		} catch (SQLException e) {}
-		return null;	}
+		return null;	
+	}
 
 	@Override
 	public boolean remove(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		String sql = "DELETE FROM domicilio WHERE id = ?";
+		try {
+			pStatement = connection.prepareStatement(sql);
+			pStatement.setString(1, id);
+			return pStatement.executeUpdate() == 0 ? false : true;
+		} catch (SQLException e) {}
+		return false;		
 	}
 
 	@Override
 	public boolean set(Domicilio obj) {
-		// TODO Auto-generated method stub
-		return false;
+		String sql = "UPDATE domicilio SET numero = ?, calle = ?, "
+				+ "ciudad = ?, codigo_postal = ?, colonia = ?, "
+				+ "estado = ?, orientacion = ? "
+				+ "WHERE id = ?";
+		try {
+			pStatement = connection.prepareStatement(sql);
+			
+			pStatement.setInt(1, obj.getNumero());
+			pStatement.setString(2, obj.getCalle());
+			pStatement.setString(2, obj.getCiudad());
+			pStatement.setString(3, obj.getCodigoPostal());
+			pStatement.setString(4, obj.getColonia());
+			pStatement.setString(5, obj.getEstado());
+			pStatement.setString(6, obj.getOrientacion().toString());
+	
+			return pStatement.executeUpdate() == 0 ? false : true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;	
 	}
 
 	@Override
 	public List<Domicilio> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT * FROM domicilio";
+		List<Domicilio> domicilios = new ArrayList<Domicilio>();
+		try {
+			resultSet = statement.executeQuery(sql);
+			while(resultSet.next()) 
+				domicilios.add(MoveResult.toAddress(resultSet));
+		} catch (SQLException e) {}
+	
+		return null;	
 	}
 
 	@Override
@@ -104,14 +142,20 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(id) AS size FROM domicilio";
+
+		try {
+			resultSet = statement.executeQuery(sql);
+			return resultSet.getInt("size");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;	
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return getSize() == 0 ? true:false;
 	}
 
 

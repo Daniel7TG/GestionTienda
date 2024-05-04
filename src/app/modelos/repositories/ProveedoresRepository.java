@@ -72,7 +72,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 
 	@Override
 	public Proveedor get(String id) {
-		String sql = "SELECT * FROM proveedor JOIN domicilio ON proveedores.domicilio = domicilio.id WHERE rfc = ?";
+		String sql = "SELECT * FROM proveedor JOIN domicilio ON proveedor.domicilio = domicilio.id WHERE rfc = ?";
 
 		try {
 			pStatement = connection.prepareStatement(sql);
@@ -100,7 +100,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 	public boolean set(Proveedor obj) {
 		String sql = "UPDATE proveedor SET nombre = ?, apellido = ?, "
 				+ "razon_social = ?, telefono = ?, domicilio = ? "
-				+ "JOIN domicilio ON proveedores.domicilio = domicilio.id "
+				+ "JOIN domicilio ON proveedor.domicilio = domicilio.id "
 				+ "WHERE rfc = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);

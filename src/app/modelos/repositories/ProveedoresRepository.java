@@ -1,30 +1,42 @@
 package app.modelos.repositories;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-import app.enums.Orientacion;
 import app.interfaces.CRUDRepository;
-<<<<<<< Updated upstream
-=======
-import app.modelos.Domicilio;
-import app.modelos.Producto;
->>>>>>> Stashed changes
 import app.modelos.Proveedor;
+import app.util.MoveResult;
+import app.util.Util;
 
 public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 
+	private Connection connection;
+	private Statement statement;
+	private PreparedStatement pStatement;
+	private ResultSet resultSet;
+
+	public ProveedoresRepository(Connection connection) {
+		this.connection = connection;
+		try {
+			statement = connection.createStatement();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	
 	@Override
 	public boolean exists(String id) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-<<<<<<< Updated upstream
-	public int save(Proveedor obj) {
-		// TODO Auto-generated method stub
-		return 0;
-=======
 	public int save(Proveedor proveedor) {
 		String sql = "INSERT INTO proveedor(rfc, nombre, apellido, razon_social, telefono, domicilio) "
 				+ "VALUES(?, ?, ?, ?, ?, ?)"; 
@@ -44,32 +56,23 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			e.printStackTrace();
 		}
 		return result;
->>>>>>> Stashed changes
 	}
 
 	@Override
 	public Proveedor get(String id) {
-<<<<<<< Updated upstream
-		// TODO Auto-generated method stub
-=======
 		String sql = "SELECT * FROM proveedor JOIN domicilio ON proveedores.domicilio = domicilio.id WHERE rfc = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
 			resultSet = pStatement.executeQuery();
 			if(resultSet.next())
-				return moveToSupplier(resultSet);
+				return MoveResult.toSupplier(resultSet);
 		} catch (SQLException e) {}
->>>>>>> Stashed changes
 		return null;
 	}
 
 	@Override
 	public boolean remove(String id) {
-<<<<<<< Updated upstream
-		// TODO Auto-generated method stub
-		return false;
-=======
 		String sql = "DELETE FROM proveedor WHERE rfc = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
@@ -77,15 +80,10 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			return pStatement.executeUpdate() == 0 ? false : true;
 		} catch (SQLException e) {}
 		return false;	
->>>>>>> Stashed changes
 	}
 
 	@Override
 	public boolean set(Proveedor obj) {
-<<<<<<< Updated upstream
-		// TODO Auto-generated method stub
-		return false;
-=======
 		String sql = "UPDATE proveedor SET nombre = ?, apellido = ?, "
 				+ "razon_social = ?, telefono = ?, domicilio = ? "
 				+ "JOIN domicilio ON proveedores.domicilio = domicilio.id "
@@ -104,40 +102,30 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			e.printStackTrace();
 		}
 		return false;	
->>>>>>> Stashed changes
 	}
 
 	@Override
 	public List<Proveedor> getAll() {
-<<<<<<< Updated upstream
-		// TODO Auto-generated method stub
-		return null;
-=======
 		String sql = "SELECT * FROM proveedor";
 		List<Proveedor> proveedores = new ArrayList<Proveedor>();
 		try {
 			resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				proveedores.add(moveToSupplier(resultSet));
+				proveedores.add(MoveResult.toSupplier(resultSet));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return proveedores;
->>>>>>> Stashed changes
 	}
 
 	@Override
 	public Object[][] getMatrix() {
-		// TODO Auto-generated method stub
-		return null;
+		return Util.anyToString(getAll());
 	}
 
 	@Override
 	public int getSize() {
-<<<<<<< Updated upstream
-		// TODO Auto-generated method stub
-=======
 		String sql = "SELECT COUNT(rfc) AS size FROM proveedor";
 		try {
 			resultSet = statement.executeQuery(sql);
@@ -145,22 +133,12 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
->>>>>>> Stashed changes
 		return 0;
 	}
 
 	@Override
 	public boolean isEmpty() {
-<<<<<<< Updated upstream
-		// TODO Auto-generated method stub
-		return false;
-	}
-=======
 		return getSize() == 0 ? true:false;
 	}
-	
->>>>>>> Stashed changes
-
-	
 	
 }

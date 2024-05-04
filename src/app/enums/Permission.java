@@ -1,0 +1,14 @@
+package app.enums;
+
+public enum Permission {
+
+	ADMIN,
+	READ_VENTA, WRITE_VENTA, 
+	READ_COMRPA, WRITE_COMPRA,
+	READ_PRODUCTOS, CRUD_PRODUCTOS, ADD_PRODUCTOS, DELETE_PRODUCTOS, MODIFY_PRODUCTOS,
+	READ_PROVEEDORES, CRUD_PROVEEDORES, ADD_PROVEEDORES, DELETE_PROVEEDORES, MODIFY_PROVEEDORES;
+	
+	public static Permission getPermission(int index) {
+		return Permission.values()[index];
+	}
+}

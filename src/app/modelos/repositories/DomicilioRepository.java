@@ -8,9 +8,10 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.List;
 
-import app.enums.Orientacion;
 import app.interfaces.CRUDRepository;
 import app.modelos.Domicilio;
+import app.util.MoveResult;
+import app.util.Util;
 
 public class DomicilioRepository implements CRUDRepository<Domicilio> {
 	
@@ -74,7 +75,7 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 			pStatement.setString(1, id);
 			resultSet = pStatement.executeQuery();
 			if(resultSet.next())
-				return toAddress(resultSet);
+				return MoveResult.toAddress(resultSet);
 		} catch (SQLException e) {}
 		return null;	}
 
@@ -98,8 +99,7 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 
 	@Override
 	public Object[][] getMatrix() {
-		// TODO Auto-generated method stub
-		return null;
+		return Util.anyToString(getAll());
 	}
 
 	@Override

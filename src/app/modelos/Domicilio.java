@@ -36,6 +36,50 @@ public class Domicilio {
 	public Domicilio() {
 	}
 	
+	
+	
+	public int getNumero() {
+		return numero;
+	}
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+	public String getCalle() {
+		return calle;
+	}
+	public void setCalle(String calle) {
+		this.calle = calle;
+	}
+	public Orientacion getOrientacion() {
+		return orientacion;
+	}
+	public void setOrientacion(Orientacion orientacion) {
+		this.orientacion = orientacion;
+	}
+	public String getColonia() {
+		return colonia;
+	}
+	public void setColonia(String colonia) {
+		this.colonia = colonia;
+	}
+	public String getCiudad() {
+		return ciudad;
+	}
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+	public String getCodigoPostal() {
+		return codigoPostal;
+	}
+	public void setCodigoPostal(String codigoPostal) {
+		this.codigoPostal = codigoPostal;
+	}
 	@Override
 	public String toString() {
 		return String.join(", ", calle, colonia, ciudad, estado);

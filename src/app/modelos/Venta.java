@@ -10,11 +10,13 @@ import app.abstractClasses.Transaccion;
 
 public class Venta extends Transaccion<DetallesVenta>{
 
+	String empleadoID;
+	
 	public Venta(LocalDate fecha, List<DetallesVenta> detalles) {
 		super(fecha, detalles);
 	}
 
-	public Venta(String folio) {
+	public Venta(int folio) {
 		super(folio);
 	}
 	

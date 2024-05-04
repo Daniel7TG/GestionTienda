@@ -1,13 +1,11 @@
 package app.modelos;
 
-public class Proveedor {
+import app.abstractClasses.Persona;
+
+public class Proveedor extends Persona {
 	
 	private String rfc;
-	private String nombre;
-	private String apellido;
 	private String razonSocial;
-	private String telefono;
-	private Domicilio domicilio;
 	
 	/**
 	 * @param razonSocial
@@ -26,12 +24,42 @@ public class Proveedor {
 		this.domicilio = domicilio;
 	}
 	/**
-	 * 
+	 * @param rfc
+	 * @param nombre
+	 * @param apellido
+	 * @param razonSocial
+	 * @param telefono
+	 * @param idDomicilio
+	 * @param domicilio
 	 */
-	public Proveedor() {
+	public Proveedor(String rfc, String nombre, String apellido, String razonSocial, String telefono, int idDomicilio,
+			Domicilio domicilio) {
+		super(nombre, apellido, telefono, idDomicilio, domicilio);
+		this.rfc = rfc;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.razonSocial = razonSocial;
+		this.telefono = telefono;
+		this.idDomicilio = idDomicilio;
+		this.domicilio = domicilio;
 	}
 
 
+	/**
+	 * 
+	 */
+	public Proveedor() {
+		super();
+	}
+
+	
+	
+	public int getIdDomicilio() {
+		return idDomicilio;
+	}
+	public void setIdDomicilio(int idDomicilio) {
+		this.idDomicilio = idDomicilio;
+	}
 	public String getRazonSocial() {
 		return razonSocial;
 	}

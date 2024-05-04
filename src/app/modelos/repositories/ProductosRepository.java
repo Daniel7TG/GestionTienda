@@ -11,6 +11,7 @@ import java.util.List;
 
 import app.interfaces.CRUDRepository;
 import app.modelos.Producto;
+import app.util.MoveResult;
 import app.util.Util;
 
 public class ProductosRepository implements CRUDRepository<Producto> {
@@ -79,7 +80,7 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 			pStatement.setString(1, id);
 			resultSet = pStatement.executeQuery();
 			if(resultSet.next())
-				return moveToProduct(resultSet);
+				return MoveResult.toProduct(resultSet);
 		} catch (SQLException e) {}
 		return null;
 	}
@@ -97,7 +98,7 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 			pStatement.setString(4, args[3]);
 			resultSet = pStatement.executeQuery();
 			if(resultSet.next())
-				return moveToProduct(resultSet);
+				return MoveResult.toProduct(resultSet);
 		} catch (SQLException e) {}
 		
 		return null;	
@@ -151,7 +152,7 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 		try {
 			resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				productos.add(moveToProduct(resultSet));
+				productos.add(MoveResult.toProduct(resultSet));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -185,23 +186,6 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 	}
 
 	
-	private Producto moveToProduct(ResultSet result) {
-		Producto product = new Producto();
-		try {
-			product.setCodigoBarras(result.getString("codigo_barras"));
-			product.setNombre(result.getString("nombre"));
-			product.setMarca(result.getString("marca"));
-			product.setTipo(result.getString("tipo"));
-			product.setContenido(result.getString("contenido"));
-			product.setUnidadDeMedida(result.getString("medida"));
-			product.setStockMaximo(result.getInt("stock_maximo"));
-			product.setStockMinimo(result.getInt("stock_minimo"));
-			product.setPresentacion(result.getString("presentacion"));
-			product.setDescripcion(result.getString("descripcion"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return product;
-	}
+
 
 }

@@ -6,6 +6,7 @@ import app.abstractClasses.Detalles;
 
 public class DetallesCompra extends Detalles {
 
+	
 	private LocalDate fechaCaducidad;
 	
 	public DetallesCompra(String codigo, double precio, int cantidad) {

@@ -4,9 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import app.enums.Orientacion;
+import app.enums.Permission;
 import app.modelos.Domicilio;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
+import app.modelos.Usuario;
 
 
 public abstract class MoveResult {
@@ -62,6 +64,24 @@ public abstract class MoveResult {
 			e.printStackTrace();
 		}
 		return address;
+	}
+
+
+	public static Usuario toUser(ResultSet result) {
+		Usuario user = new Usuario();
+		try {
+			user.setIdDomicilio(result.getInt("domicilio"));
+			user.setNombre(result.getString("nombre"));
+			user.setApellido(result.getString("apellido"));
+			user.setUserName(result.getString("username"));
+			user.setPassword(result.getString("password"));
+			user.setTelefono(result.getString("telefono"));
+			user.getPermisos().add(Permission.valueOf(result.getString("descripcion")));
+			user.setDomicilio(toAddress(result));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
 	}	
 	
 	

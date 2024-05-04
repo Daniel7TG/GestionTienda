@@ -167,10 +167,6 @@ public class PanelModificarProductos extends JPanel {
 	public PanelModificarProductos(Service<Producto> catalogo) {
 		this.catalogo = catalogo;
 
-		/////////////////////
-
-
-
 		JButton modificarButton = new JButton("Modificar");
 		modificarButton.addActionListener(new ActionListener() {
 			@Override
@@ -178,10 +174,6 @@ public class PanelModificarProductos extends JPanel {
 				modificarProducto();
 			}
 		});
-
-
-
-		//////////////////
 
 		focusField = new FocusField();
 		focusBox = new FocusBox();
@@ -546,10 +538,7 @@ public class PanelModificarProductos extends JPanel {
 	}
 
 
-
-
 	private void autoCompleteFields(Producto producto, boolean code) {
-
 		if(code) {
 			nombreField.setText(producto.getNombre());			
 		} else {
@@ -557,38 +546,19 @@ public class PanelModificarProductos extends JPanel {
 			SwingUtilities.invokeLater(()->{			
 				nombreField.setText(producto.getNombre());
 			});
-			codigoBarrasField.setText(producto.getCodigoBarras());
-			nombreField.setText(producto.getNombre());
-			marcaField.setText(producto.getMarca());
-			contenidoField.setText(producto.getContenido());
-			descripcionField.setText(producto.getDescripcion());
-			maximoBox.setSelectedItem(producto.getStockMaximo());
-			minimoBox.setSelectedItem(producto.getStockMinimo());
-			tipoBox.setSelectedItem(producto.getTipo());
-			medidaBox.setSelectedItem(producto.getUnidadDeMedida());
-			presentacionBox.setSelectedItem(producto.getPresentacion());
-			precioField.setText(String.valueOf(producto.getPrecioVenta()));
-			habilitarCampos();
-			repaint();
 		}
-
-
-
+		marcaField.setText(producto.getMarca());
+		contenidoField.setText(producto.getContenido());
+		descripcionField.setText(producto.getDescripcion());
+		maximoBox.setSelectedItem(producto.getStockMaximo());
+		minimoBox.setSelectedItem(producto.getStockMinimo());
+		tipoBox.setSelectedItem(producto.getTipo());
+		medidaBox.setSelectedItem(producto.getUnidadDeMedida());
+		presentacionBox.setSelectedItem(producto.getPresentacion());
+		precioField.setText(String.valueOf(producto.getPrecioVenta()));
+		repaint();
 	}
 
-	private void habilitarCampos() {
-		codigoBarrasField.setEnabled(true);
-		nombreField.setEnabled(true);
-		marcaField.setEnabled(true);
-		tipoBox.setEnabled(true);
-		contenidoField.setEnabled(true);
-		medidaBox.setEnabled(true);
-		presentacionBox.setEnabled(true);
-		precioField.setEnabled(true);
-		maximoBox.setEnabled(true);
-		minimoBox.setEnabled(true);
-		descripcionField.setEnabled(true);
-	}
 
 	public void style(Component[] components, GridBagConstraints[] constraints) {		
 		for(GridBagConstraints constraint : constraints) {
@@ -608,25 +578,19 @@ public class PanelModificarProductos extends JPanel {
 	public void removeActionCode() {
 		codigoBarrasField.removeKeyListener(codeKeyListener);
 		codigoBarrasField.getDocument().removeDocumentListener(codeTextListener);
-		codigoBarrasField.setEnabled(false);
 	}
 	public void setActionCode() {
 		codigoBarrasField.addKeyListener(codeKeyListener);
 		codigoBarrasField.getDocument().addDocumentListener(codeTextListener);
-		codigoBarrasField.setEnabled(true);
-		//		habilitarCampos(); ///////////
-		//		nombreField.setEnabled(false); /////
 		clearComponents();
 	}
 	public void removeActionName() {
 		nombreField.getDocument().removeDocumentListener(nameTextListener);
-		nombreField.setEnabled(false);
+		codigoBarrasField.setEnabled(true);
 	}
 	public void setActionName() {
 		nombreField.getDocument().addDocumentListener(nameTextListener);
-		nombreField.setEnabled(true);
-		//		habilitarCampos();/////////
-		//		codigoBarrasField.setEnabled(false); ////////////
+		codigoBarrasField.setEnabled(false);
 		clearComponents();
 	}
 	public void clearComponents() {

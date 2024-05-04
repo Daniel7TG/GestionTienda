@@ -1,67 +1,34 @@
 package app.UI.vista.eliminar;
 
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import app.UI.vista.captura.PanelCapturaProductos.FocusBox;
 import app.UI.vista.captura.PanelCapturaProductos.FocusField;
-import app.abstractClasses.Detalles;
 import app.components.TextFieldSuggestion;
-import app.interfaces.Funcionable;
 import app.interfaces.Service;
 import app.modelos.Producto;
-import app.modelos.containers.Catalogo;
 import app.util.TableModel;
 import app.util.Util;
 
-import java.awt.GridLayout;
-
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.text.BadLocationException;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.util.Arrays;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
@@ -69,14 +36,11 @@ import static app.dao.DaoUtility.getMedidas;
 import static app.dao.DaoUtility.getPresentaciones;
 import static app.dao.DaoUtility.getTipos;
 import static app.enums.ColorStyles.CONTENT;
-import static app.util.Util.capitalize;
 import static app.util.Util.range;
 import static mx.edu.tecnm.zitacuaro.sistemas.modelo.Utileria.visualizar;
 
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import javax.swing.JToggleButton;
 import javax.swing.JRadioButton;
 
 public class PanelEliminarProductos extends JPanel {
@@ -521,7 +485,6 @@ public class PanelEliminarProductos extends JPanel {
     public void eliminarProducto() {
 
     	String codigoBarras = codigoBarrasField.getText();
-    	String nombre = nombreField.getText();
     
     	if(!codigoBarras.isEmpty()) {
     		eliminarProducto(codigoBarras);

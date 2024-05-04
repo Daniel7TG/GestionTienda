@@ -1,5 +1,6 @@
 package app.modelos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.abstractClasses.Persona;
@@ -7,7 +8,6 @@ import app.enums.Permission;
 
 public class Usuario extends Persona {
 
-	private int userID;
 	private List<Permission> permisos;
 	private String userName;
 	private String password;
@@ -26,19 +26,21 @@ public class Usuario extends Persona {
 	public Usuario(String nombre, String apellido, String telefono, int idDomicilio, Domicilio domicilio, int userID,
 			List<Permission> permisos, String userName, String password) {
 		super(nombre, apellido, telefono, idDomicilio, domicilio);
-		this.userID = userID;
 		this.permisos = permisos;
 		this.userName = userName;
 		this.password = password;
 	}
 
+	public Usuario(String user) {
+		this.userName = user;
+	}
 	
-	public int getUserID() {
-		return userID;
+	
+	public Usuario() {
+		permisos = new ArrayList<Permission>();
 	}
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
+
+
 	public List<Permission> getPermisos() {
 		return permisos;
 	}
@@ -57,4 +59,22 @@ public class Usuario extends Persona {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	
+	
+	@Override
+	public String toString() {
+		return "Usuario [permisos=" + permisos + ", userName=" + userName + ", password="
+				+ password + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono
+				+ ", idDomicilio=" + idDomicilio + ", domicilio=" + domicilio + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Usuario u)
+			return userName.equals(u.userName);
+		return false;
+	}
+	
+	
 }

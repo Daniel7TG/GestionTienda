@@ -18,31 +18,32 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import app.UI.vista.captura.PanelCapturaCompra;
+import app.UI.vista.captura.PanelCapturaEmpleados;
 import app.UI.vista.captura.PanelCapturaProductos;
 import app.UI.vista.captura.PanelCapturaProveedor;
 import app.UI.vista.captura.PanelCapturaVenta;
 import app.UI.vista.consulta.PanelConsultaProductos;
 import app.UI.vista.eliminar.PanelEliminarProductos;
 import app.UI.vista.listado.PanelListadoCompras;
+import app.UI.vista.listado.PanelListadoEmpleados;
 import app.UI.vista.listado.PanelListadoProductos;
 import app.UI.vista.listado.PanelListadoVentas;
 import app.UI.vista.menus.PanelMenuCompra;
+import app.UI.vista.menus.PanelMenuEmpleados;
 import app.UI.vista.menus.PanelMenuProductos;
 import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
 import app.UI.vista.modificar.PanelModificarProductos;
-import app.dao.DaoUtility;
 import app.interfaces.Service;
 import app.modelos.Compra;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
-import app.modelos.containers.Catalogo;
-import app.modelos.containers.HistorialCompra;
+import app.modelos.Usuario;
 import app.modelos.containers.HistorialVenta;
-import app.modelos.containers.Proveedores;
 import app.modelos.services.ComprasServiceImp;
 import app.modelos.services.ProductosServiceImp;
 import app.modelos.services.ProveedoresServiceImp;
+import app.modelos.services.UsuarioServiceImp;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -87,6 +88,21 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private PanelListadoVentas listadoVentasPane;
 	// Fin Clientes
 	
+	
+	// Usuarios 
+	private Service<Usuario> usuarios;
+
+	private JMenuItem uMenuEmpleados;
+	private PanelMenuEmpleados panelMenuEmpleados;
+	private JButton registrarEmpButton;
+	private JButton listarEmpButton;
+	private PanelListadoEmpleados listadoEmpleadosPane;
+	private PanelCapturaEmpleados capturaEmpleadosPane;
+	
+	
+	// Fin Usuarios 
+	
+	
 	// Proveedores
 	private Service<Proveedor> proveedores;
 	
@@ -114,13 +130,12 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private JMenu menuStock;
 	private JMenu menuClientes;
 	private JMenu menuProveedores;
+	private JMenu menuUsuarios;
 	private JMenu menuContabilidad;
 	private JMenu menuEstadistica;
 	private JMenu menuConfiguracion;
 
 	private Font font;
-
-	private JButton confirmarButton;
 
 	private PanelModificarProductos modificarProductosPane;
 
@@ -146,10 +161,8 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		historialCompra = new ComprasServiceImp();
 		historialVenta = new HistorialVenta();
 		proveedores = new ProveedoresServiceImp();
+		usuarios = new UsuarioServiceImp();
 		this.addWindowListener(this);
-		
-		// Datos de ejemplo
-//		DaoUtility.getProductos().forEach(catalogo::save);
 		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
@@ -161,7 +174,6 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 			}
 		};
 		
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaPrincipal.class.getResource("/img/GatoC.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 450);
 		setExtendedState(MAXIMIZED_BOTH);
@@ -207,6 +219,12 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		menuProveedores.add(pMenuCompra);
 		barra.add(menuProveedores);
 
+		uMenuEmpleados = new JMenuItem("Empleados");
+		uMenuEmpleados.addActionListener(event-> uMenuEmpFunc());
+		menuUsuarios = new JMenu("Gestion de Usuarios");
+		menuUsuarios.add(uMenuEmpleados);
+		barra.add(menuUsuarios);
+
 		menuContabilidad = new JMenu("Contabilidad");
 		barra.add(menuContabilidad);
 
@@ -231,7 +249,8 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		  menuProveedores,
 		  menuContabilidad,
 		  menuEstadistica,
-		  menuConfiguracion
+		  menuConfiguracion,
+		  menuUsuarios
 				);
 	}
 
@@ -308,6 +327,59 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		enableButtons(panelMenuVenta , false);
 		revalidate();	
 	}
+	
+	
+	// Usuarios
+	private void uMenuEmpFunc() {
+		clearContentPane();
+		if(panelMenuEmpleados != null) return;
+		panelMenuEmpleados = new PanelMenuEmpleados();
+		registrarEmpButton = panelMenuEmpleados.getRegistrarButton();
+		registrarEmpButton.addActionListener(e->{
+			regEmpFunc();
+		});
+		listarEmpButton = panelMenuEmpleados.getListarButton();
+		listarEmpButton.addActionListener(e->{
+			listEmpFunc();
+		});
+		contentPane.add(panelMenuEmpleados, BorderLayout.WEST);
+		revalidate();
+	}
+	
+	private void regEmpFunc() {
+		capturaEmpleadosPane = new PanelCapturaEmpleados(usuarios);
+		panelEncabezados = new PanelEncabezados("Registro de Empleados");
+		panelOpciones = new PanelOpciones(capturaEmpleadosPane.getLastItem(), PanelOpciones.BOTH);
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		guardarButton.addActionListener(ec -> {
+			capturaEmpleadosPane.guardarEmpleado();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuEmpleados, capturaEmpleadosPane, panelOpciones);
+		});
+		panelEncabezados.add(capturaEmpleadosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuEmpleados, false);
+		revalidate();
+	}
+	private void listEmpFunc() {
+		listadoEmpleadosPane = new PanelListadoEmpleados(usuarios);
+		panelEncabezados = new PanelEncabezados("Listado de Empleados");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(e->{
+			cancelButton(panelEncabezados, panelMenuEmpleados, listadoEmpleadosPane, panelOpciones);
+		});
+		panelEncabezados.add(listadoEmpleadosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuEmpleados, false);
+		revalidate();	
+	}
+	
 	
 	// Inventario / Proveedores
 	private void pMenuProvFunc() {
@@ -551,7 +623,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	
 	public void enableButtons(JPanel panel, boolean status) {
 		for(Component comp : panel.getComponents()) {
-			if(comp.getClass().equals(JButton.class)) {
+			if(comp instanceof JButton) {
 				comp.setEnabled(status);
 			}
 		} 
@@ -563,23 +635,16 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		panelMenuProductos = null;
 		panelMenuCompra = null;
 		panelMenuVenta = null;
+		panelMenuEmpleados = null;
 		repaint();
 	}
 
 	
-	private void guardarProductos() {
-//		DaoUtility.saveFileTxt(catalogo.getAll(), "raw/productos");
-//		DaoUtility.saveFileTxt(proveedores.getList(), "raw/proveedores");
-//		DaoUtility.saveFileTxt(historialCompra.getList(), "raw/compras", "rfc");
-//		DaoUtility.saveFileTxt(historialVenta.getList(), "raw/ventas");
-	}
-
 	@Override
 	public void windowOpened(WindowEvent e) {
 	}
 	@Override
 	public void windowClosing(WindowEvent e) {
-		guardarProductos();
 	}
 	@Override
 	public void windowClosed(WindowEvent e) {

@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.interfaces.CRUDRepository;
+import app.modelos.Producto;
 import app.modelos.Proveedor;
+
 import app.util.MoveResult;
+
 import app.util.Util;
 
 public class ProveedoresRepository implements CRUDRepository<Proveedor> {
@@ -29,16 +32,24 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			System.out.println(e.getMessage());
 		}
 	}
-	
-	
+
+
 	@Override
 	public boolean exists(String id) {
+		String sql = "SELECT * FROM proveedor WHERE rfc = ?";
+		try {
+			pStatement = connection.prepareStatement(sql);
+			pStatement.setString(1, id);
+			return pStatement.executeQuery().next();
+		} catch (SQLException e) {}
 		return false;
 	}
 
 	@Override
 	public int save(Proveedor proveedor) {
-		String sql = "INSERT INTO proveedor(rfc, nombre, apellido, razon_social, telefono, domicilio) "
+
+		String sql = "INSERT INTO proveedor(rfc, nombre, apellido, razon_Social, telefono, domicilio) "
+
 				+ "VALUES(?, ?, ?, ?, ?, ?)"; 
 		int result = 0;
 		try {
@@ -49,6 +60,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			pStatement.setString(4, proveedor.getRazonSocial());
 			pStatement.setString(5, proveedor.getTelefono());
 			pStatement.setInt(6, proveedor.getIdDomicilio());
+
 			result = pStatement.executeUpdate();
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
@@ -61,6 +73,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 	@Override
 	public Proveedor get(String id) {
 		String sql = "SELECT * FROM proveedor JOIN domicilio ON proveedores.domicilio = domicilio.id WHERE rfc = ?";
+
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
@@ -74,6 +87,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 	@Override
 	public boolean remove(String id) {
 		String sql = "DELETE FROM proveedor WHERE rfc = ?";
+
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
@@ -96,7 +110,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			pStatement.setString(4, obj.getTelefono());
 			pStatement.setInt(5, obj.getIdDomicilio());
 			pStatement.setString(6, obj.getRfc());
-		
+	
 			return pStatement.executeUpdate() == 0 ? false : true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -107,11 +121,13 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 	@Override
 	public List<Proveedor> getAll() {
 		String sql = "SELECT * FROM proveedor";
+
 		List<Proveedor> proveedores = new ArrayList<Proveedor>();
 		try {
 			resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				proveedores.add(MoveResult.toSupplier(resultSet));
+			proveedores.add(MoveResult.toSupplier(resultSet));
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -127,6 +143,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 	@Override
 	public int getSize() {
 		String sql = "SELECT COUNT(rfc) AS size FROM proveedor";
+
 		try {
 			resultSet = statement.executeQuery(sql);
 			return resultSet.getInt("size");

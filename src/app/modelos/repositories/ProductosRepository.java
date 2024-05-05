@@ -185,6 +185,12 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 		return getSize() == 0 ? true:false;
 	}
 
+
+	@Override
+	public int saveAll(List<Producto> obj) {
+		return 0;
+	}
+
 	
 
 

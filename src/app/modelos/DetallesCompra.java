@@ -20,6 +20,9 @@ public class DetallesCompra extends Detalles {
 		super(codigo);
 	}
 
+	public DetallesCompra() {
+	}
+	
 	public LocalDate getFechaCaducidad() {
 		return fechaCaducidad;
 	}

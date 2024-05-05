@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 import app.abstractClasses.Transaccion;
+import app.interfaces.Listable;
 
-public class Compra extends Transaccion<DetallesCompra>{
+public class Compra extends Transaccion<DetallesCompra> implements Listable {
 
 	private String rfc;
 
@@ -24,8 +25,9 @@ public class Compra extends Transaccion<DetallesCompra>{
 	}
 	
 	public Compra() {
-		super();
+		detalles = new ArrayList<DetallesCompra>();
 	}
+	
 	public String getRfc() {
 		return rfc;
 	}
@@ -37,7 +39,17 @@ public class Compra extends Transaccion<DetallesCompra>{
 		return super.toString() + "Compra [rfc=" + rfc + "]";
 	}
 	
-
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Compra c)
+			return c.getFolio() == getFolio();
+		return false;
+	}
+	
+	@Override
+	public Object[] toRow() {
+		return new Object[] {folio, total, fecha, detalles, rfc};
+	}
 	
 	
 	

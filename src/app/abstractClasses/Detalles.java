@@ -6,7 +6,7 @@ public abstract class Detalles {
 	private int cantidad;
 	private double precio;
 	private double total;
-	private String folio;
+	private int folio;
 	
 	/**
 	 * @param codigo
@@ -21,7 +21,7 @@ public abstract class Detalles {
 		this.total = precio*cantidad;
 	}
 
-	public Detalles(String codigo, double precio, int cantidad, String folio) {
+	public Detalles(String codigo, double precio, int cantidad, int folio) {
 		this.codigo = codigo;
 		this.precio = precio;
 		this.cantidad = cantidad;
@@ -29,6 +29,8 @@ public abstract class Detalles {
 		this.folio = folio;
 	}
 	
+	public Detalles(){	
+	}
 	
 	public Detalles(String codigo) {
 		this.codigo = codigo;
@@ -57,10 +59,10 @@ public abstract class Detalles {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	public String getFolio() {
+	public int getFolio() {
 		return folio;
 	}	
-	public void setFolio(String folio) {
+	public void setFolio(int folio) {
 		this.folio = folio;
 	}
 	

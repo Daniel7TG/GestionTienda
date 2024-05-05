@@ -33,7 +33,8 @@ public class PanelListadoCompras extends JPanel {
 
 		this.proveedores = proveedores;		
 		table = new JTable();
-		model = new TableModel(table, proveedores.getAll(), columnNames, Transaccion.class, Compra.class);
+//		model = new TableModel(table, proveedores.getAll(), columnNames, Transaccion.class, Compra.class);
+		model = new TableModel(table, proveedores.getAll(), columnNames);
 		table.setModel(model);
 		model.renderListColumn(3);
 		model.configurarTabla(2, 2, 2, 6, 2);

@@ -1,8 +1,9 @@
 package app.modelos;
 
 import app.abstractClasses.Persona;
+import app.interfaces.Listable;
 
-public class Proveedor extends Persona {
+public class Proveedor extends Persona implements Listable {
 	
 	private String rfc;
 	private String razonSocial;
@@ -95,6 +96,11 @@ public class Proveedor extends Persona {
 	}
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+	
+	@Override
+	public String[] toRow() {
+		return new String[] {rfc, nombre, apellido, razonSocial, telefono, domicilio.toString()};
 	}
 	
 	@Override

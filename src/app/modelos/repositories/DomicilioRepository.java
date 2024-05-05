@@ -50,8 +50,8 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 	 * @return ID of the row created in the database if inserted, otherwise -1
 	 */
 	public int save(Domicilio domicilio) {
-		String sql = "INSERT INTO domicilio(numero, orientacion, colonia, estado, codigo_postal, calle) "
-				+ "VALUES(?, ?, ?, ?, ?, ?)"; 
+		String sql = "INSERT INTO domicilio(numero, orientacion, colonia, estado, codigo_postal, calle, ciudad) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?)"; 
 		int result = -1;
 		try {
 			pStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -61,6 +61,7 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 			pStatement.setString(4, domicilio.getEstado());
 			pStatement.setString(5, domicilio.getCodigoPostal());
 			pStatement.setString(6, domicilio.getCalle());
+			pStatement.setString(7, domicilio.getCiudad());
 			pStatement.executeUpdate();
 			ResultSet keys = pStatement.getGeneratedKeys();
 			
@@ -156,6 +157,12 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 	@Override
 	public boolean isEmpty() {
 		return getSize() == 0 ? true:false;
+	}
+
+
+	@Override
+	public int saveAll(List<Domicilio> obj) {
+		return 0;
 	}
 
 

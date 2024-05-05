@@ -11,10 +11,11 @@ import app.modelos.Domicilio;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
 import app.modelos.Usuario;
+import app.modelos.Venta;
 
 
 public abstract class MoveResult {
-	
+
 	public static Producto toProduct(ResultSet result) {
 		Producto product = new Producto();
 		try {
@@ -34,7 +35,7 @@ public abstract class MoveResult {
 		return product;
 	}	
 
-	
+
 	public static Proveedor toSupplier(ResultSet result) {
 		Proveedor prov = new Proveedor();
 		try {
@@ -51,7 +52,7 @@ public abstract class MoveResult {
 		return prov;
 	}	
 
-	
+
 	public static Domicilio toAddress(ResultSet result) {
 		Domicilio address = new Domicilio();
 		try {
@@ -85,8 +86,8 @@ public abstract class MoveResult {
 		}
 		return user;
 	}	
-	
-	
+
+
 	public static Compra toCompra(ResultSet result) {
 		Compra compra = new Compra();
 		try {
@@ -100,8 +101,8 @@ public abstract class MoveResult {
 		}
 		return compra;
 	}
-	
-	
+
+
 	public static DetallesCompra toDetallesCompra(ResultSet result) {
 		DetallesCompra det = new DetallesCompra();
 		try {
@@ -116,10 +117,24 @@ public abstract class MoveResult {
 		}
 		return det;		
 	}
-	
-	
-	
-	
 
 
+	public static Venta toVenta(ResultSet rs) {
+		Venta venta = new Venta();    
+		try {
+			venta.setFolio(rs.getInt("folio"));
+			venta.setTotal(rs.getInt("total"));
+			venta.setFecha(rs.getDate("fecha").toLocalDate());
+			venta.setUserName(rs.getString("username"));
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return venta;
+	}            
 }
+
+
+
+
+
+

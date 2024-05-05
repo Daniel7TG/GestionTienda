@@ -86,5 +86,10 @@ public class Transaccion<D extends Detalles> {
 			return folio == tr.folio;
 		return false;
 	}
+
+	public Object[] toRow() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

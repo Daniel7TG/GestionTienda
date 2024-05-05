@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import app.components.MenuButton;
+import app.enums.Permission;
+import app.modelos.Usuario;
 
 public class PanelMenuEmpleados extends JPanel {
 
@@ -16,13 +18,16 @@ public class PanelMenuEmpleados extends JPanel {
 	private JButton registrarButton;
 	private JButton listarButton;
 	
-	public PanelMenuEmpleados(){
+	public PanelMenuEmpleados(Usuario usuario){
 		setMaximumSize(new Dimension(200, 32767));
 		setBackground(Color.decode("#b0cfe0"));
 		setLayout(new GridLayout(6, 1, 0, 20));
 		
-		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R);
-		listarButton = new MenuButton("Listar", KeyEvent.VK_L);
+		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.ADD_USUARIOS);
+		if(!usuario.hasAccessTo(Permission.ADD_USUARIOS)) registrarButton.setEnabled(false);
+		
+		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_USUARIOS);
+		if(!usuario.hasAccessTo(Permission.READ_USUARIOS)) listarButton.setEnabled(false);
 		
 		add(registrarButton);
 		add(listarButton);

@@ -9,14 +9,18 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import app.UI.vista.menus.PanelMenuProductos;
+import app.enums.Permission;
 
 public class MenuButton extends JButton {
 
-	public MenuButton(String text) {
-		this(text, KeyEvent.VK_SPACE);
+	Permission permissionNeeded;
+	
+	public MenuButton(String text, Permission permissionNeeded) {
+		this(text, KeyEvent.VK_SPACE, permissionNeeded);
 	}
 	
-	public MenuButton(String text, int c){
+	public MenuButton(String text, int c, Permission permissionNeeded){
+		this.permissionNeeded = permissionNeeded;
 		setText(text);
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		setDisabledIcon(new ImageIcon(PanelMenuProductos.class.getResource("/img/disabled.png")));
@@ -29,6 +33,10 @@ public class MenuButton extends JButton {
 		setForeground(Color.WHITE);
 		setIcon(new ImageIcon(PanelMenuProductos.class.getResource("/img/default.png")));
 		setHorizontalTextPosition(SwingConstants.CENTER);
+	}
+
+	public Permission getPermissionNeeded() {
+		return permissionNeeded;
 	}
 	
 }

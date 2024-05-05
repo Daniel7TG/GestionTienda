@@ -6,7 +6,14 @@ import javax.xml.crypto.Data;
 import static app.dao.database.UtilityDB.getDataBaseParameters;
 import app.dao.database.Database;
 import app.interfaces.Service;
+import app.modelos.DetallesCompra;
+import app.modelos.DetallesVenta;
+import app.modelos.Producto;
 import app.modelos.Venta;
+import app.modelos.repositories.ComprasRepository;
+import app.modelos.repositories.DetallesCompraRepository;
+import app.modelos.repositories.DetallesVentaRepository;
+import app.modelos.repositories.ProductosRepository;
 import app.modelos.repositories.VentasRepository;
 import app.records.DBRecord;
 
@@ -14,6 +21,9 @@ public class VentasServiceImp implements Service<Venta> {
 
 	private Database database;
 	private VentasRepository repository;
+	private ProductosRepository repositoryProductos;
+	private DetallesVentaRepository repositoryDetalles;
+
 
 	public VentasServiceImp() {
 		initDataBase();
@@ -29,8 +39,11 @@ public class VentasServiceImp implements Service<Venta> {
 		String usuario = record.usuario();
 
 		database = Database.newInstance(name, usuario, password, protocolo, driver);
-		if(database.doConnection())
+		if(database.doConnection()) {
+			repositoryProductos = new ProductosRepository(database.getConnection());
+			repositoryDetalles = new DetallesVentaRepository(database.getConnection());
 			repository = new VentasRepository(database.getConnection());
+		}
 		else
 			System.exit(0);
 	}
@@ -48,7 +61,15 @@ public class VentasServiceImp implements Service<Venta> {
 
 	@Override
 	public int save(Venta venta) {
-		return repository.save(venta);
+		int folio = repository.save(venta);
+		for(DetallesVenta det : venta.getDetalles()) {
+			det.setFolio(folio);
+			Producto p = repositoryProductos.get(det.getCodigo());
+			p.subtractStock(det.getCantidad());
+			repositoryProductos.set(p);
+		}
+		repositoryDetalles.saveAll(venta.getDetalles());
+		return folio;
 	}
 
 	@Override
@@ -62,8 +83,8 @@ public class VentasServiceImp implements Service<Venta> {
 	}
 
 	@Override
+	@Deprecated
 	public Venta getByData(String obj) {
-		// TODO Auto-generated method stub
 		return null; 
 	}
 

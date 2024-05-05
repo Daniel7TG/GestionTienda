@@ -6,7 +6,10 @@ import app.abstractClasses.Detalles;
 
 public class DetallesVenta extends Detalles {
 	
-	private LocalDate fechaCaducidad;	
+//	private LocalDate fechaCaducidad;	
+	
+	public DetallesVenta() {
+	}
 	
 	public DetallesVenta(String codigo, double precio, int cantidad) {
 		super(codigo, precio, cantidad);
@@ -20,13 +23,11 @@ public class DetallesVenta extends Detalles {
 		super(codigo);
 	}
 	
-	public LocalDate getFechaCaducidad() {
-		return fechaCaducidad;
-	}
-	
-	public void setFechaCaducidad(LocalDate fechaCaducidad) {
-		this.fechaCaducidad = fechaCaducidad;
-		
-		
-	}
+//	public LocalDate getFechaCaducidad() {
+//		return fechaCaducidad;
+//	}
+//	
+//	public void setFechaCaducidad(LocalDate fechaCaducidad) {
+//		this.fechaCaducidad = fechaCaducidad;
+//	}
 }

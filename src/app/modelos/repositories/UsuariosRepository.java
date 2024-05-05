@@ -75,8 +75,8 @@ public class UsuariosRepository implements CRUDRepository<Usuario> {
 		String sql = "SELECT u.*, d.numero, d.orientacion, d.colonia, d.estado, d.codigo_postal, d.calle, d.ciudad, p.permiso_id, permisos.descripcion "
 				+ "FROM usuario AS u "
 				+ "JOIN domicilio AS d ON u.domicilio = d.id "
-				+ "JOIN usuario_permisos AS p ON u.username = p.username "
-				+ "JOIN permisos ON p.permiso_id = permisos.id "
+				+ "LEFT JOIN usuario_permisos AS p ON u.username = p.username "
+				+ "LEFT JOIN permisos ON p.permiso_id = permisos.id "
 				+ "WHERE u.username = ?";
 
 		try {

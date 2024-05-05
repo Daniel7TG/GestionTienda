@@ -40,7 +40,15 @@ public class Usuario extends Persona {
 		permisos = new ArrayList<Permission>();
 	}
 
-
+	public boolean hasAccessTo(Permission p) {
+		if(permisos.contains(Permission.ADMIN)) return true;
+		return permisos.stream().anyMatch(user_p -> 
+			p == user_p | 
+			(p.getCategory() == user_p.getCategory() & p.isUniversal())
+		);
+	}
+	
+	
 	public List<Permission> getPermisos() {
 		return permisos;
 	}
@@ -59,6 +67,7 @@ public class Usuario extends Persona {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
 	
 	
 	

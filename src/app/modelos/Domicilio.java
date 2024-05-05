@@ -4,6 +4,7 @@ import app.enums.Orientacion;
 
 public class Domicilio {
 	
+	private int id;
 	private int numero;
 	private String calle;
 	private Orientacion orientacion;
@@ -79,6 +80,12 @@ public class Domicilio {
 	}
 	public void setCodigoPostal(String codigoPostal) {
 		this.codigoPostal = codigoPostal;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	@Override
 	public String toString() {

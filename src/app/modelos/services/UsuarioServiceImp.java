@@ -8,6 +8,7 @@ import app.dao.database.Database;
 import app.interfaces.Service;
 import app.modelos.Usuario;
 import app.modelos.repositories.DomicilioRepository;
+import app.modelos.repositories.PermisosUsuarioRepository;
 import app.modelos.repositories.UsuariosRepository;
 import app.records.DBRecord;
 
@@ -16,7 +17,7 @@ public class UsuarioServiceImp implements Service<Usuario> {
 	private Database database;
 	private UsuariosRepository repository;
 	private DomicilioRepository repositoryDomicilio;
-	
+	private PermisosUsuarioRepository repositoryPermisos;
 	
 	public UsuarioServiceImp(){
 		initDatabase();
@@ -32,7 +33,8 @@ public class UsuarioServiceImp implements Service<Usuario> {
 		String usuario = record.usuario();
 		
 		database = Database.newInstance(name, usuario, password, protocolo, driver);
-		if(database.doConnection()) {			
+		if(database.doConnection()) {
+			repositoryPermisos = new PermisosUsuarioRepository(database.getConnection());
 			repository = new UsuariosRepository(database.getConnection());
 			repositoryDomicilio = new DomicilioRepository(database.getConnection());
 		}
@@ -54,6 +56,7 @@ public class UsuarioServiceImp implements Service<Usuario> {
 	public int save(Usuario obj) {
 		int domicilio = repositoryDomicilio.save(obj.getDomicilio());
 		obj.setIdDomicilio(domicilio);
+		obj.getPermisos().forEach(p -> repositoryPermisos.save(obj.getUserName(), p.ordinal()));
 		return repository.save(obj);
 	}
 
@@ -86,6 +89,8 @@ public class UsuarioServiceImp implements Service<Usuario> {
 	@Override
 	public boolean set(Usuario obj) {
 		repositoryDomicilio.set(obj.getDomicilio());
+		repositoryPermisos.deleteAll(obj.getUserName());
+		obj.getPermisos().stream().distinct().forEach(p -> repositoryPermisos.save(obj.getUserName(), p.ordinal()));
 		return repository.set(obj);
 	}
 

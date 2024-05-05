@@ -110,12 +110,13 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 			
 			pStatement.setInt(1, obj.getNumero());
 			pStatement.setString(2, obj.getCalle());
-			pStatement.setString(2, obj.getCiudad());
-			pStatement.setString(3, obj.getCodigoPostal());
-			pStatement.setString(4, obj.getColonia());
-			pStatement.setString(5, obj.getEstado());
-			pStatement.setString(6, obj.getOrientacion().toString());
-	
+			pStatement.setString(3, obj.getCiudad());
+			pStatement.setString(4, obj.getCodigoPostal());
+			pStatement.setString(5, obj.getColonia());
+			pStatement.setString(6, obj.getEstado());
+			pStatement.setString(7, obj.getOrientacion().toString());
+			pStatement.setInt(8, obj.getId());
+			
 			return pStatement.executeUpdate() == 0 ? false : true;
 		} catch (SQLException e) {
 			e.printStackTrace();

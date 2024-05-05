@@ -9,7 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.modelos.Compra;
 import app.modelos.Venta;
+import app.util.MoveResult;
 import app.util.Util;
 
 public class VentasRepository {
@@ -43,8 +45,8 @@ public class VentasRepository {
 	public int save(Venta venta) {
 		String sql = "INSERT INTO venta(total, fecha, username) VALUES(?, ?, ?)";
 		try {
-			pStatement = connection.prepareStatement(sql, statement.RETURN_GENERATED_KEYS);
-			pStatement.setInt(1, (int) venta.getTotal());
+			pStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			pStatement.setDouble(1, venta.getTotal());
 			pStatement.setDate(2, Date.valueOf(venta.getFecha()));
 			pStatement.setString(3, venta.getUserName());
 			pStatement.executeUpdate();
@@ -58,13 +60,19 @@ public class VentasRepository {
 	}
 
 	public Venta get(String id) {
-		String sql = "SELECT * FROM venta WHERE folio = ?";
+		String sql = "SELECT venta.*, det.* FROM venta "
+				+ "JOIN detalles_venta AS det ON venta.folio = det.folio "
+				+ "WHERE venta.folio = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
 			resultSet = pStatement.executeQuery();
-			if(resultSet.next()) return toVenta(resultSet);
-
+			Venta venta = new Venta();
+			if(resultSet.next())
+				venta = MoveResult.toVenta(resultSet);
+			while(resultSet.next())
+				venta.getDetalles().add(MoveResult.toDetallesVenta(resultSet));
+			return venta;
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -73,7 +81,7 @@ public class VentasRepository {
 
 
 	public boolean remove(String id) {
-		String sql = "SELECT * FROM venta WHERE folio = ?";
+		String sql = "DELETE FROM venta WHERE folio = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setInt(1, Integer.valueOf(id));
@@ -85,10 +93,10 @@ public class VentasRepository {
 	}
 
 	public boolean set(Venta venta) {
-		String sql = "UPDATE venta SET total = ?, username = ? WHERE folio = ? ";
+		String sql = "UPDATE venta SET total = ?, fecha = ?, username = ? WHERE folio = ? ";
 		try {
 			pStatement = connection.prepareStatement(sql);
-			pStatement.setInt(1, (int) venta.getTotal());
+			pStatement.setDouble(1, venta.getTotal());
 			pStatement.setDate(2, Date.valueOf(venta.getFecha()));
 			pStatement.setString(3, venta.getUserName());
 			pStatement.setInt(4, venta.getFolio());
@@ -101,14 +109,21 @@ public class VentasRepository {
 
 
 	public List<Venta> getAll(){
-		String sql = "SELECT * FROM venta";
-		List<Venta> ventas = new ArrayList<>();
+		String sql = "SELECT venta.*, det.* FROM venta JOIN detalles_venta AS det ON venta.folio = det.folio";
+		List<Venta> ventas = new ArrayList<Venta>();
 		try {
 			resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				ventas.add(toVenta(resultSet));
+				int folio = resultSet.getInt("compra.folio");
+				int indexOnList = ventas.indexOf(new Venta(folio));
+				if(indexOnList != -1) {
+					ventas.get(indexOnList).getDetalles().add( MoveResult.toDetallesVenta(resultSet));
+				}
+				else {
+					ventas.add(MoveResult.toVenta(resultSet));					
+				}
 			}
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return ventas;
@@ -133,20 +148,6 @@ public class VentasRepository {
 
 	public boolean isEmpty() {
 		return getSize() == 0;
-	}
-
-
-	private Venta toVenta(ResultSet rs) {
-		Venta venta = new Venta();	
-		try {
-			venta.setFolio(rs.getInt("folio"));
-			venta.setTotal(rs.getInt("total"));
-			venta.setFecha(rs.getDate("fecha").toLocalDate());
-			venta.setUserName(rs.getString("username"));
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return venta;
 	}
 
 }

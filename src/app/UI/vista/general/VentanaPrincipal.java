@@ -34,6 +34,8 @@ import app.UI.vista.menus.PanelMenuProductos;
 import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
 import app.UI.vista.modificar.PanelModificarProductos;
+import app.components.MenuButton;
+import app.enums.Permission;
 import app.interfaces.Service;
 import app.modelos.Compra;
 import app.modelos.Producto;
@@ -54,7 +56,8 @@ import javax.swing.JMenuItem;
 public class VentanaPrincipal extends JFrame implements WindowListener {
 
 	private Service<Producto> catalogo;
-
+	
+	private Usuario usuarioActual; 
 	private JMenuBar barra;
 	
 	// Panel Menu Opciones
@@ -156,6 +159,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	
 
 	public VentanaPrincipal() {
+		
 		font = new Font("Montserrat", Font.BOLD, 13);
 		catalogo = new ProductosServiceImp();
 		historialCompra = new ComprasServiceImp();
@@ -163,6 +167,11 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		proveedores = new ProveedoresServiceImp();
 		usuarios = new UsuarioServiceImp();
 		this.addWindowListener(this);
+		
+		usuarioActual = usuarios.get("aaa");
+		usuarioActual.getPermisos().add(Permission.READ_USUARIOS);
+		usuarioActual.getPermisos().remove(Permission.ADD_USUARIOS);
+		usuarios.set(usuarioActual);
 		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
@@ -333,7 +342,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private void uMenuEmpFunc() {
 		clearContentPane();
 		if(panelMenuEmpleados != null) return;
-		panelMenuEmpleados = new PanelMenuEmpleados();
+		panelMenuEmpleados = new PanelMenuEmpleados(usuarioActual);
 		registrarEmpButton = panelMenuEmpleados.getRegistrarButton();
 		registrarEmpButton.addActionListener(e->{
 			regEmpFunc();
@@ -625,6 +634,9 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		for(Component comp : panel.getComponents()) {
 			if(comp instanceof JButton) {
 				comp.setEnabled(status);
+			}
+			if(comp instanceof MenuButton menuBtn) {
+				menuBtn.setEnabled(usuarioActual.hasAccessTo(menuBtn.getPermissionNeeded()) & status);
 			}
 		} 
 	}

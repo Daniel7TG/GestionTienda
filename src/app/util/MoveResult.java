@@ -7,6 +7,7 @@ import app.enums.Orientacion;
 import app.enums.Permission;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
+import app.modelos.DetallesVenta;
 import app.modelos.Domicilio;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
@@ -63,6 +64,7 @@ public abstract class MoveResult {
 			address.setColonia(result.getString("colonia"));
 			address.setEstado(result.getString("estado"));
 			address.setNumero(result.getInt("numero"));
+			address.setId(result.getInt("domicilio"));
 			address.setOrientacion(Orientacion.valueOf(result.getString("orientacion")));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -80,7 +82,9 @@ public abstract class MoveResult {
 			user.setUserName(result.getString("username"));
 			user.setPassword(result.getString("password"));
 			user.setTelefono(result.getString("telefono"));
-			user.getPermisos().add(Permission.valueOf(result.getString("descripcion")));
+			if(result.getString("descripcion") != null){				
+				user.getPermisos().add(Permission.valueOf(result.getString("descripcion")));
+			}
 			user.setDomicilio(toAddress(result));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -120,22 +124,38 @@ public abstract class MoveResult {
 	}
 
 
-	public static Venta toVenta(ResultSet rs) {
+	public static Venta toVenta(ResultSet result) {
 		Venta venta = new Venta();    
 		try {
-			venta.setFolio(rs.getInt("folio"));
-			venta.setTotal(rs.getInt("total"));
-			venta.setFecha(rs.getDate("fecha").toLocalDate());
-			venta.setUserName(rs.getString("username"));
+			venta.setFolio(result.getInt("folio"));
+			venta.setTotal(result.getInt("total"));
+			venta.setFecha(result.getDate("fecha").toLocalDate());
+			venta.setUserName(result.getString("username"));
+			venta.getDetalles().add(toDetallesVenta(result));
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return venta;
 	}            
+
+
+	public static DetallesVenta toDetallesVenta(ResultSet result) {
+		DetallesVenta det = new DetallesVenta();    
+		try {
+			det.setCantidad(result.getInt("det.cantidad"));
+//			det.setFechaCaducidad(result.getDate("det.fecha_caducidad").toLocalDate());
+			det.setCodigo(result.getString("det.codigo"));
+			det.setFolio(result.getInt("det.folio"));
+			det.setPrecio(result.getDouble("det.precio"));
+			det.setTotal(result.getDouble("det.total"));
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return det;
+	}            
+
+
+
+
+
 }
-
-
-
-
-
-

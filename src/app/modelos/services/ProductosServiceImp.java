@@ -71,7 +71,7 @@ public class ProductosServiceImp implements Service<Producto> {
 
 	@Override
 	public boolean remove(Producto obj) {
-		return remove(obj.getCodigoBarras());
+		return repository.remove(obj.getCodigoBarras());
 	}
 
 	@Override

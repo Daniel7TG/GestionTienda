@@ -8,14 +8,17 @@ import app.dao.database.Database;
 import app.interfaces.Service;
 import app.modelos.Compra;
 import app.modelos.DetallesCompra;
+import app.modelos.Producto;
 import app.modelos.repositories.ComprasRepository;
 import app.modelos.repositories.DetallesCompraRepository;
+import app.modelos.repositories.ProductosRepository;
 import app.records.DBRecord;
 
 public class ComprasServiceImp implements Service<Compra> {
 
 	private Database database;
 	private ComprasRepository repository;
+	private ProductosRepository repositoryProductos;
 	private DetallesCompraRepository repositoryDetalles;
 	
 	
@@ -34,6 +37,7 @@ public class ComprasServiceImp implements Service<Compra> {
 		
 		database = Database.newInstance(name, usuario, password, protocolo, driver);
 		if(database.doConnection()) {			
+			repositoryProductos = new ProductosRepository(database.getConnection());
 			repositoryDetalles = new DetallesCompraRepository(database.getConnection());
 			repository = new ComprasRepository(database.getConnection());
 		}
@@ -55,7 +59,12 @@ public class ComprasServiceImp implements Service<Compra> {
 	@Override
 	public int save(Compra compra) {
 		int folio = repository.save(compra);
-		for(DetallesCompra det : compra.getDetalles()) det.setFolio(folio);
+		for(DetallesCompra det : compra.getDetalles()) {
+			det.setFolio(folio);
+			Producto p = repositoryProductos.get(det.getCodigo());
+			p.addStock(det.getCantidad());
+			repositoryProductos.set(p);
+		}
 		repositoryDetalles.saveAll(compra.getDetalles());
 		return folio;
 	}

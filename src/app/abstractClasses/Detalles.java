@@ -38,8 +38,8 @@ public abstract class Detalles {
 	public String getCodigo() {
 		return codigo;
 	}
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setCodigo(String codigo) {	
+		this.codigo = codigo != null ? codigo : "UNKNOWN";
 	}
 	public double getTotal() {
 		return total;

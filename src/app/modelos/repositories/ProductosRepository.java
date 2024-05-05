@@ -112,8 +112,11 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
+			System.out.println(pStatement.toString());
 			return pStatement.executeUpdate() == 0 ? false : true;
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;		
 	}
 	

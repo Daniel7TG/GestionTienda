@@ -24,6 +24,7 @@ public abstract class MoveResult {
 			product.setMarca(result.getString("marca"));
 			product.setTipo(result.getString("tipo"));
 			product.setContenido(result.getString("contenido"));
+			product.setStockActual(result.getInt("cantidad"));
 			product.setUnidadDeMedida(result.getString("medida"));
 			product.setStockMaximo(result.getInt("stock_maximo"));
 			product.setStockMinimo(result.getInt("stock_minimo"));

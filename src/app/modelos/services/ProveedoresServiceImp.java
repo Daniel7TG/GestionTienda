@@ -7,6 +7,7 @@ import java.util.List;
 import app.dao.database.Database;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
+import app.modelos.repositories.DomicilioRepository;
 import app.modelos.repositories.ProductosRepository;
 import app.modelos.repositories.ProveedoresRepository;
 import app.records.DBRecord;
@@ -16,6 +17,7 @@ public class ProveedoresServiceImp implements Service<Proveedor> {
 	
 	private Database database;
 	private ProveedoresRepository repository;
+	private DomicilioRepository repositoryDomicilio;
 	
 	public ProveedoresServiceImp(){
 		initDatabase();
@@ -30,8 +32,10 @@ public class ProveedoresServiceImp implements Service<Proveedor> {
 		String usuario = record.usuario();
 		
 		database = Database.newInstance(name, usuario, password, protocolo, driver);
-		if(database.doConnection()) 
+		if(database.doConnection()) {
+			repositoryDomicilio = new DomicilioRepository(database.getConnection());
 			repository = new ProveedoresRepository(database.getConnection()); 	
+		}
 		else 
 			System.exit(0);		
 	}
@@ -49,6 +53,8 @@ public class ProveedoresServiceImp implements Service<Proveedor> {
 
 	@Override
 	public int save(Proveedor obj){
+		int domicilio = repositoryDomicilio.save(obj.getDomicilio());
+		obj.setIdDomicilio(domicilio);
 		return repository.save(obj);
 	}
 
@@ -79,6 +85,7 @@ public class ProveedoresServiceImp implements Service<Proveedor> {
 
 	@Override
 	public boolean set(Proveedor obj) {
+		repositoryDomicilio.set(obj.getDomicilio());
 		return repository.set(obj);
 	}
 

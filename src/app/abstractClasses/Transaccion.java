@@ -9,10 +9,10 @@ import app.modelos.DetallesCompra;
 
 public class Transaccion<D extends Detalles> {
 
-	private int folio;
-	private double total;
-	private LocalDate fecha;
-	private List<D> detalles;
+	protected int folio;
+	protected double total;
+	protected LocalDate fecha;
+	protected List<D> detalles;
 //	private String hora;
 	
 	/**

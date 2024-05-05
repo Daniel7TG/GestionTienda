@@ -10,9 +10,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.enums.Permission;
 import app.interfaces.CRUDRepository;
 import app.modelos.Compra;
 import app.modelos.Producto;
+import app.modelos.Usuario;
+import app.util.MoveResult;
 import app.util.Util;
 
 public class ComprasRepository implements CRUDRepository<Compra> {
@@ -48,12 +51,13 @@ public class ComprasRepository implements CRUDRepository<Compra> {
 	
 	@Override
 	public int save(Compra compra) {
-		String sql = "INSERT INTO compra(fecha, rfc) "
-				+ "VALUES(?, ?)"; 
+		String sql = "INSERT INTO compra(fecha, rfc, total) "
+				+ "VALUES(?, ?, ?)"; 
 		try {
 			pStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pStatement.setDate(1, Date.valueOf(compra.getFecha()));
 			pStatement.setString(2, compra.getRfc());
+			pStatement.setDouble(3, compra.getTotal());
 			pStatement.executeUpdate();
 			resultSet = pStatement.getGeneratedKeys();
 			if(resultSet.next()) return resultSet.getInt(1);
@@ -62,19 +66,25 @@ public class ComprasRepository implements CRUDRepository<Compra> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return -1;
 	}
 
 	
 	@Override
 	public Compra get(String id) {
-		String sql = "SELECT * FROM compra WHERE folio = ?";
+		String sql = "SELECT compra.*, det.* FROM compra "
+				+ "JOIN detalles_compra AS det ON compra.folio = det.folio "
+				+ "WHERE compra.folio = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
 			resultSet = pStatement.executeQuery();
+			Compra compra = new Compra();
 			if(resultSet.next())
-				return toCompra(resultSet);
+				compra = MoveResult.toCompra(resultSet);
+			while(resultSet.next())
+				compra.getDetalles().add(MoveResult.toDetallesCompra(resultSet));
+			return compra;
 		} catch (SQLException e) {}
 		return null;	
 	}
@@ -93,12 +103,13 @@ public class ComprasRepository implements CRUDRepository<Compra> {
 
 	@Override
 	public boolean set(Compra c) {
-		String sql = "UPDATE compra SET rfc = ?, fecha = ? WHERE folio = ?";
+		String sql = "UPDATE compra SET rfc = ?, fecha = ?, total = ? WHERE folio = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, c.getRfc());
 			pStatement.setDate(2, Date.valueOf(c.getFecha()));
-			pStatement.setInt(3, c.getFolio());
+			pStatement.setDouble(3, c.getTotal());
+			pStatement.setInt(4, c.getFolio());
 			return pStatement.executeUpdate() == 0 ? false : true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -108,12 +119,19 @@ public class ComprasRepository implements CRUDRepository<Compra> {
 
 	@Override
 	public List<Compra> getAll() {
-		String sql = "SELECT * FROM compra";
+		String sql = "SELECT compra.*, det.* FROM compra JOIN detalles_compra AS det ON compra.folio = det.folio";
 		List<Compra> compras = new ArrayList<Compra>();
 		try {
 			resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				compras.add(toCompra(resultSet));
+				int folio = resultSet.getInt("compra.folio");
+				int indexOnList = compras.indexOf(new Compra(folio));
+				if(indexOnList != -1) {
+					compras.get(indexOnList).getDetalles().add( MoveResult.toDetallesCompra(resultSet));
+				}
+				else {
+					compras.add(MoveResult.toCompra(resultSet));					
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -128,7 +146,7 @@ public class ComprasRepository implements CRUDRepository<Compra> {
 
 	@Override
 	public int getSize() {
-		String sql = "SELECT COUNT(folio) AS size FROM producto";
+		String sql = "SELECT COUNT(folio) AS size FROM compra";
 		try {
 			resultSet = statement.executeQuery(sql);
 			return resultSet.getInt("size");
@@ -144,16 +162,8 @@ public class ComprasRepository implements CRUDRepository<Compra> {
 	}
 
 	
-	private Compra toCompra(ResultSet rs) {
-		Compra compra = new Compra();
-		try {
-			compra.setFecha(rs.getDate("fecha").toLocalDate());
-			compra.setFolio(rs.getInt("folio"));
-			compra.setRfc(rs.getString("rfc"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return compra;
+	@Override
+	public int saveAll(List<Compra> obj) {
+		return 0;
 	}
 }

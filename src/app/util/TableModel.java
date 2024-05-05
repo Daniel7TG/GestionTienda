@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import app.abstractClasses.Detalles;
+import app.interfaces.Listable;
 import app.modelos.DetallesVenta;
 
 public class TableModel extends DefaultTableModel {
@@ -21,6 +22,14 @@ public class TableModel extends DefaultTableModel {
 	Object[][] data;
 	String[] columns;
 	int size;
+	
+	public TableModel(JTable table, List<? extends Listable> data, String[] columns) {
+		this.table = table;
+		this.data = data.stream().map(Listable::toRow).toArray(Object[][]::new);
+		this.columns = columns;		
+		this.size = this.data.length;
+		setDataVector(this.data, columns);		
+	}
 	
 	public TableModel(JTable table, List data, String[] columns, Class ...clazz) {
 		this.table = table;
@@ -97,6 +106,7 @@ public class TableModel extends DefaultTableModel {
 			List arrayList = (List)data[row][column];
 			String[] stringArray = new String[arrayList.size()];
 			table.setRowHeight(row, 19 * arrayList.size() );
+//			System.out.println(19 * arrayList.size());
 			for(int i = 0; i < arrayList.size(); i++) stringArray[i] = arrayList.get(i).toString();
 			return new JList<String>(stringArray);
 		}

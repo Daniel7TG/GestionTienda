@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 
 import app.UI.vista.general.PanelCapturaDireccion;
 import app.abstractClasses.Detalles;
+import app.abstractClasses.Persona;
+import app.abstractClasses.Transaccion;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
 import app.modelos.containers.Proveedores;
@@ -201,7 +203,7 @@ public class PanelCapturaProveedor extends JPanel {
 		tablePanel = new JScrollPane();
 		productsTable = new JTable();
 		data = proveedores.getMatrix();
-		model = new TableModel(productsTable, data, columnNames);
+		model = new TableModel(productsTable, proveedores.getAll(), columnNames);
 		model.configurarTabla(1, 1, 1, 1, 1, 3);
 		productsTable.setModel(model);
 		tablePanel.setViewportView(productsTable);

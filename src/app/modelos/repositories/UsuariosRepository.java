@@ -180,6 +180,13 @@ public class UsuariosRepository implements CRUDRepository<Usuario> {
 	public boolean isEmpty() {
 		return getSize() == 0 ? true:false;
 	}
+
+
+	@Override
+	public int saveAll(List<Usuario> obj) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 	

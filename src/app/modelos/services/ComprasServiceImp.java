@@ -7,13 +7,16 @@ import java.util.List;
 import app.dao.database.Database;
 import app.interfaces.Service;
 import app.modelos.Compra;
+import app.modelos.DetallesCompra;
 import app.modelos.repositories.ComprasRepository;
+import app.modelos.repositories.DetallesCompraRepository;
 import app.records.DBRecord;
 
 public class ComprasServiceImp implements Service<Compra> {
 
 	private Database database;
 	private ComprasRepository repository;
+	private DetallesCompraRepository repositoryDetalles;
 	
 	
 	public ComprasServiceImp(){
@@ -30,8 +33,10 @@ public class ComprasServiceImp implements Service<Compra> {
 		String usuario = record.usuario();
 		
 		database = Database.newInstance(name, usuario, password, protocolo, driver);
-		if(database.doConnection()) 
+		if(database.doConnection()) {			
+			repositoryDetalles = new DetallesCompraRepository(database.getConnection());
 			repository = new ComprasRepository(database.getConnection());
+		}
 		else 
 			System.exit(0);		
 	}
@@ -49,7 +54,10 @@ public class ComprasServiceImp implements Service<Compra> {
 
 	@Override
 	public int save(Compra compra) {
-		return repository.save(compra);
+		int folio = repository.save(compra);
+		for(DetallesCompra det : compra.getDetalles()) det.setFolio(folio);
+		repositoryDetalles.saveAll(compra.getDetalles());
+		return folio;
 	}
 
 	@Override

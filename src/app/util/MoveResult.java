@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import app.enums.Orientacion;
 import app.enums.Permission;
+import app.modelos.Compra;
+import app.modelos.DetallesCompra;
 import app.modelos.Domicilio;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
@@ -83,6 +85,37 @@ public abstract class MoveResult {
 		}
 		return user;
 	}	
+	
+	
+	public static Compra toCompra(ResultSet result) {
+		Compra compra = new Compra();
+		try {
+			compra.setFecha(result.getDate("fecha").toLocalDate());
+			compra.setFolio(result.getInt("folio"));
+			compra.setTotal(result.getDouble("total"));
+			compra.setRfc(result.getString("rfc"));
+			compra.getDetalles().add(toDetallesCompra(result));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return compra;
+	}
+	
+	
+	public static DetallesCompra toDetallesCompra(ResultSet result) {
+		DetallesCompra det = new DetallesCompra();
+		try {
+			det.setCantidad(result.getInt("det.cantidad"));
+			det.setCodigo(result.getString("det.codigo"));
+			det.setFechaCaducidad(result.getDate("det.fecha_caducidad").toLocalDate());
+			det.setFolio(result.getInt("det.folio"));
+			det.setPrecio(result.getDouble("det.precio"));
+			det.setTotal(result.getDouble("det.total"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return det;		
+	}
 	
 	
 	

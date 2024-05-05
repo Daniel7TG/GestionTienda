@@ -47,9 +47,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 
 	@Override
 	public int save(Proveedor proveedor) {
-
-		String sql = "INSERT INTO proveedor(rfc, nombre, apellido, razon_Social, telefono, domicilio) "
-
+		String sql = "INSERT INTO proveedor(rfc, nombre, apellido, razon_social, telefono, domicilio) "
 				+ "VALUES(?, ?, ?, ?, ?, ?)"; 
 		int result = 0;
 		try {
@@ -60,8 +58,8 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			pStatement.setString(4, proveedor.getRazonSocial());
 			pStatement.setString(5, proveedor.getTelefono());
 			pStatement.setInt(6, proveedor.getIdDomicilio());
-
 			result = pStatement.executeUpdate();
+			System.out.println("saved");
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -120,14 +118,13 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 
 	@Override
 	public List<Proveedor> getAll() {
-		String sql = "SELECT * FROM proveedor";
+		String sql = "SELECT * FROM proveedor JOIN domicilio ON proveedor.domicilio = domicilio.id";
 
 		List<Proveedor> proveedores = new ArrayList<Proveedor>();
 		try {
 			resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-			proveedores.add(MoveResult.toSupplier(resultSet));
-
+				proveedores.add(MoveResult.toSupplier(resultSet));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -143,7 +140,6 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 	@Override
 	public int getSize() {
 		String sql = "SELECT COUNT(rfc) AS size FROM proveedor";
-
 		try {
 			resultSet = statement.executeQuery(sql);
 			return resultSet.getInt("size");
@@ -156,6 +152,13 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 	@Override
 	public boolean isEmpty() {
 		return getSize() == 0 ? true:false;
+	}
+
+
+	@Override
+	public int saveAll(List<Proveedor> obj) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

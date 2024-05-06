@@ -40,7 +40,7 @@ public class Venta extends Transaccion<DetallesVenta>{
 
 	@Override
 	public String toString() {
-		return super.toString() + "Compra [rfc=" + userName + "]";
+		return super.toString() + "Venta [folio=" + userName + "]";
 	}
 	
 	@Override

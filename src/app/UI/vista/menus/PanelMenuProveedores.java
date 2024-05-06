@@ -11,35 +11,76 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import app.components.MenuButton;
+import app.enums.Permission;
+import app.modelos.Usuario;
+
 public class PanelMenuProveedores extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JButton registrarButton;
 
-	public PanelMenuProveedores() {
+	private JButton registrarButton;
+	private JButton consultarButton;
+	private JButton eliminarButton;
+	private JButton modificarButton;
+	private JButton listarButton;
+
+	public PanelMenuProveedores(Usuario usuario) {
 		setMaximumSize(new Dimension(200, 32767));
 		setBackground(Color.decode("#b0cfe0"));
 		setLayout(new GridLayout(6, 1, 0, 20));
 
-		registrarButton = new JButton("Registrar");
-		registrarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		registrarButton.setDisabledIcon(new ImageIcon(PanelMenuProductos.class.getResource("/img/disabled.png")));
-		registrarButton.setMnemonic(KeyEvent.VK_R);
-		registrarButton.setFocusPainted(false);
-		registrarButton.setContentAreaFilled(false);
-		registrarButton.setBorderPainted(false);
-		registrarButton.setPressedIcon(new ImageIcon(PanelMenuProductos.class.getResource("/img/selected.png")));
-		registrarButton.setRolloverIcon(new ImageIcon(PanelMenuProductos.class.getResource("/img/hover.png")));
-		registrarButton.setForeground(Color.WHITE);
-		registrarButton.setIcon(new ImageIcon(PanelMenuProductos.class.getResource("/img/default.png")));
-		registrarButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.ADD_PROVEEDORES);
+		if(!usuario.hasAccessTo(Permission.ADD_PROVEEDORES)) registrarButton.setEnabled(false);
+
+		consultarButton = new MenuButton("Consultar", KeyEvent.VK_C, Permission.CRUD_PROVEEDORES);
+		if(!usuario.hasAccessTo(Permission.CRUD_PROVEEDORES)) consultarButton.setEnabled(false);
+
+		eliminarButton = new MenuButton("Eliminar", KeyEvent.VK_E, Permission.DELETE_PROVEEDORES);
+		if(!usuario.hasAccessTo(Permission.DELETE_PROVEEDORES)) eliminarButton.setEnabled(false);
+
+		modificarButton = new MenuButton("Modificar", KeyEvent.VK_M, Permission.MODIFY_PROVEEDORES);
+		if(!usuario.hasAccessTo(Permission.MODIFY_PROVEEDORES)) modificarButton.setEnabled(false);
+
+		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_PROVEEDORES);
+		if(!usuario.hasAccessTo(Permission.ADD_PROVEEDORES)) modificarButton.setEnabled(false);
+
+
+
 		add(registrarButton);
+		add(consultarButton);
+		add(eliminarButton);
+		add(modificarButton);
+		add(listarButton);
+
+
 	}
 	public void enableButtons(boolean status) {
 		registrarButton.setEnabled(status);
+		consultarButton.setEnabled(status);
+		eliminarButton.setEnabled(status);
+		modificarButton.setEnabled(status);
+		listarButton.setEnabled(status);
 	}
+
 	public JButton getRegistrarButton() {
 		return registrarButton;
+	}
+
+	public JButton getConsultarButton() {
+		return consultarButton;
+	}
+
+	public JButton getEliminarButton() {
+		return eliminarButton;
+	}
+
+	public JButton getModificarButton() {
+		return modificarButton;
+	}
+
+	public JButton getListarButton() {
+		return listarButton;
 	}
 
 }

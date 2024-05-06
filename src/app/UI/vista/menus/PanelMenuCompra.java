@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import app.components.MenuButton;
+import app.enums.Permission;
+import app.modelos.Usuario;
 
 public class PanelMenuCompra extends JPanel {
 
@@ -21,18 +23,20 @@ public class PanelMenuCompra extends JPanel {
 	private JButton registrarButton;
 	private JButton listarButton;
 
-	public PanelMenuCompra() {
+	public PanelMenuCompra(Usuario usuario) {
 
 		setMaximumSize(new Dimension(200, 32767));
 		setBackground(Color.decode("#b0cfe0"));
 		setLayout(new GridLayout(6, 1, 0, 20));
 
-		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R);
+		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.WRITE_COMPRA);
+		if(!usuario.hasAccessTo(Permission.WRITE_COMPRA)) registrarButton.setEnabled(false);
+		
+		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_COMRPA);
+		if(!usuario.hasAccessTo(Permission.READ_COMRPA)) listarButton.setEnabled(false);
+				
 		add(registrarButton);
-		
-		listarButton = new MenuButton("Listar", KeyEvent.VK_L);
 		add(listarButton);
-		
 	}
 	
 	public void enableButtons(boolean status) {
@@ -43,9 +47,9 @@ public class PanelMenuCompra extends JPanel {
 	public JButton getRegistrarButton() {
 		return registrarButton;
 	}
-
+	
 	public JButton getListarButton() {
 		return listarButton;
-	}	
+	}
 
 }

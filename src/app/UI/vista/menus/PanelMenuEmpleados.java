@@ -15,7 +15,11 @@ import app.modelos.Usuario;
 public class PanelMenuEmpleados extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
 	private JButton registrarButton;
+	private JButton consultarButton;
+	private JButton eliminarButton;
+	private JButton modificarButton;
 	private JButton listarButton;
 	
 	public PanelMenuEmpleados(Usuario usuario){
@@ -26,25 +30,53 @@ public class PanelMenuEmpleados extends JPanel {
 		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.ADD_USUARIOS);
 		if(!usuario.hasAccessTo(Permission.ADD_USUARIOS)) registrarButton.setEnabled(false);
 		
+		consultarButton = new MenuButton("Consultar", KeyEvent.VK_L, Permission.CRUD_USUARIOS);
+		if(!usuario.hasAccessTo(Permission.CRUD_USUARIOS)) consultarButton.setEnabled(false);
+		
+		eliminarButton = new MenuButton("Eliminar", KeyEvent.VK_L, Permission.DELETE_USUARIOS);
+		if(!usuario.hasAccessTo(Permission.DELETE_USUARIOS)) eliminarButton.setEnabled(false);
+		
+		modificarButton = new MenuButton("Modificar", KeyEvent.VK_L, Permission.MODIFY_USUARIOS);
+		if(!usuario.hasAccessTo(Permission.MODIFY_USUARIOS)) modificarButton.setEnabled(false);
+		
 		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_USUARIOS);
 		if(!usuario.hasAccessTo(Permission.READ_USUARIOS)) listarButton.setEnabled(false);
 		
+		
 		add(registrarButton);
+		add(consultarButton);
+		add(eliminarButton);
+		add(modificarButton);
 		add(listarButton);
 	}
-
+	
+	
+	public void enableButtons(boolean status) {
+		registrarButton.setEnabled(status);
+		consultarButton.setEnabled(status);
+		eliminarButton.setEnabled(status);
+		modificarButton.setEnabled(status);
+		listarButton.setEnabled(status);
+	}
 
 	public JButton getRegistrarButton() {
 		return registrarButton;
 	}
-	public void setRegistrarButton(JButton registrarButton) {
-		this.registrarButton = registrarButton;
+
+	public JButton getConsultarButton() {
+		return consultarButton;
 	}
+
+	public JButton getEliminarButton() {
+		return eliminarButton;
+	}
+	
+	public JButton getModificarButton() {
+		return modificarButton;
+	}
+
 	public JButton getListarButton() {
 		return listarButton;
-	}
-	public void setListarButton(JButton listarButton) {
-		this.listarButton = listarButton;
 	}
 	
 }

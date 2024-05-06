@@ -287,7 +287,6 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private void cMenuVentFunc() {
 		clearContentPane();
 		if(panelMenuVenta != null) return;
-		panelMenuVenta = new PanelMenuVenta();
 		panelMenuVenta = new PanelMenuVenta(usuarioActual);
 		registrarVentButton = panelMenuVenta.getRegistrarButton();
 		registrarVentButton.addActionListener(e->{

@@ -170,10 +170,17 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		usuarios = new UsuarioServiceImp();
 		this.addWindowListener(this);
 		
+<<<<<<< HEAD
 		usuarioActual = usuarios.get("Les");
 	    usuarioActual.getPermisos().add(Permission.READ_USUARIOS);
 	    usuarioActual.getPermisos().remove(Permission.ADD_USUARIOS);
 	    usuarios.set(usuarioActual);
+=======
+		usuarioActual = usuarios.get("danielTG");
+		usuarioActual.getPermisos().clear();
+		usuarioActual.getPermisos().add(Permission.ADMIN);
+		usuarios.set(usuarioActual);
+>>>>>>> aaa8bfc0e9f6bf3dd594080af4d9b4611b6cd12d
 		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override

@@ -84,7 +84,6 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private PanelEliminarProductos eliminarProductosPane;
 	
 	// Clientes
-	private HistorialVenta historialVenta;
 	private Service<Venta> historialVenta;
 	private JMenuItem cMenuVenta;
 	private PanelMenuVenta panelMenuVenta;
@@ -166,7 +165,6 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		font = new Font("Montserrat", Font.BOLD, 13);
 		catalogo = new ProductosServiceImp();
 		historialCompra = new ComprasServiceImp();
-		historialVenta = new HistorialVenta();
 		historialVenta = new VentasServiceImp();
 		proveedores = new ProveedoresServiceImp();
 		usuarios = new UsuarioServiceImp();

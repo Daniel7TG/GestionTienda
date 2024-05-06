@@ -33,8 +33,8 @@ public class PanelMenuProveedores extends JPanel {
 		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.ADD_PROVEEDORES);
 		if(!usuario.hasAccessTo(Permission.ADD_PROVEEDORES)) registrarButton.setEnabled(false);
 
-		consultarButton = new MenuButton("Consultar", KeyEvent.VK_C, Permission.CRUD_PROVEEDORES);
-		if(!usuario.hasAccessTo(Permission.CRUD_PROVEEDORES)) consultarButton.setEnabled(false);
+		consultarButton = new MenuButton("Consultar", KeyEvent.VK_C, Permission.READ_PROVEEDORES);
+		if(!usuario.hasAccessTo(Permission.READ_PROVEEDORES)) consultarButton.setEnabled(false);
 
 		eliminarButton = new MenuButton("Eliminar", KeyEvent.VK_E, Permission.DELETE_PROVEEDORES);
 		if(!usuario.hasAccessTo(Permission.DELETE_PROVEEDORES)) eliminarButton.setEnabled(false);
@@ -43,8 +43,7 @@ public class PanelMenuProveedores extends JPanel {
 		if(!usuario.hasAccessTo(Permission.MODIFY_PROVEEDORES)) modificarButton.setEnabled(false);
 
 		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_PROVEEDORES);
-		if(!usuario.hasAccessTo(Permission.ADD_PROVEEDORES)) modificarButton.setEnabled(false);
-
+		if(!usuario.hasAccessTo(Permission.READ_PROVEEDORES)) listarButton.setEnabled(false);
 
 
 		add(registrarButton);

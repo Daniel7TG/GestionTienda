@@ -13,6 +13,8 @@ import javax.swing.table.DefaultTableModel;
 
 import app.abstractClasses.Transaccion;
 import app.interfaces.Funcionable;
+import app.interfaces.Service;
+import app.modelos.Venta;
 import app.modelos.containers.HistorialVenta;
 import app.util.TableModel;
 import app.util.Util;
@@ -26,21 +28,22 @@ public class PanelListadoVentas extends JPanel {
 	private String[] columnNames = {"Folio",
 			"Total", 
 			"Fecha",
-			"Detalles"};
-	private HistorialVenta clientes;
+			"Detalles",
+			"Usuario"};
+	private Service<Venta> clientes;
 	private JScrollPane tableScroll;
 	
 	@SuppressWarnings("serial")
-	public PanelListadoVentas(HistorialVenta clientes) {
+	public PanelListadoVentas(Service<Venta> clientes) {
 		setLayout(new GridLayout(1, 1, 0, 0));
 
 		this.clientes = clientes;		
-		Object[][] data = clientes.getData();
+		Object[][] data = clientes.getMatrix();
 		table = new JTable();
-		model = new TableModel(table, clientes.getList(), columnNames, Transaccion.class);
+		model = new TableModel(table, clientes.getAll(), columnNames);
 		table.setModel(model);
 		model.renderListColumn(3);
-		model.configurarTabla(2, 2, 2, 6);
+		model.configurarTabla(2, 2, 2, 6, 2);
 		tableScroll = new JScrollPane(table);		
 		tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(tableScroll);

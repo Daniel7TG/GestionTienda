@@ -48,7 +48,6 @@ public class PermisosUsuarioRepository {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, username);
 			pStatement.executeUpdate();
-			System.out.println("deleted\n" + pStatement.toString());
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

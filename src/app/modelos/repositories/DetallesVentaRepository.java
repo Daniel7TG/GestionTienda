@@ -47,7 +47,7 @@ public class DetallesVentaRepository implements CRUDRepository<DetallesVenta> {
 	@Override
 	public int saveAll(List<DetallesVenta> detList) {
 		String sql = "INSERT INTO detalles_venta(cantidad, precio, total, folio, codigo) "
-				+ "VALUES(?, ?, ?, ?, ?, ?)"; 
+				+ "VALUES(?, ?, ?, ?, ?)"; 
 		int cantidad = 0;
 		for(DetallesVenta det : detList)
 		try {

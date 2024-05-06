@@ -42,8 +42,8 @@ public class PanelMenuProductos extends JPanel {
 		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.ADD_PRODUCTOS);
 		if(!usuario.hasAccessTo(Permission.ADD_PRODUCTOS)) registrarButton.setEnabled(false);
 
-		consultarButton = new MenuButton("Consultar", KeyEvent.VK_C, Permission.CRUD_PRODUCTOS);
-		if(!usuario.hasAccessTo(Permission.CRUD_PRODUCTOS)) consultarButton.setEnabled(false);
+		consultarButton = new MenuButton("Consultar", KeyEvent.VK_C, Permission.READ_PRODUCTOS);
+		if(!usuario.hasAccessTo(Permission.READ_PRODUCTOS)) consultarButton.setEnabled(false);
 
 		eliminarButton = new MenuButton("Eliminar", KeyEvent.VK_E, Permission.DELETE_PRODUCTOS);
 		if(!usuario.hasAccessTo(Permission.DELETE_PRODUCTOS)) eliminarButton.setEnabled(false);

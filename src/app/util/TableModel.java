@@ -21,6 +21,7 @@ public class TableModel extends DefaultTableModel {
 	JTable table;
 	Object[][] data;
 	String[] columns;
+	int[] widths;
 	int size;
 	
 	public TableModel(JTable table, List<? extends Listable> data, String[] columns) {
@@ -76,8 +77,10 @@ public class TableModel extends DefaultTableModel {
 	
 	public void configurarTabla(int ...columnWeights) {
 		SwingUtilities.invokeLater(()->{
+			widths = new int[columnWeights.length];
 			int parcialWeights = table.getWidth() / Arrays.stream(columnWeights).sum();
 			for(int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+				widths[i] = columnWeights[i]*parcialWeights;
 				table.getColumnModel()
 				.getColumn(i)
 				.setPreferredWidth( columnWeights[i]*parcialWeights );
@@ -86,10 +89,18 @@ public class TableModel extends DefaultTableModel {
 			table.revalidate();
 		});
 	}
+	public void setWidths() {
+		for(int i = 0; i < widths.length; i++) {
+			table.getColumnModel()
+			.getColumn(i)
+			.setPreferredWidth(widths[i]);
+		}		
+	}
 	
 	public void update(Object[][] data) {
 		this.size = data.length;
 		setDataVector(data, columns);
+		setWidths();
 	}
 	
 	public void renderListColumn(int column) {

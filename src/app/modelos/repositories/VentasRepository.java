@@ -9,12 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.interfaces.CRUDRepository;
 import app.modelos.Compra;
 import app.modelos.Venta;
 import app.util.MoveResult;
 import app.util.Util;
 
-public class VentasRepository {
+public class VentasRepository implements CRUDRepository<Venta> {
 
 	private Connection connection;
 	private Statement statement;
@@ -114,7 +115,7 @@ public class VentasRepository {
 		try {
 			resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				int folio = resultSet.getInt("compra.folio");
+				int folio = resultSet.getInt("venta.folio");
 				int indexOnList = ventas.indexOf(new Venta(folio));
 				if(indexOnList != -1) {
 					ventas.get(indexOnList).getDetalles().add( MoveResult.toDetallesVenta(resultSet));
@@ -148,6 +149,11 @@ public class VentasRepository {
 
 	public boolean isEmpty() {
 		return getSize() == 0;
+	}
+
+	@Override
+	public int saveAll(List<Venta> obj) {
+		return 0;
 	}
 
 }

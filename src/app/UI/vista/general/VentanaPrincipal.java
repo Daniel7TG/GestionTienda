@@ -41,11 +41,13 @@ import app.modelos.Compra;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
 import app.modelos.Usuario;
+import app.modelos.Venta;
 import app.modelos.containers.HistorialVenta;
 import app.modelos.services.ComprasServiceImp;
 import app.modelos.services.ProductosServiceImp;
 import app.modelos.services.ProveedoresServiceImp;
 import app.modelos.services.UsuarioServiceImp;
+import app.modelos.services.VentasServiceImp;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -83,6 +85,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	
 	// Clientes
 	private HistorialVenta historialVenta;
+	private Service<Venta> historialVenta;
 	private JMenuItem cMenuVenta;
 	private PanelMenuVenta panelMenuVenta;
 	private PanelCapturaVenta capturaVentaPane;
@@ -164,6 +167,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		catalogo = new ProductosServiceImp();
 		historialCompra = new ComprasServiceImp();
 		historialVenta = new HistorialVenta();
+		historialVenta = new VentasServiceImp();
 		proveedores = new ProveedoresServiceImp();
 		usuarios = new UsuarioServiceImp();
 		this.addWindowListener(this);
@@ -286,6 +290,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		clearContentPane();
 		if(panelMenuVenta != null) return;
 		panelMenuVenta = new PanelMenuVenta();
+		panelMenuVenta = new PanelMenuVenta(usuarioActual);
 		registrarVentButton = panelMenuVenta.getRegistrarButton();
 		registrarVentButton.addActionListener(e->{
 			regVentaFunc();
@@ -302,7 +307,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	
 	
 	public void regVentaFunc() {
-		capturaVentaPane = new PanelCapturaVenta(catalogo, historialVenta);
+		capturaVentaPane = new PanelCapturaVenta(catalogo, historialVenta, usuarioActual);
 		panelEncabezados = new PanelEncabezados("Registro de Venta");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
@@ -396,7 +401,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private void pMenuProvFunc() {
 		clearContentPane();
 		if(panelMenuProveedores != null) return;
-		panelMenuProveedores = new PanelMenuProveedores();
+		panelMenuProveedores = new PanelMenuProveedores(usuarioActual);
 		registrarProvButton = panelMenuProveedores.getRegistrarButton();
 		registrarProvButton.addActionListener(e->{
 			regProvFunc();
@@ -428,7 +433,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private void pMenuCompFunc() {
 		clearContentPane();
 		if(panelMenuCompra != null) return;
-		panelMenuCompra = new PanelMenuCompra();
+		panelMenuCompra = new PanelMenuCompra(usuarioActual);
 		registrarCompButton = panelMenuCompra.getRegistrarButton();
 		registrarCompButton.addActionListener(e->{
 			regCompraFunc();
@@ -483,7 +488,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	public void sMenuProdFunc() {
 		clearContentPane();
 		if(panelMenuProductos != null) return;
-		panelMenuProductos = new PanelMenuProductos();
+		panelMenuProductos = new PanelMenuProductos(usuarioActual);
 		
 		registrarButton = panelMenuProductos.getRegistrarButton();
 		registrarButton.addActionListener(e -> {
@@ -510,7 +515,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 			revalidate();
 		});
 		
+<<<<<<< HEAD
 	//	ordenarButton = panelMenuProductos.getOrdenarButton();
+=======
+>>>>>>> aaa8bfc0e9f6bf3dd594080af4d9b4611b6cd12d
 
 		contentPane.add(panelMenuProductos, BorderLayout.WEST);
 		revalidate();

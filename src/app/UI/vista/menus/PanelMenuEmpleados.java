@@ -30,8 +30,8 @@ public class PanelMenuEmpleados extends JPanel {
 		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.ADD_USUARIOS);
 		if(!usuario.hasAccessTo(Permission.ADD_USUARIOS)) registrarButton.setEnabled(false);
 		
-		consultarButton = new MenuButton("Consultar", KeyEvent.VK_L, Permission.CRUD_USUARIOS);
-		if(!usuario.hasAccessTo(Permission.CRUD_USUARIOS)) consultarButton.setEnabled(false);
+		consultarButton = new MenuButton("Consultar", KeyEvent.VK_L, Permission.READ_USUARIOS);
+		if(!usuario.hasAccessTo(Permission.READ_USUARIOS)) consultarButton.setEnabled(false);
 		
 		eliminarButton = new MenuButton("Eliminar", KeyEvent.VK_L, Permission.DELETE_USUARIOS);
 		if(!usuario.hasAccessTo(Permission.DELETE_USUARIOS)) eliminarButton.setEnabled(false);

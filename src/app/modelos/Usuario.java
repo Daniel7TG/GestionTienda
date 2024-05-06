@@ -44,7 +44,7 @@ public class Usuario extends Persona {
 		if(permisos.contains(Permission.ADMIN)) return true;
 		return permisos.stream().anyMatch(user_p -> 
 			p == user_p | 
-			(p.getCategory() == user_p.getCategory() & p.isUniversal())
+			(p.getCategory() == user_p.getCategory() & user_p.isUniversal())
 		);
 	}
 	

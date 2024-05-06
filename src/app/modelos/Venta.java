@@ -7,12 +7,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 import app.abstractClasses.Transaccion;
+import app.interfaces.Listable;
 
-public class Venta extends Transaccion<DetallesVenta>{
+public class Venta extends Transaccion<DetallesVenta> implements Listable {
 
 	private String userName;
-	
-	String empleadoID;
 	
 	public Venta(LocalDate fecha, List<DetallesVenta> detalles) {
 		super(fecha, detalles);
@@ -20,7 +19,7 @@ public class Venta extends Transaccion<DetallesVenta>{
 
 	public Venta(LocalDate fecha, List<DetallesVenta> detalles, String userName) {
 		super(fecha, detalles);
-		this.folio = folio;
+		this.userName = userName;
 	}
 	
 	public Venta(int folio) {
@@ -54,8 +53,5 @@ public class Venta extends Transaccion<DetallesVenta>{
 	public Object[] toRow() {
 		return new Object[] {folio, total, fecha, detalles, userName};
 	}
-
-
-
 	
 }

@@ -17,6 +17,7 @@ import app.abstractClasses.Detalles;
 import app.interfaces.Service;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
+import app.modelos.Usuario;
 import app.modelos.Venta;
 import app.modelos.containers.Catalogo;
 import app.modelos.containers.HistorialVenta;
@@ -42,9 +43,11 @@ public class PanelCapturaVenta extends JPanel {
 	private JTextField codigoField;
 	private TableModel model;
 	
-	private HistorialVenta clientes;
+	private Usuario user;
+	private Service<Venta> clientes;
 	private Service<Producto> catalogo;
 	private List<DetallesVenta> lista;
+	
 	private JPanel topPanel;
 	private JSpinner cantidadSpin;
 	private JButton agregarButton;
@@ -56,10 +59,12 @@ public class PanelCapturaVenta extends JPanel {
 	};
 	private List<String> headers = List.of("Tienda", "Sucursal Zitacuaro", "Telefono: 55-5555-5555", "RFC: ", LocalDate.now().toString());
 	
-	public PanelCapturaVenta(Service<Producto> catalogo, HistorialVenta clientes) {
+	public PanelCapturaVenta(Service<Producto> catalogo, Service<Venta> clientes, Usuario user) {
 		setLayout(new BorderLayout(0, 0));
 		this.clientes = clientes;
 		this.catalogo = catalogo;
+		this.user = user;
+		
 		lista = new ArrayList<>();
 		
 		topPanel = new JPanel();
@@ -152,11 +157,11 @@ public class PanelCapturaVenta extends JPanel {
 	public void guardarVenta() {
 		if(lista.size() == 0) return;
 		LocalDate fecha = LocalDate.now();
-		Venta venta = new Venta(fecha, lista);
+		Venta venta = new Venta(fecha, lista, user.getUserName());
 		lista.forEach(detalle -> 
 			catalogo.get(detalle.getCodigo()).subtractStock(detalle.getCantidad())
 		);
-		clientes.add(venta);
+		clientes.save(venta);
 		showTicket(lista);
 		lista.clear();
 		updateTable();

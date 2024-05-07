@@ -169,21 +169,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		usuarios = new UsuarioServiceImp();
 		this.addWindowListener(this);
 		
-<<<<<<< HEAD
 		usuarioActual = user;
-=======
-<<<<<<< HEAD
-		usuarioActual = usuarios.get("Les");
-	    usuarioActual.getPermisos().add(Permission.READ_USUARIOS);
-	    usuarioActual.getPermisos().remove(Permission.ADD_USUARIOS);
-	    usuarios.set(usuarioActual);
-=======
-		usuarioActual = usuarios.get("danielTG");
-		usuarioActual.getPermisos().clear();
-		usuarioActual.getPermisos().add(Permission.ADMIN);
-		usuarios.set(usuarioActual);
->>>>>>> aaa8bfc0e9f6bf3dd594080af4d9b4611b6cd12d
->>>>>>> 1c89e7a63eae9887692f13293efedc15cbc8bc03
 		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
@@ -523,10 +509,6 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 			revalidate();
 		});
 		
-<<<<<<< HEAD
-	//	ordenarButton = panelMenuProductos.getOrdenarButton();
-=======
->>>>>>> aaa8bfc0e9f6bf3dd594080af4d9b4611b6cd12d
 
 		contentPane.add(panelMenuProductos, BorderLayout.WEST);
 		revalidate();

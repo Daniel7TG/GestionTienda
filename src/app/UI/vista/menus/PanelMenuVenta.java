@@ -54,4 +54,10 @@ public class PanelMenuVenta extends JPanel {
 	public JButton getListarButton() {
 		return listarButton;
 	}
+<<<<<<< HEAD
+	public void setListarButton(JButton listarButton) {
+	
+	}
+=======
+>>>>>>> aaa8bfc0e9f6bf3dd594080af4d9b4611b6cd12d
 }

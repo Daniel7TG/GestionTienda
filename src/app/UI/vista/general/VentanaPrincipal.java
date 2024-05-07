@@ -457,7 +457,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 
 	private void elimProvFunc() {
 		eliminarProveedorPane = new PanelEliminarProveedor(proveedores);
-		panelEncabezados = new PanelEncabezados("Consultar Proveedores");
+		panelEncabezados = new PanelEncabezados("Eliminar Proveedores");
 		panelOpciones = new PanelOpciones(eliminarProveedorPane.getLastItem(), PanelOpciones.BOTH, "Eliminar", "Cancelar");
 		guardarButton = panelOpciones.getGuardarButton();
 		guardarButton.addActionListener(ec->{

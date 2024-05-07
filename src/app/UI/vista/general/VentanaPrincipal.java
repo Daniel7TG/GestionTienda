@@ -23,7 +23,9 @@ import app.UI.vista.captura.PanelCapturaProductos;
 import app.UI.vista.captura.PanelCapturaProveedor;
 import app.UI.vista.captura.PanelCapturaVenta;
 import app.UI.vista.consulta.PanelConsultaProductos;
+import app.UI.vista.consulta.PanelConsultaProveedor;
 import app.UI.vista.eliminar.PanelEliminarProductos;
+import app.UI.vista.eliminar.PanelEliminarProveedor;
 import app.UI.vista.listado.PanelListadoCompras;
 import app.UI.vista.listado.PanelListadoEmpleados;
 import app.UI.vista.listado.PanelListadoProductos;
@@ -438,7 +440,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	}
 	
 	private void consProvFunc() {
-		consultarProveedorPane = new PanelConsultarProveedor(proveedores);
+		consultarProveedorPane = new PanelConsultaProveedor(proveedores);
 		panelEncabezados = new PanelEncabezados("Consultar Proveedores");
 		panelOpciones = new PanelOpciones(consultarProveedorPane.getLastItem(), PanelOpciones.CANCEL);
 		cancelarButton = panelOpciones.getCancelarButton();

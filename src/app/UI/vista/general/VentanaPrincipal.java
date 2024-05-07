@@ -122,6 +122,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	
 	private JButton registrarProvButton;
 	private PanelCapturaProveedor capturaProveedorPane;
+	private JButton consultarProvButton;
+	private PanelConsultaProveedor consultarProveedorPane;
+	private JButton eliminarProvButton;
+	private PanelEliminarProveedor eliminarProveedorPane;
 	private PanelMenuProveedores panelMenuProveedores;
 	// Fin Proveedores
 	
@@ -400,6 +404,15 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		registrarProvButton.addActionListener(e->{
 			regProvFunc();
 		});
+		consultarProvButton = panelMenuProveedores.getConsultarButton();
+		consultarProvButton.addActionListener(e->{
+			consProvFunc();
+		});
+		eliminarProvButton = panelMenuProveedores.getEliminarButton();
+		eliminarProvButton.addActionListener(e->{
+			elimProvFunc();
+		});
+		
 		contentPane.add(panelMenuProveedores, BorderLayout.WEST);
 		revalidate();
 	}
@@ -422,6 +435,41 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuProveedores, false);
 		revalidate();
+	}
+	
+	private void consProvFunc() {
+		consultarProveedorPane = new PanelConsultarProveedor(proveedores);
+		panelEncabezados = new PanelEncabezados("Consultar Proveedores");
+		panelOpciones = new PanelOpciones(consultarProveedorPane.getLastItem(), PanelOpciones.CANCEL);
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuProveedores, consultarProveedorPane, panelOpciones);
+		});
+		panelEncabezados.add(consultarProveedorPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuProveedores, false);
+		revalidate();		
+	}
+
+	private void elimProvFunc() {
+		eliminarProveedorPane = new PanelEliminarProveedor(proveedores);
+		panelEncabezados = new PanelEncabezados("Consultar Proveedores");
+		panelOpciones = new PanelOpciones(eliminarProveedorPane.getLastItem(), PanelOpciones.BOTH, "Eliminar", "Cancelar");
+		guardarButton = panelOpciones.getGuardarButton();
+		guardarButton.addActionListener(ec->{
+			eliminarProveedorPane.eliminarProveedor();
+		});
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuProveedores, eliminarProveedorPane, panelOpciones);
+		});
+		panelEncabezados.add(eliminarProveedorPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuProveedores, false);
+		revalidate();		
 	}
 
 	private void pMenuCompFunc() {

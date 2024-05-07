@@ -17,7 +17,7 @@ public class GroupRadioButtons {
 		for(int i = 0; i < this.amount; i++) {
 			JRadioButton button = new JRadioButton(names[i]);
 			
-			if(i == 0) buttons.get(i).setSelected(false); 
+			if(i == 0) button.addActionListener(e -> universalSelected()); 
 			
 			buttons.add(new JRadioButton());
 			
@@ -28,6 +28,7 @@ public class GroupRadioButtons {
 	
 	
 	public void universalSelected() {
+		if(buttons.get(0).isSelected())
 		for(int i = 0; i < this.amount; i++) {
 			if(i != 0) buttons.get(i).setSelected(false); 
 		}		

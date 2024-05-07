@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import app.components.GroupRadioButtons;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
 import app.modelos.Usuario;
@@ -56,7 +57,7 @@ public abstract class PanelUsuarios extends JPanel {
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{35, 65, 35, 65, 35, 65, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{35, 65, 35, 65, 35, 65, 30, 30, 30, 30, 30};
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 6.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
@@ -182,6 +183,17 @@ public abstract class PanelUsuarios extends JPanel {
 		gbc_lblNombre.gridx = 0;
 		gbc_lblNombre.gridy = 2;
 		add(lblNombre, gbc_lblNombre);
+		
+		
+		GroupRadioButtons productosPermission = new GroupRadioButtons(new String[] {"CRUD", "Read", "Add", "Delete", "Modify"}, 
+				"Productos");
+		GridBagConstraints productosPermissionC = new GridBagConstraints();
+		productosPermissionC.fill = GridBagConstraints.BOTH;
+		productosPermissionC.insets = new Insets(5, 5, 5, 5);
+		productosPermissionC.gridwidth = 5;
+		productosPermissionC.gridx = 0;
+		productosPermissionC.gridy = 6;
+		add(productosPermission, productosPermissionC);
 		
 		
 		style(new Component[] {

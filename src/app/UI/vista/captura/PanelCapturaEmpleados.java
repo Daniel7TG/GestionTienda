@@ -1,22 +1,18 @@
 package app.UI.vista.captura;
 
-import java.awt.Component;
 
-import javax.swing.JPanel;
-
+import app.UI.vista.general.PanelUsuarios;
 import app.interfaces.Service;
 import app.modelos.Usuario;
 
-public class PanelCapturaEmpleados extends JPanel {
+public class PanelCapturaEmpleados extends PanelUsuarios {
 
 	public PanelCapturaEmpleados(Service<Usuario> usuarios) {
-	}
-
-	public Component getLastItem() {
-		return null;
+		super(usuarios);
 	}
 
 	public void guardarEmpleado() {
+		
 	}
 
 }

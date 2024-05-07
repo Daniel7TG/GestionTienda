@@ -146,21 +146,20 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 
 
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaPrincipal frame = new VentanaPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					new VentanaPrincipal();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 	
 
-	public VentanaPrincipal() {
+	public VentanaPrincipal(Usuario user) {
 		
 		font = new Font("Montserrat", Font.BOLD, 13);
 		catalogo = new ProductosServiceImp();
@@ -170,10 +169,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		usuarios = new UsuarioServiceImp();
 		this.addWindowListener(this);
 		
-		usuarioActual = usuarios.get("danielTG");
-		usuarioActual.getPermisos().clear();
-		usuarioActual.getPermisos().add(Permission.ADMIN);
-		usuarios.set(usuarioActual);
+		usuarioActual = user;
 		
 		contentPane = new JPanel(new BorderLayout()){
 			@Override
@@ -263,6 +259,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		  menuConfiguracion,
 		  menuUsuarios
 				);
+		this.setVisible(true);
 	}
 
 

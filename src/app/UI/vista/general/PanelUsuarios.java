@@ -333,4 +333,29 @@ public abstract class PanelUsuarios extends JPanel {
 		panelDireccion.vaciarComponentes();
 	}
 	
+	public void setUnneditable() {
+		passwordField.setEditable(false);
+		confirmPasswordField.setEditable(false);
+		telefonoField.setEditable(false);
+		fieldNombre.setEditable(false);
+		fieldApellido.setEditable(false);
+		panelDireccion.setUnneditable();;		
+	}
+	public void autocompleteFields(Usuario user) {
+		fieldNombre.setText(user.getNombre());
+		fieldApellido.setText(user.getApellido());
+		telefonoField.setText(user.getTelefono());
+		panelDireccion.autoCompleteFields(user.getDomicilio());
+		passwordField.setText("");		
+		confirmPasswordField.setText("");		
+		
+		writeCompraBtn.setSelected(user.getPermisos().contains(Permission.WRITE_COMPRA));
+		writeVentaBtn.setSelected(user.getPermisos().contains(Permission.WRITE_VENTA));
+		readCompraBtn.setSelected(user.getPermisos().contains(Permission.READ_COMPRA));
+		readVentaBtn.setSelected(user.getPermisos().contains(Permission.READ_VENTA));
+		
+		productosPermission.setPressed(user.getPermisos());
+		proveedoresPermission.setPressed(user.getPermisos());
+		usuariosPermission.setPressed(user.getPermisos());
+	}
 }

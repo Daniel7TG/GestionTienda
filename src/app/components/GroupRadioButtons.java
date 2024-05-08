@@ -43,6 +43,13 @@ public class GroupRadioButtons extends JPanel {
 	}
 	
 	
+	public void setPressed(List<Permission> lista) {
+		for(int i = 0; i<amount; i++) {
+			if(lista.contains(permisos[i])) buttons.get(i).setSelected(true);;
+		}
+	}
+	
+	
 	public List<Permission> getPressed() {
 		List<Permission> activados = new ArrayList<Permission>();
 		for(int i = 0; i < amount; i++) {

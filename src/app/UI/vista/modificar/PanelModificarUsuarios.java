@@ -1,11 +1,14 @@
 package app.UI.vista.modificar;
 
 import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import app.UI.vista.general.PanelUsuarios;
 import app.components.TextFieldSuggestion;
@@ -20,22 +23,26 @@ public class PanelModificarUsuarios extends PanelUsuarios {
 	
 	public PanelModificarUsuarios(Service<Usuario> usuarios) {
 		super(usuarios, true);
-		usernameField.addKeyListener(new KeyAdapter() {
-			
-			
-		});
+		usernameField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				Usuario user = usuarios.get(usernameField.getText());
+				if(user != null) {
+					autocompleteFields(user);
+				}				
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				Usuario user = usuarios.get(usernameField.getText());
+				if(user != null) {
+					autocompleteFields(user);
+				}				
+			}
+		}); 
 		add(usernameField, gbc_rfcField);
-	}
-	
-	
-	public void autocompleteFields() {
-		fieldNombre.setText("");
-		fieldApellido.setText("");
-		usernameField.setText("");
-		telefonoField.setText("");
-		panelDireccion.getDireccion();
-		passwordField.setText("");		
-		confirmPasswordField.setText("");		
 	}
 	
 	

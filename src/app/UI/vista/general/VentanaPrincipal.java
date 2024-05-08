@@ -24,8 +24,10 @@ import app.UI.vista.captura.PanelCapturaUsuario;
 import app.UI.vista.captura.PanelCapturaVenta;
 import app.UI.vista.consulta.PanelConsultaProductos;
 import app.UI.vista.consulta.PanelConsultaProveedor;
+import app.UI.vista.consulta.PanelConsultaUsuarios;
 import app.UI.vista.eliminar.PanelEliminarProductos;
 import app.UI.vista.eliminar.PanelEliminarProveedor;
+import app.UI.vista.eliminar.PanelEliminarUsuario;
 import app.UI.vista.listado.PanelListadoCompras;
 import app.UI.vista.listado.PanelListadoEmpleados;
 import app.UI.vista.listado.PanelListadoProductos;
@@ -105,8 +107,12 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private JButton registrarEmpButton;
 	private JButton listarEmpButton;
 	private JButton modificarEmpButton;
+	private JButton consultarEmpButton;
+	private JButton eliminarEmpButton;
 	private PanelListadoEmpleados listadoEmpleadosPane;
 	private PanelCapturaUsuario capturaUsuariosPane;
+	private PanelEliminarUsuario eliminarUsuariosPane;
+	private PanelConsultaUsuarios consultarUsuariosPane;
 	private PanelModificarUsuarios modificarUsuariosPane;
 	
 	
@@ -357,11 +363,18 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		registrarEmpButton.addActionListener(e->{
 			regEmpFunc();
 		});
-		modificarEmpButton= panelMenuEmpleados.getModificarButton();
+		modificarEmpButton = panelMenuEmpleados.getModificarButton();
 		modificarEmpButton.addActionListener(e->{
 			modifEmpFunc();
 		});
-		
+		eliminarEmpButton = panelMenuEmpleados.getEliminarButton();
+		eliminarEmpButton.addActionListener(e->{
+			elimEmpFunc();
+		});
+		consultarEmpButton = panelMenuEmpleados.getConsultarButton();
+		consultarEmpButton.addActionListener(e->{
+			consEmpFunc();
+		});		
 		listarEmpButton = panelMenuEmpleados.getListarButton();
 		listarEmpButton.addActionListener(e->{
 			listEmpFunc();
@@ -389,10 +402,44 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		enableButtons(panelMenuEmpleados, false);
 		revalidate();
 	}
+	private void consEmpFunc() {
+		consultarUsuariosPane = new PanelConsultaUsuarios(usuarios);
+		panelEncabezados = new PanelEncabezados("Consulta de Empleados");
+		panelOpciones = new PanelOpciones(consultarUsuariosPane.getLastItem(), PanelOpciones.CANCEL, "Cancelar");
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuEmpleados, consultarUsuariosPane, panelOpciones);
+		});
+		panelEncabezados.add(consultarUsuariosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuEmpleados, false);
+		revalidate();
+	}
+	private void elimEmpFunc() {
+		eliminarUsuariosPane = new PanelEliminarUsuario(usuarios);
+		panelEncabezados = new PanelEncabezados("Eliminar Empleados");
+		panelOpciones = new PanelOpciones(eliminarUsuariosPane.getLastItem(), PanelOpciones.BOTH, "Eliminar", "Cancelar");
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		guardarButton.addActionListener(ec -> {
+			eliminarUsuariosPane.eliminarUsuario();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuEmpleados, eliminarUsuariosPane, panelOpciones);
+		});
+		panelEncabezados.add(eliminarUsuariosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuEmpleados, false);
+		revalidate();
+	}
 	private void modifEmpFunc() {
 		modificarUsuariosPane = new PanelModificarUsuarios(usuarios);
 		panelEncabezados = new PanelEncabezados("Registro de Empleados");
-		panelOpciones = new PanelOpciones(modificarUsuariosPane.getLastItem(), PanelOpciones.BOTH);
+		panelOpciones = new PanelOpciones(modificarUsuariosPane.getLastItem(), PanelOpciones.BOTH, "Modificar", "Cancelar");
 		guardarButton = panelOpciones.getGuardarButton();
 		cancelarButton = panelOpciones.getCancelarButton();
 		

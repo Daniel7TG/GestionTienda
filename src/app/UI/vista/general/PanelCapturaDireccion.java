@@ -61,28 +61,28 @@ public class PanelCapturaDireccion extends JPanel {
 		FocusBox focusBox = new FocusBox();
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
 				"Formulario Domicilio", TitledBorder.LEFT, TitledBorder.ABOVE_TOP, titleLabel));
-		
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
 		gridBagLayout.rowHeights = new int[] {0, 45, 0, 45, 0, 45, 0, 45, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
-		
+
 		lbNumero = new JLabel("Numero");
 		GridBagConstraints gbc_lbNumero = new GridBagConstraints();
 		gbc_lbNumero.insets = new Insets(10, 0, 0, 0);
 		gbc_lbNumero.gridx = 0;
 		gbc_lbNumero.gridy = 0;
 		add(lbNumero, gbc_lbNumero);
-		
+
 		lbCalle = new JLabel("Calle");
 		GridBagConstraints gbc_lbCalle = new GridBagConstraints();
 		gbc_lbCalle.insets = new Insets(10, 0, 5, 0);
 		gbc_lbCalle.gridx = 1;
 		gbc_lbCalle.gridy = 0;
 		add(lbCalle, gbc_lbCalle);
-		
+
 		numeroField = new JTextField();
 		numeroField.addActionListener(focusField);
 		numeroField.addKeyListener(new KeyAdapter() {
@@ -100,7 +100,7 @@ public class PanelCapturaDireccion extends JPanel {
 		gbc_numeroField.gridy = 1;
 		add(numeroField, gbc_numeroField);
 		numeroField.setColumns(10);
-		
+
 		calleField = new JTextField();
 		calleField.addActionListener(focusField);
 		GridBagConstraints gbc_calleField = new GridBagConstraints();
@@ -110,21 +110,21 @@ public class PanelCapturaDireccion extends JPanel {
 		gbc_calleField.gridy = 1;
 		add(calleField, gbc_calleField);
 		calleField.setColumns(10);
-		
+
 		lbOrientacion = new JLabel("Orientacion");
 		GridBagConstraints gbc_lbOrientacion = new GridBagConstraints();
 		gbc_lbOrientacion.insets = new Insets(10, 0, 0, 0);
 		gbc_lbOrientacion.gridx = 0;
 		gbc_lbOrientacion.gridy = 2;
 		add(lbOrientacion, gbc_lbOrientacion);
-		
+
 		lbColonia = new JLabel("Colonia");
 		GridBagConstraints gbc_lbColonia = new GridBagConstraints();
 		gbc_lbColonia.insets = new Insets(10, 0, 0, 0);
 		gbc_lbColonia.gridx = 1;
 		gbc_lbColonia.gridy = 2;
 		add(lbColonia, gbc_lbColonia);
-		
+
 		orientacionBox = new JComboBox<Orientacion>();
 		orientacionBox.addItemListener(focusBox);
 		orientacionBox.addItem(Orientacion.NORTE);
@@ -137,7 +137,7 @@ public class PanelCapturaDireccion extends JPanel {
 		gbc_orientacionBox.gridx = 0;
 		gbc_orientacionBox.gridy = 3;
 		add(orientacionBox, gbc_orientacionBox);
-		
+
 		coloniaField = new JTextField();
 		coloniaField.addActionListener(focusField);
 		GridBagConstraints gbc_coloniaField = new GridBagConstraints();
@@ -147,21 +147,21 @@ public class PanelCapturaDireccion extends JPanel {
 		gbc_coloniaField.gridy = 3;
 		add(coloniaField, gbc_coloniaField);
 		coloniaField.setColumns(10);
-		
+
 		lbCiudad = new JLabel("Ciudad");
 		GridBagConstraints gbc_lbCiudad = new GridBagConstraints();
 		gbc_lbCiudad.insets = new Insets(10, 0, 0, 5);
 		gbc_lbCiudad.gridx = 0;
 		gbc_lbCiudad.gridy = 4;
 		add(lbCiudad, gbc_lbCiudad);
-		
+
 		lbEstado = new JLabel("Estado");
 		GridBagConstraints gbc_lbEstado = new GridBagConstraints();
 		gbc_lbEstado.insets = new Insets(10, 0, 0, 0);
 		gbc_lbEstado.gridx = 1;
 		gbc_lbEstado.gridy = 4;
 		add(lbEstado, gbc_lbEstado);
-		
+
 		ciudadField = new JTextField();
 		ciudadField.addActionListener(focusField);
 		GridBagConstraints gbc_ciudadField = new GridBagConstraints();
@@ -171,7 +171,7 @@ public class PanelCapturaDireccion extends JPanel {
 		gbc_ciudadField.gridy = 5;
 		add(ciudadField, gbc_ciudadField);
 		ciudadField.setColumns(10);
-		
+
 		estadoField = new JTextField();
 		estadoField.addActionListener(focusField);
 		GridBagConstraints gbc_estadoField = new GridBagConstraints();
@@ -181,14 +181,14 @@ public class PanelCapturaDireccion extends JPanel {
 		gbc_estadoField.gridy = 5;
 		add(estadoField, gbc_estadoField);
 		estadoField.setColumns(10);
-		
+
 		lbCodigoPostal = new JLabel("Codigo Postal");
 		GridBagConstraints gbc_lbCodigoPostal = new GridBagConstraints();
 		gbc_lbCodigoPostal.insets = new Insets(10, 0, 5, 5);
 		gbc_lbCodigoPostal.gridx = 0;
 		gbc_lbCodigoPostal.gridy = 6;
 		add(lbCodigoPostal, gbc_lbCodigoPostal);
-		
+
 		codigoPostalField = new JTextField();
 		codigoPostalField.addActionListener(focusField);
 		codigoPostalField.addKeyListener(new KeyAdapter() {
@@ -208,25 +208,25 @@ public class PanelCapturaDireccion extends JPanel {
 		codigoPostalField.setColumns(10);
 
 		style( new Component[] {		
-		 numeroField,
-		 calleField,
-		 coloniaField,
-		 ciudadField,
-		 estadoField,
-		 codigoPostalField,
-		 lbNumero,
-		 lbCalle,
-		 lbOrientacion,
-		 lbColonia,
-		 orientacionBox,
-		 lbCiudad,
-		 lbEstado,
-		 lbCodigoPostal
+				numeroField,
+				calleField,
+				coloniaField,
+				ciudadField,
+				estadoField,
+				codigoPostalField,
+				lbNumero,
+				lbCalle,
+				lbOrientacion,
+				lbColonia,
+				orientacionBox,
+				lbCiudad,
+				lbEstado,
+				lbCodigoPostal
 		});
 
 	}
-	
-	
+
+
 	public void style(Component[] components) {				
 		for(Component c : components) {
 			if(c instanceof JLabel) {
@@ -235,7 +235,7 @@ public class PanelCapturaDireccion extends JPanel {
 			else c.setFont(fontFunc);	
 		}	
 	}
-	
+
 	public boolean isValidDirection() {
 		if(numeroField.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "La direccion debe tener un numero");
@@ -254,7 +254,7 @@ public class PanelCapturaDireccion extends JPanel {
 		}
 		return false;
 	}
-	
+
 	public Domicilio getDireccion() {
 		return new Domicilio(
 				Integer.valueOf(numeroField.getText()), 
@@ -274,11 +274,11 @@ public class PanelCapturaDireccion extends JPanel {
 			});
 		});
 	}
-	
+
 	public Component getLastItem() {
 		return codigoPostalField;
 	}
-	
+
 
 	public void vaciarComponentes() {
 		numeroField.setText(""); 
@@ -288,6 +288,20 @@ public class PanelCapturaDireccion extends JPanel {
 		ciudadField.setText("");
 		estadoField.setText("");
 		codigoPostalField.setText("");
+	}
+
+
+	public void autoCompleteFields(Domicilio domicilio) {
+		if (domicilio != null) {
+			numeroField.setText(String.valueOf(domicilio.getNumero()));
+			calleField.setText(domicilio.getCalle());
+			orientacionBox.setSelectedItem(domicilio.getOrientacion());
+			coloniaField.setText(domicilio.getColonia());
+			ciudadField.setText(domicilio.getCiudad());
+			estadoField.setText(domicilio.getEstado());
+			codigoPostalField.setText(domicilio.getCodigoPostal());
+		}
+
 	}
 
 }

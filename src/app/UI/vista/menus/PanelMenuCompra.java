@@ -32,8 +32,8 @@ public class PanelMenuCompra extends JPanel {
 		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.WRITE_COMPRA);
 		if(!usuario.hasAccessTo(Permission.WRITE_COMPRA)) registrarButton.setEnabled(false);
 		
-		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_COMRPA);
-		if(!usuario.hasAccessTo(Permission.READ_COMRPA)) listarButton.setEnabled(false);
+		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_COMPRA);
+		if(!usuario.hasAccessTo(Permission.READ_COMPRA)) listarButton.setEnabled(false);
 				
 		add(registrarButton);
 		add(listarButton);

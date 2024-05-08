@@ -18,9 +18,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import app.UI.vista.captura.PanelCapturaCompra;
-import app.UI.vista.captura.PanelCapturaEmpleados;
 import app.UI.vista.captura.PanelCapturaProductos;
 import app.UI.vista.captura.PanelCapturaProveedor;
+import app.UI.vista.captura.PanelCapturaUsuario;
 import app.UI.vista.captura.PanelCapturaVenta;
 import app.UI.vista.consulta.PanelConsultaProductos;
 import app.UI.vista.consulta.PanelConsultaProveedor;
@@ -36,6 +36,7 @@ import app.UI.vista.menus.PanelMenuProductos;
 import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
 import app.UI.vista.modificar.PanelModificarProductos;
+import app.UI.vista.modificar.PanelModificarUsuarios;
 import app.components.MenuButton;
 import app.enums.Permission;
 import app.interfaces.Service;
@@ -103,8 +104,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private PanelMenuEmpleados panelMenuEmpleados;
 	private JButton registrarEmpButton;
 	private JButton listarEmpButton;
+	private JButton modificarEmpButton;
 	private PanelListadoEmpleados listadoEmpleadosPane;
-	private PanelCapturaEmpleados capturaEmpleadosPane;
+	private PanelCapturaUsuario capturaUsuariosPane;
+	private PanelModificarUsuarios modificarUsuariosPane;
 	
 	
 	// Fin Usuarios 
@@ -354,6 +357,11 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		registrarEmpButton.addActionListener(e->{
 			regEmpFunc();
 		});
+		modificarEmpButton= panelMenuEmpleados.getModificarButton();
+		modificarEmpButton.addActionListener(e->{
+			modifEmpFunc();
+		});
+		
 		listarEmpButton = panelMenuEmpleados.getListarButton();
 		listarEmpButton.addActionListener(e->{
 			listEmpFunc();
@@ -363,19 +371,38 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	}
 	
 	private void regEmpFunc() {
-		capturaEmpleadosPane = new PanelCapturaEmpleados(usuarios);
+		capturaUsuariosPane = new PanelCapturaUsuario(usuarios);
 		panelEncabezados = new PanelEncabezados("Registro de Empleados");
-		panelOpciones = new PanelOpciones(capturaEmpleadosPane.getLastItem(), PanelOpciones.BOTH);
+		panelOpciones = new PanelOpciones(capturaUsuariosPane.getLastItem(), PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
 		cancelarButton = panelOpciones.getCancelarButton();
 		
 		guardarButton.addActionListener(ec -> {
-			capturaEmpleadosPane.guardarEmpleado();
+			capturaUsuariosPane.guardarUsuario();
 		});
 		cancelarButton.addActionListener(ec -> {
-			cancelButton(panelEncabezados, panelMenuEmpleados, capturaEmpleadosPane, panelOpciones);
+			cancelButton(panelEncabezados, panelMenuEmpleados, capturaUsuariosPane, panelOpciones);
 		});
-		panelEncabezados.add(capturaEmpleadosPane, BorderLayout.CENTER);
+		panelEncabezados.add(capturaUsuariosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuEmpleados, false);
+		revalidate();
+	}
+	private void modifEmpFunc() {
+		modificarUsuariosPane = new PanelModificarUsuarios(usuarios);
+		panelEncabezados = new PanelEncabezados("Registro de Empleados");
+		panelOpciones = new PanelOpciones(modificarUsuariosPane.getLastItem(), PanelOpciones.BOTH);
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		guardarButton.addActionListener(ec -> {
+			modificarUsuariosPane.modificarUsuario();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuEmpleados, modificarUsuariosPane, panelOpciones);
+		});
+		panelEncabezados.add(modificarUsuariosPane, BorderLayout.CENTER);
 		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuEmpleados, false);

@@ -78,7 +78,6 @@ public class UsuariosRepository implements CRUDRepository<Usuario> {
 				+ "LEFT JOIN usuario_permisos AS p ON u.username = p.username "
 				+ "LEFT JOIN permisos ON p.permiso_id = permisos.id "
 				+ "WHERE u.username = ?";
-
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);

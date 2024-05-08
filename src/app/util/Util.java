@@ -25,6 +25,7 @@ import app.modelos.DetallesCompra;
 import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
+import app.modelos.Usuario;
 import app.modelos.containers.Catalogo;
 
 public class Util {
@@ -229,6 +230,13 @@ public class Util {
 			.map(Proveedor::getRfc)
 			.filter(rfc -> rfc.startsWith(field.getText()))
 			.toArray(String[]::new);
+	}	
+	public static Function<JTextField, String[]> getUsernameFilter(Service<Usuario> proveedores){
+		return field -> 
+		proveedores.getAll().stream()
+		.map(Usuario::getUserName)
+		.filter(user -> user.startsWith(field.getText()))
+		.toArray(String[]::new);
 	}	
 	
 	public static class FocusField implements ActionListener {

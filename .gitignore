@@ -3,10 +3,3 @@ bin
 .classpath
 src/app/util/MainTests.java
 /Driver
-resources/config/config.properties
-/.idea
-resources/config/config.properties
-/resources/config
-/resources
-resources/config/config.properties
-*.properties

@@ -8,3 +8,5 @@ resources/config/config.properties
 resources/config/config.properties
 /resources/config
 /resources
+resources/config/config.properties
+*.properties

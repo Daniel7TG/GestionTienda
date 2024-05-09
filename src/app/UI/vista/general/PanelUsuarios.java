@@ -331,6 +331,15 @@ public abstract class PanelUsuarios extends JPanel {
 		fieldNombre.setText("");
 		fieldApellido.setText("");
 		panelDireccion.vaciarComponentes();
+
+		writeCompraBtn.setSelected(false);
+		writeVentaBtn.setSelected(false);
+		readCompraBtn.setSelected(false);
+		readVentaBtn.setSelected(false);
+
+		productosPermission.setUnselected();
+		productosPermission.setUnselected();
+		usuariosPermission.setUnselected();
 	}
 	
 	public void setUnneditable() {
@@ -355,8 +364,8 @@ public abstract class PanelUsuarios extends JPanel {
 		fieldApellido.setText(user.getApellido());
 		telefonoField.setText(user.getTelefono());
 		panelDireccion.autoCompleteFields(user.getDomicilio());
-		passwordField.setText("");
-		confirmPasswordField.setText("");
+		passwordField.setText(user.getPassword());
+		confirmPasswordField.setText(user.getPassword());
 
 		writeCompraBtn.setSelected(user.getPermisos().contains(Permission.WRITE_COMPRA));
 		writeVentaBtn.setSelected(user.getPermisos().contains(Permission.WRITE_VENTA));

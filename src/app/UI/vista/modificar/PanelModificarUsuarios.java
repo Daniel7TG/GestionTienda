@@ -50,6 +50,8 @@ public class PanelModificarUsuarios extends PanelUsuarios {
 		List<Permission> permisos = getPermisos();
 		if(usernameField.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "El campo de username no puede estar vacío");			
+		} else if(usuarios.get(usernameField.getText()) == null) {
+			JOptionPane.showMessageDialog(null, "El usuario no existe");
 		} else if(passwordField.getPassword().length == 0) {
 			JOptionPane.showMessageDialog(null, "El campo de contraseña no puede estar vacío");
 		} else if(confirmPasswordField.getPassword().length == 0) {
@@ -60,8 +62,6 @@ public class PanelModificarUsuarios extends PanelUsuarios {
 			JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacío");
 		} else if(fieldApellido.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacío");
-		} else if(usuarios.exists(usernameField.getText())) {
-			JOptionPane.showMessageDialog(null, "Nombre de usuario en uso");
 		} else if(telefonoField.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "El campo de teléfono no puede estar vacío");				
 		} else if(permisos.isEmpty()) {
@@ -73,6 +73,7 @@ public class PanelModificarUsuarios extends PanelUsuarios {
 			String username = usernameField.getText();
 			String telefono = telefonoField.getText();
 			Domicilio domicilio = panelDireccion.getDireccion();
+			domicilio.setId(usuarios.get(username).getIdDomicilio());
 			String password = String.valueOf(passwordField.getPassword());
 			
 			Usuario user = new Usuario();

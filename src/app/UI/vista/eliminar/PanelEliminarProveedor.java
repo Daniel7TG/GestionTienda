@@ -208,19 +208,18 @@ public class PanelEliminarProveedor extends JPanel {
 		model.configurarTabla(1, 1, 1, 1, 1, 3);
 		productsTable.setModel(model);
 		tablePanel.setViewportView(productsTable);
-		productsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()) { 
-					int selectedRow = productsTable.getSelectedRow();
-					if (selectedRow != -1) {
-						Proveedor selectedProveedor = proveedores.getAll().get(selectedRow);
-						autoCompleteFields(selectedProveedor, false);
-						
-					}
-				}
-			}
-		});
+		 productsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+	            @Override
+	            public void valueChanged(ListSelectionEvent e) {
+	                if (!e.getValueIsAdjusting()) { 
+	                    int selectedRow = productsTable.getSelectedRow();
+	                    if (selectedRow != -1) {
+	                        Proveedor selectedProveedor = proveedores.getAll().get(selectedRow);
+	                        autoCompleteFields(selectedProveedor, false);
+	                    }
+	                }
+	            }
+	        });
 
 		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
 		gbc_tablePanel.gridwidth = 4;

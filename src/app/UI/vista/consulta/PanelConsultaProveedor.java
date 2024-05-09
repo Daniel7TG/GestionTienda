@@ -84,25 +84,22 @@ import app.UI.vista.general.PanelCapturaDireccion;
 			rfcField = new TextFieldSuggestion(Util.getRfcFilter(proveedores));
 			rfcField.setHorizontalAlignment(SwingConstants.CENTER);
 			rfcField.addKeyListener(new KeyAdapter() {
-			    @Override
-			    public void keyTyped(KeyEvent e) {
-			        SwingUtilities.invokeLater(() -> {
-			            String rfc = rfcField.getText();
-			            if (rfc.length() > 12) {
-			                Proveedor proveedor = proveedores.get(rfc);
-			                if (proveedor != null) {
-			                    fieldNombre.setText(proveedor.getNombre());
-			                    fieldApellido.setText(proveedor.getApellido());
-			                    razonField.setText(proveedor.getRazonSocial());
-			                    telefonoField.setText(proveedor.getTelefono());
-			                    panelDireccion.autoCompleteFields(proveedor.getDomicilio());
-			                }
-			            }
-			        });
-			    }
+				@Override
+				public void keyTyped(KeyEvent e) {
+					char[] texto = rfcField.getText().toCharArray();
+					if(texto.length > 12) {
+						if(proveedores.exists(rfcField.getText())) {
+							//JOptionPane.showMessageDialog(null, "Ya existe este proveedor");
+//							rfcField.setText("");
+						} else {
+							JOptionPane.showMessageDialog(null, "El proveedor no existe");
+							rfcField.transferFocus();
+						}
+						e.consume();
+					}				
+				}
 			});
 			panelDireccion = new PanelCapturaDireccion();
-			panelDireccion.getLastItem().setEnabled(false);
 			GridBagConstraints gbc_direccion = new GridBagConstraints();
 			gbc_direccion.gridheight = 7;
 			gbc_direccion.fill = GridBagConstraints.BOTH;
@@ -255,19 +252,22 @@ import app.UI.vista.general.PanelCapturaDireccion;
 			if(proveedor != null) {
 				if(rfc) {
 					rfcField.setText(proveedor.getRfc());
-				}else {
-					
 					fieldNombre.setEditable(false);
 					fieldApellido.setEditable(false);
 					razonField.setEditable(false);
 					telefonoField.setEditable(false);
+				}else {
+					fieldNombre.setEditable(true);
+					fieldApellido.setEditable(true);
+					razonField.setEditable(true);
+					telefonoField.setEditable(true);
 	
-					rfcField.setText(proveedor.getRfc());
 					fieldNombre.setText(proveedor.getNombre());
 					fieldApellido.setText(proveedor.getApellido());
 					razonField.setText(proveedor.getRazonSocial());
 					telefonoField.setText(proveedor.getTelefono());
-					
+	
+	
 					panelDireccion.autoCompleteFields(proveedor.getDomicilio());
 	
 				}
@@ -310,6 +310,5 @@ import app.UI.vista.general.PanelCapturaDireccion;
 			fieldApellido.setText("");
 			panelDireccion.vaciarComponentes();
 		}
-		
 	
 	}

@@ -46,7 +46,7 @@ public class PanelEliminarUsuario extends PanelUsuarios {
 		}
 		
 		usuarios.remove(usernameField.getText());
-		JOptionPane.showMessageDialog(null, "UsuarioEliminado");
+		JOptionPane.showMessageDialog(null, "Usuario Eliminado");
 		vaciarComponentes();
 	}
 	

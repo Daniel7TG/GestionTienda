@@ -101,7 +101,8 @@ public class UsuariosRepository implements CRUDRepository<Usuario> {
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
-			return pStatement.executeUpdate() == 0 ? false : true;
+			System.out.println(pStatement.toString());
+			return pStatement.executeUpdate() != 0;
 		} catch (SQLException e) {}
 		return false;	
 	}

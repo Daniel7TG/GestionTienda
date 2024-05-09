@@ -19,8 +19,6 @@ import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Usuario;
 import app.modelos.Venta;
-import app.modelos.containers.Catalogo;
-import app.modelos.containers.HistorialVenta;
 import app.util.TableModel;
 import app.util.Util;
 

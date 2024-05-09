@@ -26,7 +26,6 @@ import app.modelos.DetallesVenta;
 import app.modelos.Producto;
 import app.modelos.Proveedor;
 import app.modelos.Usuario;
-import app.modelos.containers.Catalogo;
 
 public class Util {
 

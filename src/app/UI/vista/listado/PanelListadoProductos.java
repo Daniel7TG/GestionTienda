@@ -8,7 +8,6 @@ import javax.swing.JTable;
 
 import app.interfaces.Service;
 import app.modelos.Producto;
-import app.modelos.containers.Catalogo;
 import app.util.TableModel;
 
 public class PanelListadoProductos extends JPanel {

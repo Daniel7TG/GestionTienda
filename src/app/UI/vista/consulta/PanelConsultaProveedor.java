@@ -88,7 +88,9 @@ import app.UI.vista.general.PanelCapturaDireccion;
 			    public void keyTyped(KeyEvent e) {
 			        SwingUtilities.invokeLater(() -> {
 			            String rfc = rfcField.getText();
-			            if (rfc.length() > 12) {
+			            if (rfc.length() >= 12) {
+			                // Limitar la longitud del RFC a 12 caracteres
+			                rfcField.setText(rfc.substring(0, 12));
 			                Proveedor proveedor = proveedores.get(rfc);
 			                if (proveedor != null) {
 			                    fieldNombre.setText(proveedor.getNombre());

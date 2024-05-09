@@ -7,3 +7,4 @@ resources/config/config.properties
 /.idea
 /resources/config
 *.properties
+src/app/Launcher.java

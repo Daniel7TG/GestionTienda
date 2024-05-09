@@ -1,10 +1,10 @@
 bin
 .settings
 .classpath
-src/app/util/MainTests.java
+/src/app/util/MainTests.java
 /Driver
-resources/config/config.properties
+/resources/config/config.properties
 /.idea
 /resources/config
 *.properties
-src/app/Launcher.java
+/src/app/Launcher.java

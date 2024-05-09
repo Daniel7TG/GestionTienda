@@ -5,3 +5,5 @@ src/app/util/MainTests.java
 /Driver
 resources/config/config.properties
 /.idea
+/resources/config
+*.properties

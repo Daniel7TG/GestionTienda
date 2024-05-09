@@ -78,21 +78,20 @@ public class UsuariosRepository implements CRUDRepository<Usuario> {
 				+ "LEFT JOIN usuario_permisos AS p ON u.username = p.username "
 				+ "LEFT JOIN permisos ON p.permiso_id = permisos.id "
 				+ "WHERE u.username = ?";
-
+		Usuario user = null;
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
 			resultSet = pStatement.executeQuery();
-			Usuario user = new Usuario();
+			user = new Usuario();
 			if(resultSet.next())
 				user = MoveResult.toUser(resultSet);
 			while(resultSet.next())
 				user.getPermisos().add(Permission.valueOf(resultSet.getString("descripcion")));
-			return user;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return user;
 	}
 
 	@Override
@@ -102,7 +101,8 @@ public class UsuariosRepository implements CRUDRepository<Usuario> {
 		try {
 			pStatement = connection.prepareStatement(sql);
 			pStatement.setString(1, id);
-			return pStatement.executeUpdate() == 0 ? false : true;
+			System.out.println(pStatement.toString());
+			return pStatement.executeUpdate() != 0;
 		} catch (SQLException e) {}
 		return false;	
 	}

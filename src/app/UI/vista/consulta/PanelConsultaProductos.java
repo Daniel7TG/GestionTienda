@@ -11,7 +11,6 @@ import app.components.TextFieldSuggestion;
 import app.interfaces.Funcionable;
 import app.interfaces.Service;
 import app.modelos.Producto;
-import app.modelos.containers.Catalogo;
 import app.util.TableModel;
 import app.util.Util;
 

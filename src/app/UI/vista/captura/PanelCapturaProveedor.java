@@ -8,7 +8,6 @@ import app.abstractClasses.Persona;
 import app.abstractClasses.Transaccion;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
-import app.modelos.containers.Proveedores;
 import app.util.Util.FocusField;
 import app.util.TableModel;
 import app.util.Util;

@@ -1,52 +1,73 @@
 package app.UI.vista.general;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import app.components.GroupRadioButtons;
+import app.components.TextFieldSuggestion;
+import app.enums.Permission;
 import app.interfaces.Service;
+import app.modelos.Domicilio;
 import app.modelos.Proveedor;
 import app.modelos.Usuario;
 import app.util.TableModel;
+import app.util.Util;
 import app.util.Util.FocusField;
+
+import static app.enums.Permission.*;
 
 public abstract class PanelUsuarios extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-	private Service<Usuario> usuarios;
-	private JTextField usernameField;
-	private JPasswordField passwordField;
-	private JPasswordField confirmPasswordField;
-	private JTextField telefonoField;
-	private JLabel lbUsername;
-	private JLabel lbPassword;
-	private JLabel lbConfirmPassword;
-	private JLabel lbTelefono;
-	private Font fontLabel;
-	private Font fontFunc;
-	private PanelCapturaDireccion panelDireccion;
-	private JLabel lblNombre;
-	private JLabel lblApellido;
-	private JTextField fieldNombre;
-	private JTextField fieldApellido;
+	protected Service<Usuario> usuarios;
+	protected JTextField usernameField;
+	protected JPasswordField passwordField;
+	protected JPasswordField confirmPasswordField;
+	protected JTextField telefonoField;
+	protected JLabel lbUsername;
+	protected JLabel lbPassword;
+	protected JLabel lbConfirmPassword;
+	protected JLabel lbTelefono;
+	protected Font fontLabel;
+	protected Font fontFunc;
+	protected PanelCapturaDireccion panelDireccion;
+	protected JLabel lblNombre;
+	protected JLabel lblApellido;
+	protected JTextField fieldNombre;
+	protected JTextField fieldApellido;
+	protected GroupRadioButtons productosPermission;
+	protected GroupRadioButtons proveedoresPermission;
+	protected GroupRadioButtons usuariosPermission;
+	protected JRadioButton writeCompraBtn;
+	protected JRadioButton readCompraBtn;
+	protected JRadioButton writeVentaBtn;
+	protected JRadioButton readVentaBtn;
+	protected GridBagConstraints gbc_rfcField;
 	
-	protected PanelUsuarios(Service<Usuario> usuarios) {
+	protected PanelUsuarios(Service<Usuario> usuarios, boolean autoComplete) {
 		this.usuarios = usuarios;
 		
 		fontLabel = new Font("Montserrat", Font.PLAIN, 16);
@@ -57,9 +78,9 @@ public abstract class PanelUsuarios extends JPanel {
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{35, 65, 35, 65, 35, 65, 30, 30, 30, 30, 30};
+		gridBagLayout.rowHeights = new int[]{35, 65, 35, 65, 35, 65, 30, 30, 30, 30, 30, 30};
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 6.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		lbUsername = new JLabel("Nombre de Usuario");
@@ -70,9 +91,9 @@ public abstract class PanelUsuarios extends JPanel {
 		gbc_lbRfc.gridy = 0;
 		add(lbUsername, gbc_lbRfc);
 		
-		usernameField = new JTextField();
-		usernameField.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_rfcField = new GridBagConstraints();
+		if(autoComplete) usernameField = new TextFieldSuggestion(Util.getUsernameFilter(usuarios));
+		else usernameField = new JTextField();
+		gbc_rfcField = new GridBagConstraints();
 		gbc_rfcField.insets = new Insets(10, 10, 10, 10);
 		gbc_rfcField.fill = GridBagConstraints.BOTH;
 		gbc_rfcField.gridx = 0;
@@ -185,16 +206,85 @@ public abstract class PanelUsuarios extends JPanel {
 		add(lblNombre, gbc_lblNombre);
 		
 		
-		GroupRadioButtons productosPermission = new GroupRadioButtons(new String[] {"CRUD", "Read", "Add", "Delete", "Modify"}, 
+		productosPermission = new GroupRadioButtons(
+				new String[] {"CRUD", "Read", "Add", "Delete", "Modify"}, 
+				new Permission[]{CRUD_PRODUCTOS, READ_PRODUCTOS, ADD_PRODUCTOS, DELETE_PRODUCTOS, MODIFY_PRODUCTOS}, 
 				"Productos");
 		GridBagConstraints productosPermissionC = new GridBagConstraints();
 		productosPermissionC.fill = GridBagConstraints.BOTH;
 		productosPermissionC.insets = new Insets(5, 5, 5, 5);
 		productosPermissionC.gridwidth = 5;
 		productosPermissionC.gridx = 0;
-		productosPermissionC.gridy = 6;
+		productosPermissionC.gridy = 7;
 		add(productosPermission, productosPermissionC);
+
+		proveedoresPermission = new GroupRadioButtons(
+				new String[] {"CRUD", "Read", "Add", "Delete", "Modify"}, 
+				new Permission[]{CRUD_PROVEEDORES, READ_PROVEEDORES, ADD_PROVEEDORES, DELETE_PROVEEDORES, MODIFY_PROVEEDORES}, 
+				"Proveedores");
+		GridBagConstraints proveedoresPermissionC = new GridBagConstraints();
+		proveedoresPermissionC.fill = GridBagConstraints.BOTH;
+		proveedoresPermissionC.insets = new Insets(5, 5, 5, 5);
+		proveedoresPermissionC.gridwidth = 5;
+		proveedoresPermissionC.gridx = 0;
+		proveedoresPermissionC.gridy = 8;
+		add(proveedoresPermission, proveedoresPermissionC);
+
+		usuariosPermission = new GroupRadioButtons(
+				new String[] {"CRUD", "Read", "Add", "Delete", "Modify"}, 
+				new Permission[]{CRUD_USUARIOS, READ_USUARIOS, ADD_USUARIOS, DELETE_USUARIOS, MODIFY_USUARIOS}, 
+				"Usuarios");
+		GridBagConstraints usuariosPermissionC = new GridBagConstraints();
+		usuariosPermissionC.fill = GridBagConstraints.BOTH;
+		usuariosPermissionC.insets = new Insets(5, 5, 5, 5);
+		usuariosPermissionC.gridwidth = 5;
+		usuariosPermissionC.gridx = 0;
+		usuariosPermissionC.gridy = 9;
+		add(usuariosPermission, usuariosPermissionC);
 		
+		GridLayout buttonLayout = new GridLayout(1, 2, 5, 0);
+		Border panelVentaBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
+				"Venta", TitledBorder.LEFT, TitledBorder.ABOVE_TOP, new Font("Montserrat", Font.BOLD, 16));
+		Border panelCompraBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
+				"Compra", TitledBorder.LEFT, TitledBorder.ABOVE_TOP, new Font("Montserrat", Font.BOLD, 16));
+		JPanel ventaButtonPanel = new JPanel();
+		ventaButtonPanel.setBorder(panelVentaBorder);
+		ventaButtonPanel.setLayout(buttonLayout);
+		
+		JPanel compraButtonPanel = new JPanel();
+		compraButtonPanel.setBorder(panelCompraBorder);
+		compraButtonPanel.setLayout(buttonLayout);
+		
+		readVentaBtn = new JRadioButton("Read Venta");
+		writeVentaBtn = new JRadioButton("Write Venta");
+		readVentaBtn.setHorizontalAlignment(JRadioButton.CENTER);
+		writeVentaBtn.setHorizontalAlignment(JRadioButton.CENTER);
+		compraButtonPanel.add(writeVentaBtn);
+		compraButtonPanel.add(readVentaBtn);
+
+		GridBagConstraints writeVentaBtnC = new GridBagConstraints();
+		writeVentaBtnC.fill = GridBagConstraints.BOTH;
+		writeVentaBtnC.insets = new Insets(5, 5, 5, 5);
+		writeVentaBtnC.gridx = 0;
+		writeVentaBtnC.gridy = 10;
+		writeVentaBtnC.gridwidth = 2;
+		add(ventaButtonPanel, writeVentaBtnC);
+
+		writeCompraBtn = new JRadioButton("Write Compra");
+		readCompraBtn = new JRadioButton("Read Compra");
+		readCompraBtn.setHorizontalAlignment(JRadioButton.CENTER);
+		writeCompraBtn.setHorizontalAlignment(JRadioButton.CENTER);
+		ventaButtonPanel.add(writeCompraBtn);
+		ventaButtonPanel.add(readCompraBtn);
+		
+		GridBagConstraints writeCompraBtnC = new GridBagConstraints();
+		writeCompraBtnC.fill = GridBagConstraints.BOTH;
+		writeCompraBtnC.insets = new Insets(5, 5, 5, 5);
+		writeCompraBtnC.gridx = 2;
+		writeCompraBtnC.gridy = 10;
+		writeCompraBtnC.gridwidth = 2;
+		add(compraButtonPanel, writeCompraBtnC);
+				
 		
 		style(new Component[] {
 		  usernameField,
@@ -228,27 +318,6 @@ public abstract class PanelUsuarios extends JPanel {
 		}	
 	}
 	
-	public void guardarProveedor() {
-		if(usernameField.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de username no puede estar vacío");			
-		} else if(passwordField.getPassword().length == 0) {
-			JOptionPane.showMessageDialog(null, "El campo de razón no puede estar vacío");
-		} else if(fieldNombre.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacío");
-		} else if(fieldApellido.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacío");
-		} else if(usuarios.exists(usernameField.getText())) {
-			JOptionPane.showMessageDialog(null, "Nombre de usuario en uso");
-		} else if(telefonoField.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El campo de teléfono no puede estar vacío");				
-		} else if(!panelDireccion.isValidDirection()) {} 
-		else {			
-			Usuario user = new Usuario();
-			usuarios.save(user);
-			JOptionPane.showMessageDialog(null, "Usuario registrado correctamente");
-			vaciarComponentes();
-		}
-	}
 	
 	public Component getLastItem() {
 		return panelDireccion.getLastItem();
@@ -256,11 +325,55 @@ public abstract class PanelUsuarios extends JPanel {
 	
 	public void vaciarComponentes() {
 		passwordField.setText("");
+		confirmPasswordField.setText("");
 		usernameField.setText("");
 		telefonoField.setText("");
 		fieldNombre.setText("");
 		fieldApellido.setText("");
 		panelDireccion.vaciarComponentes();
+
+		writeCompraBtn.setSelected(false);
+		writeVentaBtn.setSelected(false);
+		readCompraBtn.setSelected(false);
+		readVentaBtn.setSelected(false);
+
+		productosPermission.setUnselected();
+		productosPermission.setUnselected();
+		usuariosPermission.setUnselected();
 	}
 	
+	public void setUnneditable() {
+		passwordField.setEditable(false);
+		confirmPasswordField.setEditable(false);
+		telefonoField.setEditable(false);
+		fieldNombre.setEditable(false);
+		fieldApellido.setEditable(false);
+		panelDireccion.setUnneditable();
+
+		writeCompraBtn.setEnabled(false);
+		writeVentaBtn.setEnabled(false);
+		readCompraBtn.setEnabled(false);
+		readVentaBtn.setEnabled(false);
+
+		productosPermission.setDisabled();
+		proveedoresPermission.setDisabled();
+		usuariosPermission.setDisabled();
+	}
+	public void autocompleteFields(Usuario user) {
+		fieldNombre.setText(user.getNombre());
+		fieldApellido.setText(user.getApellido());
+		telefonoField.setText(user.getTelefono());
+		panelDireccion.autoCompleteFields(user.getDomicilio());
+		passwordField.setText(user.getPassword());
+		confirmPasswordField.setText(user.getPassword());
+
+		writeCompraBtn.setSelected(user.getPermisos().contains(Permission.WRITE_COMPRA));
+		writeVentaBtn.setSelected(user.getPermisos().contains(Permission.WRITE_VENTA));
+		readCompraBtn.setSelected(user.getPermisos().contains(Permission.READ_COMPRA));
+		readVentaBtn.setSelected(user.getPermisos().contains(Permission.READ_VENTA));
+
+		productosPermission.setPressed(user.getPermisos());
+		proveedoresPermission.setPressed(user.getPermisos());
+		usuariosPermission.setPressed(user.getPermisos());
+	}
 }

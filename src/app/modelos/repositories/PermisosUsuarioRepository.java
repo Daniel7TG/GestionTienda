@@ -33,6 +33,7 @@ public class PermisosUsuarioRepository {
 			pStatement.setString(1, username);
 			pStatement.setInt(2, permissionId);
 			pStatement.executeUpdate();
+			System.out.println(pStatement);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

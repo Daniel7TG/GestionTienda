@@ -18,17 +18,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import app.UI.vista.captura.PanelCapturaCompra;
-import app.UI.vista.captura.PanelCapturaEmpleados;
 import app.UI.vista.captura.PanelCapturaProductos;
 import app.UI.vista.captura.PanelCapturaProveedor;
+import app.UI.vista.captura.PanelCapturaUsuario;
 import app.UI.vista.captura.PanelCapturaVenta;
 import app.UI.vista.consulta.PanelConsultaProductos;
 import app.UI.vista.consulta.PanelConsultaProveedor;
+import app.UI.vista.consulta.PanelConsultaUsuarios;
 import app.UI.vista.eliminar.PanelEliminarProductos;
 import app.UI.vista.eliminar.PanelEliminarProveedor;
+import app.UI.vista.eliminar.PanelEliminarUsuario;
 import app.UI.vista.listado.PanelListadoCompras;
-import app.UI.vista.listado.PanelListadoEmpleados;
 import app.UI.vista.listado.PanelListadoProductos;
+import app.UI.vista.listado.PanelListadoUsuarios;
 import app.UI.vista.listado.PanelListadoVentas;
 import app.UI.vista.menus.PanelMenuCompra;
 import app.UI.vista.menus.PanelMenuEmpleados;
@@ -36,6 +38,7 @@ import app.UI.vista.menus.PanelMenuProductos;
 import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
 import app.UI.vista.modificar.PanelModificarProductos;
+import app.UI.vista.modificar.PanelModificarUsuarios;
 import app.components.MenuButton;
 import app.enums.Permission;
 import app.interfaces.Service;
@@ -44,7 +47,6 @@ import app.modelos.Producto;
 import app.modelos.Proveedor;
 import app.modelos.Usuario;
 import app.modelos.Venta;
-import app.modelos.containers.HistorialVenta;
 import app.modelos.services.ComprasServiceImp;
 import app.modelos.services.ProductosServiceImp;
 import app.modelos.services.ProveedoresServiceImp;
@@ -103,8 +105,14 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private PanelMenuEmpleados panelMenuEmpleados;
 	private JButton registrarEmpButton;
 	private JButton listarEmpButton;
-	private PanelListadoEmpleados listadoEmpleadosPane;
-	private PanelCapturaEmpleados capturaEmpleadosPane;
+	private JButton modificarEmpButton;
+	private JButton consultarEmpButton;
+	private JButton eliminarEmpButton;
+	private PanelListadoUsuarios listadoUsuariosPane;
+	private PanelCapturaUsuario capturaUsuariosPane;
+	private PanelEliminarUsuario eliminarUsuariosPane;
+	private PanelConsultaUsuarios consultarUsuariosPane;
+	private PanelModificarUsuarios modificarUsuariosPane;
 	
 	
 	// Fin Usuarios 
@@ -174,7 +182,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		proveedores = new ProveedoresServiceImp();
 		usuarios = new UsuarioServiceImp();
 		this.addWindowListener(this);
-		
+
 		usuarioActual = user;
 		
 		contentPane = new JPanel(new BorderLayout()){
@@ -354,6 +362,18 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		registrarEmpButton.addActionListener(e->{
 			regEmpFunc();
 		});
+		modificarEmpButton = panelMenuEmpleados.getModificarButton();
+		modificarEmpButton.addActionListener(e->{
+			modifEmpFunc();
+		});
+		eliminarEmpButton = panelMenuEmpleados.getEliminarButton();
+		eliminarEmpButton.addActionListener(e->{
+			elimEmpFunc();
+		});
+		consultarEmpButton = panelMenuEmpleados.getConsultarButton();
+		consultarEmpButton.addActionListener(e->{
+			consEmpFunc();
+		});		
 		listarEmpButton = panelMenuEmpleados.getListarButton();
 		listarEmpButton.addActionListener(e->{
 			listEmpFunc();
@@ -363,33 +383,86 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	}
 	
 	private void regEmpFunc() {
-		capturaEmpleadosPane = new PanelCapturaEmpleados(usuarios);
+		capturaUsuariosPane = new PanelCapturaUsuario(usuarios);
 		panelEncabezados = new PanelEncabezados("Registro de Empleados");
-		panelOpciones = new PanelOpciones(capturaEmpleadosPane.getLastItem(), PanelOpciones.BOTH);
+		panelOpciones = new PanelOpciones(capturaUsuariosPane.getLastItem(), PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
 		cancelarButton = panelOpciones.getCancelarButton();
 		
 		guardarButton.addActionListener(ec -> {
-			capturaEmpleadosPane.guardarEmpleado();
+			capturaUsuariosPane.guardarUsuario();
 		});
 		cancelarButton.addActionListener(ec -> {
-			cancelButton(panelEncabezados, panelMenuEmpleados, capturaEmpleadosPane, panelOpciones);
+			cancelButton(panelEncabezados, panelMenuEmpleados, capturaUsuariosPane, panelOpciones);
 		});
-		panelEncabezados.add(capturaEmpleadosPane, BorderLayout.CENTER);
+		panelEncabezados.add(capturaUsuariosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuEmpleados, false);
+		revalidate();
+	}
+	private void consEmpFunc() {
+		consultarUsuariosPane = new PanelConsultaUsuarios(usuarios);
+		panelEncabezados = new PanelEncabezados("Consulta de Empleados");
+		panelOpciones = new PanelOpciones(consultarUsuariosPane.getLastItem(), PanelOpciones.CANCEL, "Cancelar");
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuEmpleados, consultarUsuariosPane, panelOpciones);
+		});
+		panelEncabezados.add(consultarUsuariosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuEmpleados, false);
+		revalidate();
+	}
+	private void elimEmpFunc() {
+		eliminarUsuariosPane = new PanelEliminarUsuario(usuarios);
+		panelEncabezados = new PanelEncabezados("Eliminar Empleados");
+		panelOpciones = new PanelOpciones(eliminarUsuariosPane.getLastItem(), PanelOpciones.BOTH, "Eliminar", "Cancelar");
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		guardarButton.addActionListener(ec -> {
+			eliminarUsuariosPane.eliminarUsuario();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuEmpleados, eliminarUsuariosPane, panelOpciones);
+		});
+		panelEncabezados.add(eliminarUsuariosPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuEmpleados, false);
+		revalidate();
+	}
+	private void modifEmpFunc() {
+		modificarUsuariosPane = new PanelModificarUsuarios(usuarios);
+		panelEncabezados = new PanelEncabezados("Registro de Empleados");
+		panelOpciones = new PanelOpciones(modificarUsuariosPane.getLastItem(), PanelOpciones.BOTH, "Modificar", "Cancelar");
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		guardarButton.addActionListener(ec -> {
+			modificarUsuariosPane.modificarUsuario();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuEmpleados, modificarUsuariosPane, panelOpciones);
+		});
+		panelEncabezados.add(modificarUsuariosPane, BorderLayout.CENTER);
 		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuEmpleados, false);
 		revalidate();
 	}
 	private void listEmpFunc() {
-		listadoEmpleadosPane = new PanelListadoEmpleados(usuarios);
+		listadoUsuariosPane = new PanelListadoUsuarios(usuarios);
 		panelEncabezados = new PanelEncabezados("Listado de Empleados");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
 		cancelarButton = panelOpciones.getCancelarButton();
 		cancelarButton.addActionListener(e->{
-			cancelButton(panelEncabezados, panelMenuEmpleados, listadoEmpleadosPane, panelOpciones);
+			cancelButton(panelEncabezados, panelMenuEmpleados, listadoUsuariosPane, panelOpciones);
 		});
-		panelEncabezados.add(listadoEmpleadosPane, BorderLayout.CENTER);
+		panelEncabezados.add(listadoUsuariosPane, BorderLayout.CENTER);
 		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuEmpleados, false);

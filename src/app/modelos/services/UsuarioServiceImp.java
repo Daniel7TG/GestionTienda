@@ -56,8 +56,9 @@ public class UsuarioServiceImp implements Service<Usuario> {
 	public int save(Usuario obj) {
 		int domicilio = repositoryDomicilio.save(obj.getDomicilio());
 		obj.setIdDomicilio(domicilio);
+		int result = repository.save(obj);
 		obj.getPermisos().forEach(p -> repositoryPermisos.save(obj.getUserName(), p.ordinal()));
-		return repository.save(obj);
+		return result;
 	}
 
 	@Override

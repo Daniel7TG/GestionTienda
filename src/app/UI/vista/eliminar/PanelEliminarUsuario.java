@@ -40,7 +40,7 @@ public class PanelEliminarUsuario extends PanelUsuarios {
 	
 	
 	public void eliminarUsuario() {
-		if(usuarios.exists(usernameField.getText()) == false) {
+		if(!usuarios.exists(usernameField.getText())) {
 			JOptionPane.showMessageDialog(null, "No existe este usuario");
 			return;
 		}

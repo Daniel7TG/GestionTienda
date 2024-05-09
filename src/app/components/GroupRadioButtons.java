@@ -48,7 +48,11 @@ public class GroupRadioButtons extends JPanel {
 			if(lista.contains(permisos[i])) buttons.get(i).setSelected(true);;
 		}
 	}
-	
+
+
+	public void setDisabled() {
+		buttons.forEach(b -> b.setEnabled(false));
+	}
 	
 	public List<Permission> getPressed() {
 		List<Permission> activados = new ArrayList<Permission>();

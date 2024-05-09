@@ -5,8 +5,9 @@ import java.util.List;
 
 import app.abstractClasses.Persona;
 import app.enums.Permission;
+import app.interfaces.Listable;
 
-public class Usuario extends Persona {
+public class Usuario extends Persona implements Listable {
 
 	private List<Permission> permisos;
 	private String userName;
@@ -84,6 +85,10 @@ public class Usuario extends Persona {
 			return userName.equals(u.userName);
 		return false;
 	}
-	
-	
+
+
+	@Override
+	public Object[] toRow() {
+		return new Object[] {userName, nombre + " " + apellido, telefono, domicilio.toString(), permisos};
+	}
 }

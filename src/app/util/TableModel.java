@@ -102,6 +102,11 @@ public class TableModel extends DefaultTableModel {
 		setDataVector(data, columns);
 		setWidths();
 	}
+	public void update(List<? extends Listable> data){
+		this.size = data.size();
+		setDataVector(data.stream().map(Listable::toRow).toArray(Object[][]::new), columns);
+		setWidths();
+	}
 	
 	public void renderListColumn(int column) {
 		table.getColumnModel().getColumn(column).setCellRenderer(new ListRenderer());

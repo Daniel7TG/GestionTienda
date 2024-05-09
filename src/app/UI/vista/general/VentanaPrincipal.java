@@ -29,8 +29,8 @@ import app.UI.vista.eliminar.PanelEliminarProductos;
 import app.UI.vista.eliminar.PanelEliminarProveedor;
 import app.UI.vista.eliminar.PanelEliminarUsuario;
 import app.UI.vista.listado.PanelListadoCompras;
-import app.UI.vista.listado.PanelListadoEmpleados;
 import app.UI.vista.listado.PanelListadoProductos;
+import app.UI.vista.listado.PanelListadoUsuarios;
 import app.UI.vista.listado.PanelListadoVentas;
 import app.UI.vista.menus.PanelMenuCompra;
 import app.UI.vista.menus.PanelMenuEmpleados;
@@ -47,7 +47,6 @@ import app.modelos.Producto;
 import app.modelos.Proveedor;
 import app.modelos.Usuario;
 import app.modelos.Venta;
-import app.modelos.containers.HistorialVenta;
 import app.modelos.services.ComprasServiceImp;
 import app.modelos.services.ProductosServiceImp;
 import app.modelos.services.ProveedoresServiceImp;
@@ -109,7 +108,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private JButton modificarEmpButton;
 	private JButton consultarEmpButton;
 	private JButton eliminarEmpButton;
-	private PanelListadoEmpleados listadoEmpleadosPane;
+	private PanelListadoUsuarios listadoUsuariosPane;
 	private PanelCapturaUsuario capturaUsuariosPane;
 	private PanelEliminarUsuario eliminarUsuariosPane;
 	private PanelConsultaUsuarios consultarUsuariosPane;
@@ -183,7 +182,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		proveedores = new ProveedoresServiceImp();
 		usuarios = new UsuarioServiceImp();
 		this.addWindowListener(this);
-		
+
 		usuarioActual = user;
 		
 		contentPane = new JPanel(new BorderLayout()){
@@ -456,14 +455,14 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		revalidate();
 	}
 	private void listEmpFunc() {
-		listadoEmpleadosPane = new PanelListadoEmpleados(usuarios);
+		listadoUsuariosPane = new PanelListadoUsuarios(usuarios);
 		panelEncabezados = new PanelEncabezados("Listado de Empleados");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
 		cancelarButton = panelOpciones.getCancelarButton();
 		cancelarButton.addActionListener(e->{
-			cancelButton(panelEncabezados, panelMenuEmpleados, listadoEmpleadosPane, panelOpciones);
+			cancelButton(panelEncabezados, panelMenuEmpleados, listadoUsuariosPane, panelOpciones);
 		});
-		panelEncabezados.add(listadoEmpleadosPane, BorderLayout.CENTER);
+		panelEncabezados.add(listadoUsuariosPane, BorderLayout.CENTER);
 		panelEncabezados.add(panelOpciones , BorderLayout.SOUTH);
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuEmpleados, false);

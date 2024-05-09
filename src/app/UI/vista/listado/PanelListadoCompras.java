@@ -9,8 +9,6 @@ import javax.swing.JTable;
 import app.abstractClasses.Transaccion;
 import app.interfaces.Service;
 import app.modelos.Compra;
-import app.modelos.containers.HistorialCompra;
-import app.modelos.containers.HistorialVenta;
 import app.util.TableModel;
 
 public class PanelListadoCompras extends JPanel {
@@ -33,7 +31,6 @@ public class PanelListadoCompras extends JPanel {
 
 		this.proveedores = proveedores;		
 		table = new JTable();
-//		model = new TableModel(table, proveedores.getAll(), columnNames, Transaccion.class, Compra.class);
 		model = new TableModel(table, proveedores.getAll(), columnNames);
 		table.setModel(model);
 		model.renderListColumn(3);

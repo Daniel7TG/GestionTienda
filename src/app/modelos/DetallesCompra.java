@@ -3,8 +3,9 @@ package app.modelos;
 import java.time.LocalDate;
 
 import app.abstractClasses.Detalles;
+import app.interfaces.Listable;
 
-public class DetallesCompra extends Detalles {
+public class DetallesCompra extends Detalles implements Listable {
 
 	
 	private LocalDate fechaCaducidad;
@@ -29,5 +30,9 @@ public class DetallesCompra extends Detalles {
 	public void setFechaCaducidad(LocalDate fechaCaducidad) {
 		this.fechaCaducidad = fechaCaducidad;
 	}
-	
+
+	@Override
+	public Object[] toRow() {
+		return new Object[] {codigo, cantidad, precio, total};
+	}
 }

@@ -25,6 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import app.components.GroupRadioButtons;
 import app.components.TextFieldSuggestion;
@@ -91,15 +93,38 @@ public abstract class PanelUsuarios extends JPanel {
 		gbc_lbRfc.gridy = 0;
 		add(lbUsername, gbc_lbRfc);
 		
-		if(autoComplete) usernameField = new TextFieldSuggestion(Util.getUsernameFilter(usuarios));
-		else usernameField = new JTextField();
+		if(autoComplete){
+			usernameField = new TextFieldSuggestion(Util.getUsernameFilter(usuarios));
+			usernameField.getDocument().addDocumentListener(new DocumentListener() {
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+				}
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					Usuario user = usuarios.get(usernameField.getText());
+					if(user != null) {
+						autocompleteFields(user);
+					}
+				}
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					Usuario user = usuarios.get(usernameField.getText());
+					if(user != null) {
+						autocompleteFields(user);
+					}
+				}
+			});
+		}
+		else {
+			usernameField = new JTextField();
+		}
 		gbc_rfcField = new GridBagConstraints();
 		gbc_rfcField.insets = new Insets(10, 10, 10, 10);
 		gbc_rfcField.fill = GridBagConstraints.BOTH;
 		gbc_rfcField.gridx = 0;
 		gbc_rfcField.gridy = 1;
 		add(usernameField, gbc_rfcField);
-		
+
 		panelDireccion = new PanelCapturaDireccion();
 		GridBagConstraints gbc_direccion = new GridBagConstraints();
 		gbc_direccion.gridheight = 7;

@@ -1,16 +1,17 @@
 package app.abstractClasses;
 
-public abstract class Detalles {
+import app.interfaces.Listable;
+
+public abstract class Detalles implements Listable {
 	
-	private String codigo;
-	private int cantidad;
-	private double precio;
-	private double total;
-	private int folio;
+	protected String codigo;
+	protected int cantidad;
+	protected double precio;
+	protected double total;
+	protected int folio;
 	
 	/**
 	 * @param codigo
-	 * @param total
 	 * @param precio
 	 * @param cantidad
 	 */
@@ -21,15 +22,7 @@ public abstract class Detalles {
 		this.total = precio*cantidad;
 	}
 
-	public Detalles(String codigo, double precio, int cantidad, int folio) {
-		this.codigo = codigo;
-		this.precio = precio;
-		this.cantidad = cantidad;
-		this.total = precio*cantidad;
-		this.folio = folio;
-	}
-	
-	public Detalles(){	
+	public Detalles(){
 	}
 	
 	public Detalles(String codigo) {
@@ -72,11 +65,7 @@ public abstract class Detalles {
 	}
 	@Override
 	public String toString() {
-		return "Detalles [codigo=" + codigo + ", cantidad=" + cantidad + ", precio=" + precio + ", total=" + total
-				+ "]";
+		return "Detalles [codigo=" + codigo + ", cantidad=" + cantidad + ", precio=" + precio + ", total=" + total + "]";
 	}
 
-	
-	
-	
 }

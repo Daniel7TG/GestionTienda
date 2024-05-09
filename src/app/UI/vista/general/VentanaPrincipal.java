@@ -28,10 +28,7 @@ import app.UI.vista.consulta.PanelConsultaUsuarios;
 import app.UI.vista.eliminar.PanelEliminarProductos;
 import app.UI.vista.eliminar.PanelEliminarProveedor;
 import app.UI.vista.eliminar.PanelEliminarUsuario;
-import app.UI.vista.listado.PanelListadoCompras;
-import app.UI.vista.listado.PanelListadoProductos;
-import app.UI.vista.listado.PanelListadoUsuarios;
-import app.UI.vista.listado.PanelListadoVentas;
+import app.UI.vista.listado.*;
 import app.UI.vista.menus.PanelMenuCompra;
 import app.UI.vista.menus.PanelMenuEmpleados;
 import app.UI.vista.menus.PanelMenuProductos;
@@ -129,7 +126,11 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private JMenuItem pMenuProveedores;
 	private PanelListadoCompras listadoComprasPane;
 	private PanelCapturaCompra capturaCompraPane;
-	
+
+	private JButton listarProvButton;
+	private PanelListadoProveedores listadoProveedoresPane;
+	private JButton modificarProvButton;
+
 	private JButton registrarProvButton;
 	private PanelCapturaProveedor capturaProveedorPane;
 	private JButton consultarProvButton;
@@ -160,19 +161,6 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 
 
 	
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					new VentanaPrincipal();
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-	
-
 	public VentanaPrincipal(Usuario user) {
 		
 		font = new Font("Montserrat", Font.BOLD, 13);
@@ -487,6 +475,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		eliminarProvButton.addActionListener(e->{
 			elimProvFunc();
 		});
+		listarProvButton = panelMenuProveedores.getListarButton();
+		listarProvButton.addActionListener(e->{
+			listProvFunc();
+		});
 		
 		contentPane.add(panelMenuProveedores, BorderLayout.WEST);
 		revalidate();
@@ -545,6 +537,21 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuProveedores, false);
 		revalidate();		
+	}
+
+	private void listProvFunc() {
+		listadoProveedoresPane = new PanelListadoProveedores(proveedores);
+		panelEncabezados = new PanelEncabezados("Listado de  Proveedores");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL,  "Cancelar");
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuProveedores, listadoProveedoresPane, panelOpciones);
+		});
+		panelEncabezados.add(listadoProveedoresPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuProveedores, false);
+		revalidate();
 	}
 
 	private void pMenuCompFunc() {

@@ -51,7 +51,6 @@ public class PanelCapturaVenta extends JPanel {
 	private JButton agregarButton;
 	private JScrollPane tablePanel;
 	
-	private Object[][] data = new Object[0][0];
 	private String[] columnNames = {
 		"Codigo", "Cantidad", "Precio", "Total"
 	};
@@ -116,7 +115,7 @@ public class PanelCapturaVenta extends JPanel {
 		
 		tablePanel = new JScrollPane();
 		productsTable = new JTable();
-		model = new TableModel(productsTable, data, columnNames);
+		model = new TableModel(productsTable, lista, columnNames);
 		productsTable.setModel(model);
 		tablePanel.setViewportView(productsTable);
 
@@ -153,7 +152,7 @@ public class PanelCapturaVenta extends JPanel {
 	
 	
 	public void guardarVenta() {
-		if(lista.size() == 0) return;
+		if(lista.isEmpty()) return;
 		LocalDate fecha = LocalDate.now();
 		Venta venta = new Venta(fecha, lista, user.getUserName());
 		lista.forEach(detalle -> 
@@ -178,7 +177,7 @@ public class PanelCapturaVenta extends JPanel {
 	
 
 	public void updateTable() {
-		model.update(Util.anyToString(lista, Detalles.class));
+		model.update(lista.stream().map(Detalles::toRow).toArray(Object[][]::new));
 	}
 
 }

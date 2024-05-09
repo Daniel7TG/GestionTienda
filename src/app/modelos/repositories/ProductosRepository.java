@@ -46,8 +46,8 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 	
 	@Override
 	public int save(Producto producto) {
-		String sql = "INSERT INTO producto(codigo_barras, nombre, marca, tipo, contenido, medida, stock_maximo, stock_minimo, presentacion, descripcion, cantidad) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+		String sql = "INSERT INTO producto(codigo_barras, nombre, marca, tipo, contenido, medida, stock_maximo, stock_minimo, presentacion, descripcion, cantidad, precio_venta) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		int result = 0;
 		try {
 			pStatement = connection.prepareStatement(sql);
@@ -62,6 +62,7 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 			pStatement.setString(9, producto.getPresentacion());
 			pStatement.setString(10, producto.getDescripcion());
 			pStatement.setInt(11, producto.getStockActual());
+			pStatement.setDouble(12, producto.getPrecioVenta());
 			result = pStatement.executeUpdate();
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
@@ -125,7 +126,7 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 	public boolean set(Producto p) {
 		String sql = "UPDATE producto SET nombre = ?, marca = ?, tipo = ?, "
 				+ "contenido = ?, medida = ?, stock_maximo = ?, stock_minimo = ?, "
-				+ "presentacion = ?, descripcion = ?, cantidad = ? "
+				+ "presentacion = ?, descripcion = ?, cantidad = ?, precio_venta = ?"
 				+ "WHERE codigo_barras = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
@@ -140,6 +141,7 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 			pStatement.setString(9, p.getDescripcion());
 			pStatement.setInt(10, p.getStockActual());
 			pStatement.setString(11, p.getCodigoBarras());
+			pStatement.setDouble(12, p.getPrecioVenta());
 			return pStatement.executeUpdate() == 0 ? false : true;
 		} catch (SQLException e) {
 			e.printStackTrace();

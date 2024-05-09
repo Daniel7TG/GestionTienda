@@ -140,8 +140,8 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 			pStatement.setString(8, p.getPresentacion());
 			pStatement.setString(9, p.getDescripcion());
 			pStatement.setInt(10, p.getStockActual());
-			pStatement.setString(11, p.getCodigoBarras());
-			pStatement.setDouble(12, p.getPrecioVenta());
+			pStatement.setDouble(11, p.getPrecioVenta());
+			pStatement.setString(12, p.getCodigoBarras());
 			return pStatement.executeUpdate() == 0 ? false : true;
 		} catch (SQLException e) {
 			e.printStackTrace();

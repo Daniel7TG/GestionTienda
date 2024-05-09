@@ -100,7 +100,7 @@ public class Proveedor extends Persona implements Listable {
 	
 	@Override
 	public String[] toRow() {
-		return new String[] {rfc, nombre, apellido, razonSocial, telefono, domicilio.toString()};
+		return new String[] {rfc, nombre + " " + apellido, razonSocial, domicilio.toString(), telefono};
 	}
 	
 	@Override

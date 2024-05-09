@@ -90,6 +90,7 @@ public class TableModel extends DefaultTableModel {
 		});
 	}
 	public void setWidths() {
+		if(widths!=null)
 		for(int i = 0; i < widths.length; i++) {
 			table.getColumnModel()
 			.getColumn(i)

@@ -50,6 +50,7 @@ public abstract class Detalles implements Listable {
 		return cantidad;
 	}
 	public void setCantidad(int cantidad) {
+		this.total = cantidad*precio;
 		this.cantidad = cantidad;
 	}
 	public int getFolio() {

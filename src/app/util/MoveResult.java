@@ -31,6 +31,7 @@ public abstract class MoveResult {
 			product.setStockMinimo(result.getInt("stock_minimo"));
 			product.setPresentacion(result.getString("presentacion"));
 			product.setDescripcion(result.getString("descripcion"));
+			product.setPrecioVenta(result.getDouble("precio_venta"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

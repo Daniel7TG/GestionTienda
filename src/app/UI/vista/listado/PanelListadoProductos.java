@@ -1,6 +1,7 @@
 package app.UI.vista.listado;
 
 import java.awt.GridLayout;
+import java.util.LinkedHashMap;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -10,40 +11,26 @@ import app.interfaces.Service;
 import app.modelos.Producto;
 import app.util.TableModel;
 
-public class PanelListadoProductos extends JPanel {
+public class PanelListadoProductos extends Listado {
 
-	private static final long serialVersionUID = 1L;
+	private static final LinkedHashMap<String, Integer> columns = new LinkedHashMap<String, Integer>(){{
+		put("Código", 3);
+		put("Nombre", 3);
+		put("Marca", 2);
+		put("Tipo", 2);
+		put("Contenido", 1);
+		put("Medida", 2);
+		put("Presentación", 2);
+		put("Máximo", 1);
+		put("Mínimo", 1);
+		put("Descripción", 3);
+		put("Precio", 1);
+		put("Cantidad", 1);
+	}};
 
-	private JTable table;
-	private TableModel model;
-	private String[] columnNames = {"Codigo",
-			"Nombre",
-			"Marca",
-			"Tipo",
-			"Contenido",
-			"Medida",
-			"Presentacion",
-			"Maximo",
-			"Minimo",
-			"Descripcion",
-			"Precio",
-			"Cantidad",
-			};
-	private JScrollPane tableScroll;
-	
 	public PanelListadoProductos(Service<Producto> catalogo) {
-		setLayout(new GridLayout(1, 1, 0, 0));
-
-		Object[][] data = catalogo.getMatrix();
-		table = new JTable();
-		model = new TableModel(table, data, columnNames);
-		table.setModel(model);
-		model.configurarTabla(3, 3, 2, 2, 1, 2, 2, 1, 1, 3, 1, 1);
-		table.setRowHeight(30);
-		tableScroll = new JScrollPane(table);		
-		tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		add(tableScroll);	
-	}	
+		super(columns, catalogo);
+	}
 	
 }
 

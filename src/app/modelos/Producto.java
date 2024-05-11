@@ -1,10 +1,12 @@
 package app.modelos;
 
 
+import app.interfaces.Listable;
+
 /**
  * @author odtgo
  */
-public class Producto {
+public class Producto implements Listable {
 	private String codigoBarras;
 	private String nombre;	
 	private String marca;
@@ -187,6 +189,10 @@ public class Producto {
 	public boolean equals(Object o) {
 		return this.codigoBarras.equals(((Producto)o).codigoBarras) | this.getMainData().equals(((Producto)o).getMainData());
 	}
-	
-	
+
+
+	@Override
+	public Object[] toRow() {
+		return new Object[]{codigoBarras, nombre, marca, tipo, contenido, unidadDeMedida, presentacion, stockMaximo, stockMinimo, descripcion, precioVenta, stockActual};
+	}
 }

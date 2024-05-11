@@ -202,13 +202,6 @@ public class PanelProveedores extends JPanel {
         gbc_lblNombre.gridy = 2;
         add(lblNombre, gbc_lblNombre);
 
-//        tablePanel = new JScrollPane();
-//        productsTable = new JTable();
-//        data = proveedores.getMatrix();
-//        model = new TableModel(productsTable, proveedores.getAll(), columnNames);
-//        model.configurarTabla(1, 1, 1, 1, 1, 3);
-//        productsTable.setModel(model);
-//        tablePanel.setViewportView(productsTable);
         Listado listado = new Listado(columns, proveedores);
         listado.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

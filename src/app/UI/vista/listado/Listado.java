@@ -11,11 +11,14 @@ import java.util.Map;
 public class Listado extends JPanel {
 
     public JTable table;
+    private TableModel model;
+    private Service<? extends Listable> service;
 
     public Listado(Map<String, Integer> columns, Service<? extends Listable> service) {
         this(columns, service, -1);
     }
     public Listado(Map<String, Integer> columns, Service<? extends Listable> service, int listColumn) {
+        this.service = service;
 
         setLayout(new GridLayout(1, 1, 0, 0));
 
@@ -23,7 +26,7 @@ public class Listado extends JPanel {
         int[] columnWeights = columns.values().stream().mapToInt(i -> i).toArray();
 
         table = new JTable();
-        TableModel model = new TableModel(table, service.getAll(), columnNames);
+        model = new TableModel(table, service.getAll(), columnNames);
         table.setModel(model);
 
         if(listColumn >= 0)
@@ -34,5 +37,11 @@ public class Listado extends JPanel {
         tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         add(tableScroll);
     }
+
+
+    public void update() {
+        model.update(service.getAll());
+    }
+
 
 }

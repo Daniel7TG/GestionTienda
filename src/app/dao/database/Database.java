@@ -36,8 +36,7 @@ public class Database {
 		if(connection == null)
 		try {
 			Class.forName(driver);
-			System.out.println("password " + databasePassword + " user " + databaseUser + " database " + databaseName + " protocol " + protocol);
-			connection = DriverManager.getConnection(protocol + databaseName, databaseUser, databasePassword); 
+			connection = DriverManager.getConnection(protocol + databaseName, databaseUser, databasePassword);
 			return true;
 		} catch(SQLException | ClassNotFoundException e) {		
 			e.printStackTrace();

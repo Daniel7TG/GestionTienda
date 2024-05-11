@@ -1,5 +1,6 @@
 package app.UI.vista.general;
 
+import app.UI.vista.listado.Listado;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
@@ -15,35 +16,37 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.LinkedHashMap;
 
 public class PanelProveedores extends JPanel {
 
-    private static final long serialVersionUID = 1L;
-    private Service<Proveedor> proveedores;
-    private JTextField rfcField;
-    private JTextField razonField;
-    private JTextField telefonoField;
-    private JLabel lbRfc;
-    private JLabel lbRazonSocial;
-    private JLabel lbTelefono;
-    private Font fontLabel;
-    private Font fontFunc;
-    private PanelCapturaDireccion panelDireccion;
-    private JLabel lblNombre;
-    private JLabel lblApellido;
-    private JTextField fieldNombre;
-    private JTextField fieldApellido;
-    private JScrollPane tablePanel;
-    private JTable productsTable;
-    private TableModel model;
-    private Object[][] data = new Object[0][0];
-    private String[] columnNames = {"RFC",
-            "Nombre",
-            "Apellido",
-            "Razón Social",
-            "Teléfono",
-            "Dirección"
-    };
+    protected static final long serialVersionUID = 1L;
+    protected Service<Proveedor> proveedores;
+    protected JTextField rfcField;
+    protected JTextField razonField;
+    protected JTextField telefonoField;
+    protected JLabel lbRfc;
+    protected JLabel lbRazonSocial;
+    protected JLabel lbTelefono;
+    protected Font fontLabel;
+    protected Font fontFunc;
+    protected PanelCapturaDireccion panelDireccion;
+    protected JLabel lblNombre;
+    protected JLabel lblApellido;
+    protected JTextField fieldNombre;
+    protected JTextField fieldApellido;
+    protected JScrollPane tablePanel;
+    protected JTable productsTable;
+
+    protected TableModel model;
+    protected static final LinkedHashMap<String, Integer> columns = new LinkedHashMap<>() {{
+        put("RFC", 1);
+        put("Nombre", 3);
+        put("Razón Social", 2);
+        put("Dirección", 3);
+        put("Teléfono", 2);
+    }};
+
 
     public PanelProveedores(Service<Proveedor> proveedores, boolean autoComplete){
         fontLabel = new Font("Montserrat", Font.PLAIN, 16);
@@ -198,14 +201,15 @@ public class PanelProveedores extends JPanel {
         gbc_lblNombre.gridy = 2;
         add(lblNombre, gbc_lblNombre);
 
-        tablePanel = new JScrollPane();
-        productsTable = new JTable();
-        data = proveedores.getMatrix();
-        model = new TableModel(productsTable, proveedores.getAll(), columnNames);
-        model.configurarTabla(1, 1, 1, 1, 1, 3);
-        productsTable.setModel(model);
-        tablePanel.setViewportView(productsTable);
-        productsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+//        tablePanel = new JScrollPane();
+//        productsTable = new JTable();
+//        data = proveedores.getMatrix();
+//        model = new TableModel(productsTable, proveedores.getAll(), columnNames);
+//        model.configurarTabla(1, 1, 1, 1, 1, 3);
+//        productsTable.setModel(model);
+//        tablePanel.setViewportView(productsTable);
+        Listado listado = new Listado(columns, proveedores);
+        listado.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
@@ -224,7 +228,7 @@ public class PanelProveedores extends JPanel {
         gbc_tablePanel.fill = GridBagConstraints.BOTH;
         gbc_tablePanel.gridx = 0;
         gbc_tablePanel.gridy = 7;
-        add(tablePanel, gbc_tablePanel);
+        add(listado, gbc_tablePanel);
 
         style(new Component[] {
                 rfcField,

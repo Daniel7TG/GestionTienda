@@ -35,6 +35,7 @@ import app.UI.vista.menus.PanelMenuProductos;
 import app.UI.vista.menus.PanelMenuProveedores;
 import app.UI.vista.menus.PanelMenuVenta;
 import app.UI.vista.modificar.PanelModificarProductos;
+import app.UI.vista.modificar.PanelModificarProveedor;
 import app.UI.vista.modificar.PanelModificarUsuarios;
 import app.components.MenuButton;
 import app.enums.Permission;
@@ -128,6 +129,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private PanelCapturaCompra capturaCompraPane;
 
 	private JButton listarProvButton;
+	private PanelModificarProveedor modificarProveedorPane;
 	private PanelListadoProveedores listadoProveedoresPane;
 	private JButton modificarProvButton;
 
@@ -479,6 +481,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		listarProvButton.addActionListener(e->{
 			listProvFunc();
 		});
+		modificarProvButton = panelMenuProveedores.getModificarButton();
+		modificarProvButton.addActionListener(e->{
+			modProvFunc();
+		});
 		
 		contentPane.add(panelMenuProveedores, BorderLayout.WEST);
 		revalidate();
@@ -537,6 +543,25 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
 		enableButtons(panelMenuProveedores, false);
 		revalidate();		
+	}
+
+	private void modProvFunc(){
+		modificarProveedorPane = new PanelModificarProveedor(proveedores);
+		panelEncabezados = new PanelEncabezados("Modificar Proveedores");
+		panelOpciones = new PanelOpciones(modificarProveedorPane.getLastItem(), PanelOpciones.BOTH, "Modificar", "Cancelar");
+		guardarButton = panelOpciones.getGuardarButton();
+		guardarButton.addActionListener(ec -> {
+			modificarProveedorPane.modificarProveedor();
+		});
+		cancelarButton = panelOpciones.getCancelarButton();
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuProveedores, modificarProveedorPane, panelOpciones);
+		});
+		panelEncabezados.add(modificarProveedorPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuProveedores, false);
+		revalidate();
 	}
 
 	private void listProvFunc() {

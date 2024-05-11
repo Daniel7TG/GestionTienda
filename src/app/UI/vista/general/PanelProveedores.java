@@ -1,10 +1,10 @@
 package app.UI.vista.general;
 
+import app.UI.vista.captura.PanelCapturaDireccion;
 import app.UI.vista.listado.Listado;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
-import app.modelos.Usuario;
 import app.util.TableModel;
 import app.util.Util;
 
@@ -46,6 +46,7 @@ public class PanelProveedores extends JPanel {
         put("Dirección", 3);
         put("Teléfono", 2);
     }};
+    private final boolean FROM_TABLE = true, FROM_FIELD = false;
 
 
     public PanelProveedores(Service<Proveedor> proveedores, boolean autoComplete){
@@ -81,14 +82,14 @@ public class PanelProveedores extends JPanel {
 				public void insertUpdate(DocumentEvent e) {
 					Proveedor prov = proveedores.get(rfcField.getText());
 					if(prov != null) {
-						autoCompleteFields(prov);
+						autoCompleteFields(prov, FROM_FIELD);
 					}
 				}
 				@Override
 				public void removeUpdate(DocumentEvent e) {
 					Proveedor prov = proveedores.get(rfcField.getText());
 					if(prov != null) {
-						autoCompleteFields(prov);
+                        autoCompleteFields(prov, FROM_FIELD);
 					}
 				}
 			});
@@ -216,7 +217,7 @@ public class PanelProveedores extends JPanel {
                     int selectedRow = productsTable.getSelectedRow();
                     if (selectedRow != -1) {
                         Proveedor selectedProveedor = proveedores.getAll().get(selectedRow);
-                        autoCompleteFields(selectedProveedor);
+                        autoCompleteFields(selectedProveedor, FROM_TABLE);
                     }
                 }
             }
@@ -284,9 +285,9 @@ public class PanelProveedores extends JPanel {
     }
     
 
-    protected void autoCompleteFields(Proveedor proveedor) {
+    protected void autoCompleteFields(Proveedor proveedor, boolean fromTable) {
         if(proveedor != null) {
-            rfcField.setText(proveedor.getRfc());
+            if(fromTable) rfcField.setText(proveedor.getRfc());
             fieldNombre.setText(proveedor.getNombre());
             fieldApellido.setText(proveedor.getApellido());
             razonField.setText(proveedor.getRazonSocial());

@@ -1,4 +1,4 @@
-package app.UI.vista.general;
+package app.UI.vista.captura;
 
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;

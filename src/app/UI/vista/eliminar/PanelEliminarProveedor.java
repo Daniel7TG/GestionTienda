@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -21,7 +20,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import app.UI.vista.general.PanelCapturaDireccion;
+import app.UI.vista.captura.PanelCapturaDireccion;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Service;
 import app.modelos.Proveedor;

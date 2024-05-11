@@ -9,33 +9,25 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import app.UI.vista.captura.PanelCapturaDireccion;
 import app.components.GroupRadioButtons;
 import app.components.TextFieldSuggestion;
 import app.enums.Permission;
 import app.interfaces.Service;
-import app.modelos.Domicilio;
-import app.modelos.Proveedor;
 import app.modelos.Usuario;
-import app.util.TableModel;
 import app.util.Util;
 import app.util.Util.FocusField;
 

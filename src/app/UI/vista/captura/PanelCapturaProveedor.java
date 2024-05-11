@@ -2,16 +2,10 @@ package app.UI.vista.captura;
 
 import javax.swing.JPanel;
 
-import app.UI.vista.general.PanelCapturaDireccion;
-import app.abstractClasses.Detalles;
-import app.abstractClasses.Persona;
-import app.abstractClasses.Transaccion;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
 import app.util.Util.FocusField;
 import app.util.TableModel;
-import app.util.Util;
-import app.util.Util.FocusBox;
 
 import java.awt.GridBagLayout;
 
@@ -23,8 +17,6 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 

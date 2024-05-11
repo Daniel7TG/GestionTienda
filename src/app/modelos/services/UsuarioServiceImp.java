@@ -6,6 +6,7 @@ import java.util.List;
 
 import app.dao.database.Database;
 import app.interfaces.Service;
+import app.modelos.Proveedor;
 import app.modelos.Usuario;
 import app.modelos.repositories.DomicilioRepository;
 import app.modelos.repositories.PermisosUsuarioRepository;
@@ -68,6 +69,8 @@ public class UsuarioServiceImp implements Service<Usuario> {
 
 	@Override
 	public Usuario get(Usuario obj) {
+		
+		
 		return repository.get(obj.getUserName());
 	}
 

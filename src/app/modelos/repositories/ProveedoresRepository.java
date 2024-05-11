@@ -157,7 +157,6 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 
 	@Override
 	public int saveAll(List<Proveedor> obj) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	

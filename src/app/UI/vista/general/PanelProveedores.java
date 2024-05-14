@@ -127,7 +127,6 @@ public class PanelProveedores extends JPanel {
         add(lblApellido, gbc_lblApellido);
 
         fieldNombre = new JTextField();
-        fieldNombre.setEditable(false);
         GridBagConstraints gbc_fieldNombre = new GridBagConstraints();
         gbc_fieldNombre.insets = new Insets(10, 10, 10, 10);
         gbc_fieldNombre.fill = GridBagConstraints.BOTH;
@@ -137,7 +136,6 @@ public class PanelProveedores extends JPanel {
         fieldNombre.setColumns(10);
 
         fieldApellido = new JTextField();
-        fieldApellido.setEditable(false);
         GridBagConstraints gbc_fieldApellido = new GridBagConstraints();
         gbc_fieldApellido.insets = new Insets(10, 10, 10, 10);
         gbc_fieldApellido.fill = GridBagConstraints.BOTH;
@@ -155,7 +153,6 @@ public class PanelProveedores extends JPanel {
         add(lbRazonSocial, gbc_lbRazonSocial);
 
         razonField = new JTextField();
-        razonField.setEditable(false);
         razonField.addActionListener(focusField);
 
         lbTelefono = new JLabel("Teléfono");
@@ -174,7 +171,6 @@ public class PanelProveedores extends JPanel {
         razonField.setColumns(10);
 
         telefonoField = new JTextField();
-        telefonoField.setEditable(false);
         telefonoField.addActionListener(focusField);
         telefonoField.addKeyListener(new KeyAdapter() {
             @Override

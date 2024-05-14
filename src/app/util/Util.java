@@ -239,7 +239,8 @@ public class Util {
 	public static KeyListener lenghtLimit(int limit){
 		return new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyTyped(KeyEvent e) {
+				System.out.println("source" + e.getSource() + " " + e.getSource().getClass());
 				if(e.getSource() instanceof JTextField field)
 					if(field.getText().length() >= limit) e.consume();
 			}

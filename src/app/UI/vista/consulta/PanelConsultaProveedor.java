@@ -32,7 +32,7 @@ import app.UI.vista.captura.PanelCapturaDireccion;
 	
 		public PanelConsultaProveedor(Service<Proveedor> proveedores) {
 			super(proveedores, true);
-
+			setDisabled();
 		}
 	
 	}

@@ -15,7 +15,7 @@ import app.components.MenuButton;
 import app.enums.Permission;
 import app.modelos.Usuario;
 
-public class PanelMenuProveedores extends JPanel {
+public class PanelMenuProveedores extends PanelMenu {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,9 +26,7 @@ public class PanelMenuProveedores extends JPanel {
 	private JButton listarButton;
 
 	public PanelMenuProveedores(Usuario usuario) {
-		setMaximumSize(new Dimension(200, 32767));
-		setBackground(Color.decode("#b0cfe0"));
-		setLayout(new GridLayout(6, 1, 0, 20));
+		super("Proveedores", usuario);
 
 		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.ADD_PROVEEDORES);
 		if(!usuario.hasAccessTo(Permission.ADD_PROVEEDORES)) registrarButton.setEnabled(false);

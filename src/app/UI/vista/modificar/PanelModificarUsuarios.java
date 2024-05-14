@@ -1,22 +1,16 @@
 package app.UI.vista.modificar;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import app.UI.vista.general.PanelUsuarios;
-import app.components.TextFieldSuggestion;
 import app.enums.Permission;
 import app.interfaces.Service;
 import app.modelos.Domicilio;
 import app.modelos.Usuario;
-import app.util.Util;
 
 public class PanelModificarUsuarios extends PanelUsuarios {
 
@@ -72,17 +66,17 @@ public class PanelModificarUsuarios extends PanelUsuarios {
 	
 	
 	public List<Permission> getPermisos(){
-		List<Permission> todosLosPermisos = new ArrayList<Permission>();
+		List<Permission> all = new ArrayList<>();
 		
-		if(writeCompraBtn.isSelected()) todosLosPermisos.add(Permission.WRITE_COMPRA); 
-		if(writeVentaBtn.isSelected()) todosLosPermisos.add(Permission.WRITE_VENTA); 
-		if(readCompraBtn.isSelected()) todosLosPermisos.add(Permission.READ_COMPRA); 
-		if(readVentaBtn.isSelected()) todosLosPermisos.add(Permission.READ_VENTA); 
+		if(writeCompraBtn.isSelected()) all.add(Permission.WRITE_COMPRA); 
+		if(writeVentaBtn.isSelected()) all.add(Permission.WRITE_VENTA); 
+		if(readCompraBtn.isSelected()) all.add(Permission.READ_COMPRA); 
+		if(readVentaBtn.isSelected()) all.add(Permission.READ_VENTA); 
 		
-		todosLosPermisos.addAll(productosPermission.getPressed());
-		todosLosPermisos.addAll(proveedoresPermission.getPressed());
-		todosLosPermisos.addAll(usuariosPermission.getPressed());
-		return todosLosPermisos;
+		all.addAll(productosPermission.getPressed());
+		all.addAll(proveedoresPermission.getPressed());
+		all.addAll(usuariosPermission.getPressed());
+		return all;
 	}
 
 }

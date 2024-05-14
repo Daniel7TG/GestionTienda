@@ -5,7 +5,6 @@ import app.UI.vista.listado.Listado;
 import app.components.TextFieldSuggestion;
 import app.interfaces.Service;
 import app.modelos.Proveedor;
-import app.util.TableModel;
 import app.util.Util;
 
 import javax.swing.*;

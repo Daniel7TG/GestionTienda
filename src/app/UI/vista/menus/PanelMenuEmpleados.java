@@ -30,7 +30,7 @@ public class PanelMenuEmpleados extends PanelMenu {
 		modificarButton = new MenuButton("Modificar", KeyEvent.VK_L, Permission.MODIFY_USUARIOS);
 		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_USUARIOS);
 			
-		super.addButtons(registrarButton, consultarButton, eliminarButton, modificarButton, listarButton);
+		addButtons(registrarButton, consultarButton, eliminarButton, modificarButton, listarButton);
 	}	
 	
 	

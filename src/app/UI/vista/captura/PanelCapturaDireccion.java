@@ -190,6 +190,7 @@ public class PanelCapturaDireccion extends JPanel {
 		gbc_lbCodigoPostal.gridy = 6;
 		add(lbCodigoPostal, gbc_lbCodigoPostal);
 
+
 		codigoPostalField = new JTextField();
 		codigoPostalField.addActionListener(focusField);
 		codigoPostalField.addKeyListener(new KeyAdapter() {
@@ -259,7 +260,7 @@ public class PanelCapturaDireccion extends JPanel {
 
 	public Domicilio getDireccion() {
 		return new Domicilio(
-				Integer.valueOf(numeroField.getText()), 
+				Integer.parseInt(numeroField.getText()),
 				calleField.getText(),
 				(Orientacion)orientacionBox.getSelectedItem(),
 				coloniaField.getText(),
@@ -318,8 +319,7 @@ public class PanelCapturaDireccion extends JPanel {
 		}
 
 	}
-	////////////
-	
+
 	public void setEditable(boolean editable) {
 	    numeroField.setEditable(editable); 
 	    calleField.setEditable(editable);
@@ -329,6 +329,5 @@ public class PanelCapturaDireccion extends JPanel {
 	    estadoField.setEditable(editable);
 	    codigoPostalField.setEditable(editable);
 	}
-///////////////////
-	
+
 }

@@ -5,16 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import app.UI.vista.general.PanelUsuarios;
-import app.components.TextFieldSuggestion;
 import app.enums.Permission;
 import app.interfaces.Service;
 import app.modelos.Domicilio;
 import app.modelos.Usuario;
-import app.modelos.repositories.PermisosUsuarioRepository;
-import app.util.Util;
 
 public class PanelCapturaUsuario extends PanelUsuarios {
 
@@ -43,7 +39,7 @@ public class PanelCapturaUsuario extends PanelUsuarios {
 			JOptionPane.showMessageDialog(null, "El campo de teléfono no puede estar vacío");				
 		} else if(permisos.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No puede dejar todos los permisos sin marcar");				
-		} else if(!panelDireccion.isValidDirection()) {} 
+		} else if(!panelDireccion.isValidDirection()) {}
 		else {
 			String nombre = fieldNombre.getText();
 			String apellido = fieldApellido.getText();

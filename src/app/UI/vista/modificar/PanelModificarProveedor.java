@@ -43,7 +43,7 @@ public class PanelModificarProveedor extends PanelProveedores {
             Domicilio domicilio = panelDireccion.getDireccion();
 
             Proveedor proveedor = proveedores.get(rfc);
-
+            domicilio.setId(proveedor.getIdDomicilio());
             // Actualizar los datos del proveedor
             proveedor.setNombre(nombre);
             proveedor.setApellido(apellido);

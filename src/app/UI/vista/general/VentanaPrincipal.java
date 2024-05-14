@@ -775,11 +775,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	// Utilidades
 	
 	public void cancelButton(JPanel parent, JPanel menu, JPanel...panels) {
+		for(JPanel panel : panels) {
+			contentPane.remove(panel);
+		}
 		contentPane.remove(parent);
-		parent = null;
-//		for(JPanel panel : panels) {
-//			panel = null;
-//		}
 		enableButtons(menu, true);
 		repaint();
 		System.gc();

@@ -107,7 +107,6 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			pStatement.setString(4, obj.getTelefono());
 			pStatement.setInt(5, obj.getIdDomicilio());
 			pStatement.setString(6, obj.getRfc());
-	
 			return pStatement.executeUpdate() != 0;
 		} catch (SQLException e) {
 			e.printStackTrace();

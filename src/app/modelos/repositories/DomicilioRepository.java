@@ -116,7 +116,6 @@ public class DomicilioRepository implements CRUDRepository<Domicilio> {
 			pStatement.setString(6, obj.getEstado());
 			pStatement.setString(7, obj.getOrientacion().toString());
 			pStatement.setInt(8, obj.getId());
-			
 			return pStatement.executeUpdate() == 0 ? false : true;
 		} catch (SQLException e) {
 			e.printStackTrace();

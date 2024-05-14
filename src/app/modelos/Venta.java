@@ -34,7 +34,7 @@ public class Venta extends Transaccion<DetallesVenta> implements Listable {
 		return userName;
 	}
 	public void setUserName(String userName) {
-		this.userName= userName;
+		this.userName = userName != null ? userName : "UNKNOWN";
 	}
 
 	@Override

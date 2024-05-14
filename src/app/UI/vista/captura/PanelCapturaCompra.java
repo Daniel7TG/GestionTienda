@@ -134,26 +134,20 @@ public class PanelCapturaCompra extends JPanel {
 			}
 		}		
 	};
-	
-	
+
+
 	DocumentListener nameTextListener = new DocumentListener() {
 		public void changedUpdate(DocumentEvent e) {}
 		public void removeUpdate(DocumentEvent e) {
-			Producto p = new Producto();
-			p.setMainData(fieldNombreP.getText());
-			Producto producto = catalogo.get(p);
+			Producto producto = catalogo.getByData(fieldNombreP.getText());
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
-				buscarProductoCodigo(fieldCodigoP.getText());
 			}
 		}
 		public void insertUpdate(DocumentEvent e) {
-			Producto p = new Producto();
-			p.setMainData(fieldNombreP.getText());
-			Producto producto = catalogo.get(p);
+			Producto producto = catalogo.getByData(fieldNombreP.getText());
 			if(producto != null) {
 				autoCompleteFields(producto, BY_NAME);
-				buscarProductoCodigo(fieldCodigoP.getText());
 			}
 		}
 	};
@@ -464,7 +458,7 @@ public class PanelCapturaCompra extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {				
 				if(!precioField.getText().isEmpty()) {
-					totalField.setText(String.valueOf(Double.valueOf(precioField.getText()) * (Integer)cantidadSpin.getValue()));					
+					totalField.setText(String.valueOf(Double.valueOf(precioField.getText()) * (Integer)cantidadSpin.getValue()));
 				}
 			};
 			
@@ -692,16 +686,14 @@ public class PanelCapturaCompra extends JPanel {
 	
 	private void autoCompleteFields(Producto producto, boolean code) {
 		if(code) {
-			fieldNombreP.setText(producto.getNombre());			
+			fieldNombreP.setText(producto.getNombre());
 		} else {
-			fieldCodigoP.setText(producto.getCodigoBarras());			
+			fieldCodigoP.setText(producto.getCodigoBarras());
 			SwingUtilities.invokeLater(()->{			
 				fieldNombreP.setText(producto.getNombre());
 			});
 		}
-		lblProdDetalles.setText(producto.getMainData());
-		
-		
+		lblProdDetalles.setText(producto.getMainData().replaceAll("_", " "));
 		repaint();
 	}
 	

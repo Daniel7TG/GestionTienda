@@ -32,7 +32,7 @@ public class Compra extends Transaccion<DetallesCompra> implements Listable {
 		return rfc;
 	}
 	public void setRfc(String rfc) {
-		this.rfc = rfc;
+		this.rfc = rfc != null ? rfc : "UNKNOWN";
 	}
 	@Override
 	public String toString() {

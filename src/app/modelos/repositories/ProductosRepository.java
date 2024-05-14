@@ -100,7 +100,9 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 			resultSet = pStatement.executeQuery();
 			if(resultSet.next())
 				return MoveResult.toProduct(resultSet);
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return null;	
 	}

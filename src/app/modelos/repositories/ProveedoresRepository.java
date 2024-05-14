@@ -98,7 +98,6 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 	public boolean set(Proveedor obj) {
 		String sql = "UPDATE proveedor SET nombre = ?, apellido = ?, "
 				+ "razon_social = ?, telefono = ?, domicilio = ? "
-				+ "JOIN domicilio ON proveedor.domicilio = domicilio.id "
 				+ "WHERE rfc = ?";
 		try {
 			pStatement = connection.prepareStatement(sql);
@@ -109,7 +108,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 			pStatement.setInt(5, obj.getIdDomicilio());
 			pStatement.setString(6, obj.getRfc());
 	
-			return pStatement.executeUpdate() == 0 ? false : true;
+			return pStatement.executeUpdate() != 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -151,7 +150,7 @@ public class ProveedoresRepository implements CRUDRepository<Proveedor> {
 
 	@Override
 	public boolean isEmpty() {
-		return getSize() == 0 ? true:false;
+		return getSize() == 0;
 	}
 
 

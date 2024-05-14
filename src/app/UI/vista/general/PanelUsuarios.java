@@ -355,7 +355,7 @@ public abstract class PanelUsuarios extends JPanel {
 		readVentaBtn.setSelected(false);
 
 		productosPermission.setUnselected();
-		productosPermission.setUnselected();
+		proveedoresPermission.setUnselected();
 		usuariosPermission.setUnselected();
 	}
 	

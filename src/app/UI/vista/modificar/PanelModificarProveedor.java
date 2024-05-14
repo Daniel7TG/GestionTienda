@@ -16,8 +16,6 @@ public class PanelModificarProveedor extends PanelProveedores {
 
     public PanelModificarProveedor(Service<Proveedor> proveedores) {
         super(proveedores, true);
-        this.proveedores = proveedores;
-        editable(); // Esto permitirá la edición de los campos en PanelModificarProveedor
     }
 
     
@@ -43,6 +41,7 @@ public class PanelModificarProveedor extends PanelProveedores {
             String razonSocial = razonField.getText();
             String telefono = telefonoField.getText();
             Domicilio domicilio = panelDireccion.getDireccion();
+
             Proveedor proveedor = proveedores.get(rfc);
 
             // Actualizar los datos del proveedor
@@ -56,6 +55,7 @@ public class PanelModificarProveedor extends PanelProveedores {
             if(proveedores.set(proveedor)) {
                 JOptionPane.showMessageDialog(null, "Proveedor modificado correctamente");
                 vaciarComponentes();
+                updateTable();
             } else {
                 JOptionPane.showMessageDialog(null, "Error al modificar el proveedor");
             }

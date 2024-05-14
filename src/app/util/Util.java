@@ -1,10 +1,7 @@
 package app.util;
 
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -237,7 +234,19 @@ public class Util {
 		.filter(user -> user.startsWith(field.getText()))
 		.toArray(String[]::new);
 	}	
-	
+
+
+	public static KeyListener lenghtLimit(int limit){
+		return new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getSource() instanceof JTextField field)
+					if(field.getText().length() >= limit) e.consume();
+			}
+		};
+	}
+
+
 	public static class FocusField implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

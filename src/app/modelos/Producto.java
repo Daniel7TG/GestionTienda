@@ -191,6 +191,9 @@ public class Producto implements Listable {
 	}
 
 
+	public int compareByName(Producto p) {
+		return nombre.compareTo(p.nombre);
+	}
 	@Override
 	public Object[] toRow() {
 		return new Object[]{codigoBarras, nombre, marca, tipo, contenido, unidadDeMedida, presentacion, stockMaximo, stockMinimo, descripcion, precioVenta, stockActual};

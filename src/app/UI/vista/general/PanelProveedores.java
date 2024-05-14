@@ -47,6 +47,31 @@ public class PanelProveedores extends JPanel {
 		put("Teléfono", 2);
 	}};
 	private final boolean FROM_TABLE = true, FROM_FIELD = false;
+    protected static final long serialVersionUID = 1L;
+    protected Service<Proveedor> proveedores;
+    protected JTextField rfcField;
+    protected JTextField razonField;
+    protected JTextField telefonoField;
+    protected JLabel lbRfc;
+    protected JLabel lbRazonSocial;
+    protected JLabel lbTelefono;
+    protected Font fontLabel;
+    protected Font fontFunc;
+    protected PanelCapturaDireccion panelDireccion;
+    protected JLabel lblNombre;
+    protected JLabel lblApellido;
+    protected JTextField fieldNombre;
+    protected JTextField fieldApellido;
+
+    protected Listado listado;
+    protected static final LinkedHashMap<String, Integer> columns = new LinkedHashMap<>() {{
+        put("RFC", 1);
+        put("Nombre", 3);
+        put("Razón Social", 2);
+        put("Dirección", 3);
+        put("Teléfono", 2);
+    }};
+    private final boolean FROM_TABLE = true, FROM_FIELD = false;
 
 
 	public PanelProveedores(Service<Proveedor> proveedores, boolean autoComplete){
@@ -98,6 +123,149 @@ public class PanelProveedores extends JPanel {
 			rfcField = new JTextField();
 		}
 		rfcField.setHorizontalAlignment(SwingConstants.CENTER);
+=======
+        rfcField.setHorizontalAlignment(SwingConstants.CENTER);
+
+        
+        panelDireccion = new PanelCapturaDireccion();
+        panelDireccion.getLastItem().setEnabled(false);
+        panelDireccion.setUnneditable();
+        GridBagConstraints gbc_direccion = new GridBagConstraints();
+        gbc_direccion.gridheight = 7;
+        gbc_direccion.fill = GridBagConstraints.BOTH;
+        gbc_direccion.insets = new Insets(10, 0, 10, 0);
+        gbc_direccion.gridx = 2;
+        gbc_direccion.gridy = 0;
+        gbc_direccion.gridwidth = 2;
+        add(panelDireccion, gbc_direccion);
+        GridBagConstraints gbc_rfcField = new GridBagConstraints();
+        gbc_rfcField.gridwidth = 2;
+        gbc_rfcField.insets = new Insets(10, 10, 10, 10);
+        gbc_rfcField.fill = GridBagConstraints.BOTH;
+        gbc_rfcField.gridx = 0;
+        gbc_rfcField.gridy = 1;
+        add(rfcField, gbc_rfcField);
+        rfcField.setColumns(10);
+
+        lblApellido = new JLabel("Apellido");
+        GridBagConstraints gbc_lblApellido = new GridBagConstraints();
+        gbc_lblApellido.fill = GridBagConstraints.VERTICAL;
+        gbc_lblApellido.insets = new Insets(0, 0, 5, 5);
+        gbc_lblApellido.gridx = 1;
+        gbc_lblApellido.gridy = 2;
+        add(lblApellido, gbc_lblApellido);
+
+        fieldNombre = new JTextField();
+        fieldNombre.setEditable(false);
+        GridBagConstraints gbc_fieldNombre = new GridBagConstraints();
+        gbc_fieldNombre.insets = new Insets(10, 10, 10, 10);
+        gbc_fieldNombre.fill = GridBagConstraints.BOTH;
+        gbc_fieldNombre.gridx = 0;
+        gbc_fieldNombre.gridy = 3;
+        add(fieldNombre, gbc_fieldNombre);
+        fieldNombre.setColumns(10);
+
+        fieldApellido = new JTextField();
+        fieldApellido.setEditable(false);
+        GridBagConstraints gbc_fieldApellido = new GridBagConstraints();
+        gbc_fieldApellido.insets = new Insets(10, 10, 10, 10);
+        gbc_fieldApellido.fill = GridBagConstraints.BOTH;
+        gbc_fieldApellido.gridx = 1;
+        gbc_fieldApellido.gridy = 3;
+        add(fieldApellido, gbc_fieldApellido);
+        fieldApellido.setColumns(10);
+
+        lbRazonSocial = new JLabel("Razon Social");
+        GridBagConstraints gbc_lbRazonSocial = new GridBagConstraints();
+        gbc_lbRazonSocial.fill = GridBagConstraints.VERTICAL;
+        gbc_lbRazonSocial.insets = new Insets(0, 0, 5, 5);
+        gbc_lbRazonSocial.gridx = 0;
+        gbc_lbRazonSocial.gridy = 4;
+        add(lbRazonSocial, gbc_lbRazonSocial);
+
+        razonField = new JTextField();
+        razonField.setEditable(false);
+        razonField.addActionListener(focusField);
+
+        lbTelefono = new JLabel("Teléfono");
+        GridBagConstraints gbc_lbTelefono = new GridBagConstraints();
+        gbc_lbTelefono.fill = GridBagConstraints.VERTICAL;
+        gbc_lbTelefono.insets = new Insets(0, 0, 5, 5);
+        gbc_lbTelefono.gridx = 1;
+        gbc_lbTelefono.gridy = 4;
+        add(lbTelefono, gbc_lbTelefono);
+        GridBagConstraints gbc_razonField = new GridBagConstraints();
+        gbc_razonField.insets = new Insets(10, 10, 10, 10);
+        gbc_razonField.fill = GridBagConstraints.BOTH;
+        gbc_razonField.gridx = 0;
+        gbc_razonField.gridy = 5;
+        add(razonField, gbc_razonField);
+        razonField.setColumns(10);
+
+        telefonoField = new JTextField();
+        telefonoField.setEditable(false);
+        telefonoField.addActionListener(focusField);
+        telefonoField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(!(telefonoField.getText() + e.getKeyChar()).matches("^[0-9]+(\\.[0-9]*)?$") ) {
+                    e.consume();
+                }
+            }
+        });
+        telefonoField.addKeyListener(Util.lenghtLimit(10));
+        GridBagConstraints gbc_telefonoField = new GridBagConstraints();
+        gbc_telefonoField.insets = new Insets(10, 10, 10, 10);
+        gbc_telefonoField.fill = GridBagConstraints.BOTH;
+        gbc_telefonoField.gridx = 1;
+        gbc_telefonoField.gridy = 5;
+        add(telefonoField, gbc_telefonoField);
+        telefonoField.setColumns(10);
+
+        lblNombre = new JLabel("Nombre");
+        GridBagConstraints gbc_lblNombre = new GridBagConstraints();
+        gbc_lblNombre.fill = GridBagConstraints.VERTICAL;
+        gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNombre.gridx = 0;
+        gbc_lblNombre.gridy = 2;
+        add(lblNombre, gbc_lblNombre);
+
+        listado = new Listado(columns, proveedores);
+
+        if(autoComplete)
+        listado.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedRow = listado.table.getSelectedRow();
+                    if (selectedRow != -1) {
+                        Proveedor selectedProveedor = proveedores.getAll().get(selectedRow);
+                        autoCompleteFields(selectedProveedor, FROM_TABLE);
+                    }
+                }
+            }
+        });
+
+        GridBagConstraints gbc_tablePanel = new GridBagConstraints();
+        gbc_tablePanel.gridwidth = 4;
+        gbc_tablePanel.insets = new Insets(0, 0, 0, 5);
+        gbc_tablePanel.fill = GridBagConstraints.BOTH;
+        gbc_tablePanel.gridx = 0;
+        gbc_tablePanel.gridy = 7;
+        add(listado, gbc_tablePanel);
+
+        style(new Component[] {
+                rfcField,
+                razonField,
+                telefonoField,
+                lbRfc,
+                lbRazonSocial,
+                lbTelefono,
+                lblNombre,
+                lblApellido,
+                fieldNombre,
+                fieldApellido
+        });
 
 
 		panelDireccion = new PanelCapturaDireccion();
@@ -254,6 +422,9 @@ public class PanelProveedores extends JPanel {
 		}
 	}
 
+    public void updateTable() {
+        listado.update();
+    }
 
 	public Component getLastItem() {
 		return panelDireccion.getLastItem();

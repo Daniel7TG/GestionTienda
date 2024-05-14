@@ -93,6 +93,7 @@ public class PanelCapturaDireccion extends JPanel {
 				}
 			}
 		});
+		numeroField.addKeyListener(Util.lenghtLimit(3));
 		GridBagConstraints gbc_numeroField = new GridBagConstraints();
 		gbc_numeroField.insets = new Insets(10, 10, 10, 10);
 		gbc_numeroField.fill = GridBagConstraints.BOTH;
@@ -199,6 +200,7 @@ public class PanelCapturaDireccion extends JPanel {
 				}
 			}
 		});
+		codigoPostalField.addKeyListener(Util.lenghtLimit(5));
 		GridBagConstraints gbc_codigoPostalField = new GridBagConstraints();
 		gbc_codigoPostalField.insets = new Insets(10, 10, 10, 10);
 		gbc_codigoPostalField.fill = GridBagConstraints.BOTH;

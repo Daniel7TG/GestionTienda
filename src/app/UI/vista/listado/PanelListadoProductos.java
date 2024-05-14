@@ -29,11 +29,9 @@ public class PanelListadoProductos extends Listado {
 	}};
 
 	public PanelListadoProductos(Service<Producto> catalogo) {
-		super(columns, catalogo);
+		super(columns,
+				catalogo.getAll().stream().sorted(Producto::compareByName).toList()
+		);
 	}
 	
 }
-
-
-
-////

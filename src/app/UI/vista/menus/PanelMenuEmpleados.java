@@ -5,77 +5,52 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import app.components.MenuButton;
 import app.enums.Permission;
 import app.modelos.Usuario;
 
-public class PanelMenuEmpleados extends JPanel {
+public class PanelMenuEmpleados extends PanelMenu {
 
 	private static final long serialVersionUID = 1L;
 	
-	private JButton registrarButton;
-	private JButton consultarButton;
-	private JButton eliminarButton;
-	private JButton modificarButton;
-	private JButton listarButton;
+	private MenuButton registrarButton;
+	private MenuButton consultarButton;
+	private MenuButton eliminarButton;
+	private MenuButton modificarButton;
+	private MenuButton listarButton;
 	
 	public PanelMenuEmpleados(Usuario usuario){
-		setMaximumSize(new Dimension(200, 32767));
-		setBackground(Color.decode("#b0cfe0"));
-		setLayout(new GridLayout(6, 1, 0, 20));
+		super("Usuarios", usuario);
 		
 		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.ADD_USUARIOS);
-		if(!usuario.hasAccessTo(Permission.ADD_USUARIOS)) registrarButton.setEnabled(false);
-		
 		consultarButton = new MenuButton("Consultar", KeyEvent.VK_L, Permission.READ_USUARIOS);
-		if(!usuario.hasAccessTo(Permission.READ_USUARIOS)) consultarButton.setEnabled(false);
-		
 		eliminarButton = new MenuButton("Eliminar", KeyEvent.VK_L, Permission.DELETE_USUARIOS);
-		if(!usuario.hasAccessTo(Permission.DELETE_USUARIOS)) eliminarButton.setEnabled(false);
-		
 		modificarButton = new MenuButton("Modificar", KeyEvent.VK_L, Permission.MODIFY_USUARIOS);
-		if(!usuario.hasAccessTo(Permission.MODIFY_USUARIOS)) modificarButton.setEnabled(false);
-		
 		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_USUARIOS);
-		if(!usuario.hasAccessTo(Permission.READ_USUARIOS)) listarButton.setEnabled(false);
-		
-		
-		add(registrarButton);
-		add(consultarButton);
-		add(eliminarButton);
-		add(modificarButton);
-		add(listarButton);
-	}
+			
+		super.addButtons(registrarButton, consultarButton, eliminarButton, modificarButton, listarButton);
+	}	
 	
 	
-	public void enableButtons(boolean status) {
-		registrarButton.setEnabled(status);
-		consultarButton.setEnabled(status);
-		eliminarButton.setEnabled(status);
-		modificarButton.setEnabled(status);
-		listarButton.setEnabled(status);
-	}
-
-	public JButton getRegistrarButton() {
+	public MenuButton getRegistrarButton() {
 		return registrarButton;
 	}
 
-	public JButton getConsultarButton() {
+	public MenuButton getConsultarButton() {
 		return consultarButton;
 	}
 
-	public JButton getEliminarButton() {
+	public MenuButton getEliminarButton() {
 		return eliminarButton;
 	}
 	
-	public JButton getModificarButton() {
+	public MenuButton getModificarButton() {
 		return modificarButton;
 	}
 
-	public JButton getListarButton() {
+	public MenuButton getListarButton() {
 		return listarButton;
 	}
 	

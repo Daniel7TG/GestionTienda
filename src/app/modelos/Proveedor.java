@@ -113,4 +113,8 @@ public class Proveedor extends Persona implements Listable {
 		return "Proveedor [rfc=" + rfc + ", razonSocial=" + razonSocial + ", domicilio=" + domicilio + ", telefono="
 				+ telefono + "]";
 	}
+
+	public int compareByName(Proveedor p) {
+		return nombre.compareTo(p.nombre);
+	}
 }

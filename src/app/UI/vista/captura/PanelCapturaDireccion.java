@@ -302,6 +302,8 @@ public class PanelCapturaDireccion extends JPanel {
 		estadoField.setEditable(false);
 		codigoPostalField.setEditable(false);		
 	}
+	
+	
 
 
 	public void autoCompleteFields(Domicilio domicilio) {
@@ -316,5 +318,17 @@ public class PanelCapturaDireccion extends JPanel {
 		}
 
 	}
-
+	////////////
+	
+	public void setEditable(boolean editable) {
+	    numeroField.setEditable(editable); 
+	    calleField.setEditable(editable);
+	    orientacionBox.setEnabled(editable);
+	    coloniaField.setEditable(editable);
+	    ciudadField.setEditable(editable);
+	    estadoField.setEditable(editable);
+	    codigoPostalField.setEditable(editable);
+	}
+///////////////////
+	
 }

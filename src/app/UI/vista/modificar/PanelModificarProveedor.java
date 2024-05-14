@@ -14,53 +14,52 @@ import app.modelos.Usuario;
 
 public class PanelModificarProveedor extends PanelProveedores {
 
-	public PanelModificarProveedor(Service<Proveedor> proveedores) {
-		super(proveedores, true);
-	}
+    public PanelModificarProveedor(Service<Proveedor> proveedores) {
+        super(proveedores, true);
+        this.proveedores = proveedores;
+        editable(); // Esto permitirá la edición de los campos en PanelModificarProveedor
+    }
 
-	
-	public void modificarProveedor() {
-//		if(rfcField.getText().isBlank()) {
-//			JOptionPane.showMessageDialog(null, "El campo de username no puede estar vacío");
-//		} else if(usuarios.get(usernameField.getText()) == null) {
-//			JOptionPane.showMessageDialog(null, "El usuario no existe");
-//		} else if(passwordField.getPassword().length == 0) {
-//			JOptionPane.showMessageDialog(null, "El campo de contraseña no puede estar vacío");
-//		} else if(confirmPasswordField.getPassword().length == 0) {
-//			JOptionPane.showMessageDialog(null, "El campo de confirmar contraseña no puede estar vacío");
-//		} else if(Arrays.compare(confirmPasswordField.getPassword(), passwordField.getPassword()) != 0) {
-//			JOptionPane.showMessageDialog(null, "Las contraseñas son diferentes");
-//		} else if(fieldNombre.getText().isBlank()) {
-//			JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacío");
-//		} else if(fieldApellido.getText().isBlank()) {
-//			JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacío");
-//		} else if(telefonoField.getText().isBlank()) {
-//			JOptionPane.showMessageDialog(null, "El campo de teléfono no puede estar vacío");
-//		} else if(permisos.isEmpty()) {
-//			JOptionPane.showMessageDialog(null, "No puede dejar todos los permisos sin marcar");
-//		} else if(!panelDireccion.isValidDirection()) {}
-//		else {
-//			String nombre = fieldNombre.getText();
-//			String apellido = fieldApellido.getText();
-//			String username = usernameField.getText();
-//			String telefono = telefonoField.getText();
-//			Domicilio domicilio = panelDireccion.getDireccion();
-//			domicilio.setId(usuarios.get(username).getIdDomicilio());
-//			String password = String.valueOf(passwordField.getPassword());
-//
-//			Usuario user = new Usuario();
-//			user.setNombre(nombre);
-//			user.setApellido(apellido);
-//			user.setDomicilio(domicilio);
-//			user.setPassword(password);
-//			user.setTelefono(telefono);
-//			user.setUserName(username);
-//			user.setPermisos(permisos);
-//			usuarios.set(user);
-//			JOptionPane.showMessageDialog(null, "Usuario modificado correctamente");
-//			vaciarComponentes();
-//		}
-	}
+    
+    public void modificarProveedor() {
+        if(rfcField.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "El campo de RFC no puede estar vacío");
+        } else if(proveedores.get(rfcField.getText()) == null) {
+            JOptionPane.showMessageDialog(null, "El proveedor no existe");
+        } else if(fieldNombre.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "El campo de nombre no puede estar vacío");
+        } else if(fieldApellido.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "El campo de apellido no puede estar vacío");
+        } else if(telefonoField.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "El campo de teléfono no puede estar vacío");
+        } else if(razonField.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "El campo de razón social no puede estar vacío");
+        } else if(!panelDireccion.isValidDirection()) {
+            JOptionPane.showMessageDialog(null, "La dirección no es válida");
+        } else {
+            String rfc = rfcField.getText();
+            String nombre = fieldNombre.getText();
+            String apellido = fieldApellido.getText();
+            String razonSocial = razonField.getText();
+            String telefono = telefonoField.getText();
+            Domicilio domicilio = panelDireccion.getDireccion();
+            Proveedor proveedor = proveedores.get(rfc);
 
+            // Actualizar los datos del proveedor
+            proveedor.setNombre(nombre);
+            proveedor.setApellido(apellido);
+            proveedor.setRazonSocial(razonSocial);
+            proveedor.setTelefono(telefono);
+            proveedor.setDomicilio(domicilio);
+
+            // Guardar los cambios
+            if(proveedores.set(proveedor)) {
+                JOptionPane.showMessageDialog(null, "Proveedor modificado correctamente");
+                vaciarComponentes();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al modificar el proveedor");
+            }
+        }
+    }
 
 }

@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 
 public class PanelProveedores extends JPanel {
 
+<<<<<<< HEAD
 	protected static final long serialVersionUID = 1L;
 	protected Service<Proveedor> proveedores;
 	protected JTextField rfcField;
@@ -47,6 +48,7 @@ public class PanelProveedores extends JPanel {
 		put("Teléfono", 2);
 	}};
 	private final boolean FROM_TABLE = true, FROM_FIELD = false;
+=======
     protected static final long serialVersionUID = 1L;
     protected Service<Proveedor> proveedores;
     protected JTextField rfcField;
@@ -72,6 +74,7 @@ public class PanelProveedores extends JPanel {
         put("Teléfono", 2);
     }};
     private final boolean FROM_TABLE = true, FROM_FIELD = false;
+>>>>>>> 50300b3c4bb58c40dbaab67205144edcc79cbd45
 
 
 	public PanelProveedores(Service<Proveedor> proveedores, boolean autoComplete){
@@ -122,6 +125,7 @@ public class PanelProveedores extends JPanel {
 		else {
 			rfcField = new JTextField();
 		}
+<<<<<<< HEAD
 		rfcField.setHorizontalAlignment(SwingConstants.CENTER);
 =======
         rfcField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -266,6 +270,7 @@ public class PanelProveedores extends JPanel {
                 fieldNombre,
                 fieldApellido
         });
+>>>>>>> 50300b3c4bb58c40dbaab67205144edcc79cbd45
 
 
 		panelDireccion = new PanelCapturaDireccion();

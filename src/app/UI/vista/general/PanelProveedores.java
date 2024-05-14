@@ -35,10 +35,8 @@ public class PanelProveedores extends JPanel {
     protected JLabel lblApellido;
     protected JTextField fieldNombre;
     protected JTextField fieldApellido;
-    protected JScrollPane tablePanel;
-    protected JTable productsTable;
 
-    protected TableModel model;
+    protected Listado listado;
     protected static final LinkedHashMap<String, Integer> columns = new LinkedHashMap<>() {{
         put("RFC", 1);
         put("Nombre", 3);
@@ -186,6 +184,7 @@ public class PanelProveedores extends JPanel {
                 }
             }
         });
+        telefonoField.addKeyListener(Util.lenghtLimit(10));
         GridBagConstraints gbc_telefonoField = new GridBagConstraints();
         gbc_telefonoField.insets = new Insets(10, 10, 10, 10);
         gbc_telefonoField.fill = GridBagConstraints.BOTH;
@@ -202,12 +201,14 @@ public class PanelProveedores extends JPanel {
         gbc_lblNombre.gridy = 2;
         add(lblNombre, gbc_lblNombre);
 
-        Listado listado = new Listado(columns, proveedores);
+        listado = new Listado(columns, proveedores);
+
+        if(autoComplete)
         listado.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    int selectedRow = productsTable.getSelectedRow();
+                    int selectedRow = listado.table.getSelectedRow();
                     if (selectedRow != -1) {
                         Proveedor selectedProveedor = proveedores.getAll().get(selectedRow);
                         autoCompleteFields(selectedProveedor, FROM_TABLE);
@@ -259,6 +260,9 @@ public class PanelProveedores extends JPanel {
         return panelDireccion.getLastItem();
     }
 
+    public void updateTable() {
+        listado.update();
+    }
 
     public void vaciarComponentes() {
         razonField.setText("");

@@ -17,6 +17,9 @@ public class PanelListadoProveedores extends Listado {
     }};
 
     public PanelListadoProveedores(Service<Proveedor> service) {
-        super(columns, service);
+        super(columns,
+                service.getAll().stream().sorted(Proveedor::compareByName).toList()
+        );
+
     }
 }

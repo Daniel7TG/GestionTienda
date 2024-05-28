@@ -17,11 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import app.UI.vista.captura.PanelCapturaCompra;
-import app.UI.vista.captura.PanelCapturaProductos;
-import app.UI.vista.captura.PanelCapturaProveedor;
-import app.UI.vista.captura.PanelCapturaUsuario;
-import app.UI.vista.captura.PanelCapturaVenta;
+import app.UI.vista.captura.*;
 import app.UI.vista.consulta.PanelConsultaProductos;
 import app.UI.vista.consulta.PanelConsultaProveedor;
 import app.UI.vista.consulta.PanelConsultaUsuarios;
@@ -29,27 +25,15 @@ import app.UI.vista.eliminar.PanelEliminarProductos;
 import app.UI.vista.eliminar.PanelEliminarProveedor;
 import app.UI.vista.eliminar.PanelEliminarUsuario;
 import app.UI.vista.listado.*;
-import app.UI.vista.menus.PanelMenuCompra;
-import app.UI.vista.menus.PanelMenuEmpleados;
-import app.UI.vista.menus.PanelMenuProductos;
-import app.UI.vista.menus.PanelMenuProveedores;
-import app.UI.vista.menus.PanelMenuVenta;
+import app.UI.vista.menus.*;
 import app.UI.vista.modificar.PanelModificarProductos;
 import app.UI.vista.modificar.PanelModificarProveedor;
 import app.UI.vista.modificar.PanelModificarUsuarios;
 import app.components.MenuButton;
 import app.enums.Permission;
 import app.interfaces.Service;
-import app.modelos.Compra;
-import app.modelos.Producto;
-import app.modelos.Proveedor;
-import app.modelos.Usuario;
-import app.modelos.Venta;
-import app.modelos.services.ComprasServiceImp;
-import app.modelos.services.ProductosServiceImp;
-import app.modelos.services.ProveedoresServiceImp;
-import app.modelos.services.UsuarioServiceImp;
-import app.modelos.services.VentasServiceImp;
+import app.modelos.*;
+import app.modelos.services.*;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -117,8 +101,8 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	
 	
 	// Proveedores
+
 	private Service<Proveedor> proveedores;
-	
 	private Service<Compra> historialCompra;
 	private PanelMenuCompra panelMenuCompra;
 	private JButton registrarCompButton;
@@ -141,7 +125,28 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private PanelEliminarProveedor eliminarProveedorPane;
 	private PanelMenuProveedores panelMenuProveedores;
 	// Fin Proveedores
-	
+
+
+	// Clientes
+	private Service<Cliente> clientes;
+	private PanelMenuClientes panelMenuClientes;
+	private JMenuItem cMenuCliente;
+	private PanelCapturaClientes capturaClientesPane;
+//	private PanelListadoClientes listadoClientesPane;
+//	private PanelModificarClientes modificarClientesPane;
+//	private PanelConsultaClientes consultarClientesPane;
+//	private PanelEliminarClientes eliminarClientesPane;
+
+	private JButton registrarClientButton;
+	private JButton listarClientButton;
+	private JButton modificarClientButton;
+	private JButton consultarClientButton;
+	private JButton eliminarClientButton;
+
+
+	// Fin clientes
+
+
 	private JMenuItem sMenuProductos;
 	private JMenuItem sMenuInventarioRT;
 	private JMenuItem sMenuInventarioF;
@@ -171,6 +176,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		historialVenta = new VentasServiceImp();
 		proveedores = new ProveedoresServiceImp();
 		usuarios = new UsuarioServiceImp();
+		clientes = new ClientesServiceImp();
 		this.addWindowListener(this);
 
 		usuarioActual = user;
@@ -218,6 +224,11 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		menuClientes.add(cMenuVenta);
 		cMenuVenta.addActionListener(event->{
 			cMenuVentFunc();
+		});
+		cMenuCliente = new JMenuItem("Clientes");
+		menuClientes.add(cMenuCliente);
+		cMenuCliente.addActionListener(event->{
+			cMenuCliFunc();
 		});
 		barra.add(menuClientes);
 
@@ -341,7 +352,44 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		enableButtons(panelMenuVenta , false);
 		revalidate();	
 	}
-	
+
+
+	private void cMenuCliFunc(){
+		clearContentPane();
+		if(panelMenuClientes != null) return;
+		panelMenuClientes = new PanelMenuClientes(usuarioActual);
+		registrarClientButton = panelMenuClientes.getRegistrarButton();
+		registrarClientButton.addActionListener(e->{
+			regCliFunc();
+		});
+//		listarVentButton = panelMenuVenta.getListarButton();
+//		listarVentButton.addActionListener(e->{
+//			listVentFunc();
+//		});
+		contentPane.add(panelMenuClientes, BorderLayout.WEST);
+		revalidate();
+	}
+
+	public void regCliFunc() {
+		capturaClientesPane = new PanelCapturaClientes(clientes);
+		panelEncabezados = new PanelEncabezados("Registro de Clientes");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+
+		guardarButton.addActionListener(ec -> {
+			capturaClientesPane.guardarCliente();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuClientes, capturaClientesPane, panelOpciones);
+		});
+		panelEncabezados.add(capturaClientesPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuClientes, false);
+		revalidate();
+	}
+
 	
 	// Usuarios
 	private void uMenuEmpFunc() {

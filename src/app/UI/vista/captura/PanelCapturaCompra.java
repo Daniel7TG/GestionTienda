@@ -604,7 +604,6 @@ public class PanelCapturaCompra extends JPanel {
 		listaDetalles.clear();
 		actualizarTabla();
 		clearProveedor();
-		
 	}
 
 

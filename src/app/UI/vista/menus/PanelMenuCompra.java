@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -17,38 +16,25 @@ import app.components.MenuButton;
 import app.enums.Permission;
 import app.modelos.Usuario;
 
-public class PanelMenuCompra extends JPanel {
+public class PanelMenuCompra extends PanelMenu {
 
 	private static final long serialVersionUID = 1L;
-	private JButton registrarButton;
-	private JButton listarButton;
+	private MenuButton registrarButton;
+	private MenuButton listarButton;
 
 	public PanelMenuCompra(Usuario usuario) {
-
-		setMaximumSize(new Dimension(200, 32767));
-		setBackground(Color.decode("#b0cfe0"));
-		setLayout(new GridLayout(6, 1, 0, 20));
-
+		super("Compra", usuario);
 		registrarButton = new MenuButton("Registrar", KeyEvent.VK_R, Permission.WRITE_COMPRA);
-		if(!usuario.hasAccessTo(Permission.WRITE_COMPRA)) registrarButton.setEnabled(false);
-		
 		listarButton = new MenuButton("Listar", KeyEvent.VK_L, Permission.READ_COMPRA);
-		if(!usuario.hasAccessTo(Permission.READ_COMPRA)) listarButton.setEnabled(false);
-				
-		add(registrarButton);
-		add(listarButton);
-	}
-	
-	public void enableButtons(boolean status) {
-		registrarButton.setEnabled(status);
-		listarButton.setEnabled(status);
+		addButtons(registrarButton, listarButton);
 	}
 
-	public JButton getRegistrarButton() {
+
+	public MenuButton getRegistrarButton() {
 		return registrarButton;
 	}
 	
-	public JButton getListarButton() {
+	public MenuButton getListarButton() {
 		return listarButton;
 	}
 

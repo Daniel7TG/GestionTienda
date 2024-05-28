@@ -5,14 +5,7 @@ import java.sql.SQLException;
 
 import app.enums.Orientacion;
 import app.enums.Permission;
-import app.modelos.Compra;
-import app.modelos.DetallesCompra;
-import app.modelos.DetallesVenta;
-import app.modelos.Domicilio;
-import app.modelos.Producto;
-import app.modelos.Proveedor;
-import app.modelos.Usuario;
-import app.modelos.Venta;
+import app.modelos.*;
 
 
 public abstract class MoveResult {
@@ -153,10 +146,19 @@ public abstract class MoveResult {
 			e.printStackTrace();
 		}
 		return det;
-	}            
+	}
 
 
-
-
-
+    public static Cliente toClient(ResultSet resultSet) {
+		Cliente clt = new Cliente();
+		try {
+			clt.setNombre(resultSet.getString("nombre"));
+			clt.setApellido(resultSet.getString("apellido"));
+			clt.setTelefono(resultSet.getString("telefono"));
+			clt.setTarjeta(resultSet.getString("tarjeta"));
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return clt;
+	}
 }

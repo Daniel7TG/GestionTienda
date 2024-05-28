@@ -18,11 +18,7 @@ import javax.swing.JTextField;
 import app.abstractClasses.Detalles;
 import app.interfaces.Funcionable;
 import app.interfaces.Service;
-import app.modelos.DetallesCompra;
-import app.modelos.DetallesVenta;
-import app.modelos.Producto;
-import app.modelos.Proveedor;
-import app.modelos.Usuario;
+import app.modelos.*;
 
 public class Util {
 
@@ -228,12 +224,19 @@ public class Util {
 			.toArray(String[]::new);
 	}	
 	public static Function<JTextField, String[]> getUsernameFilter(Service<Usuario> proveedores){
-		return field -> 
+		return field ->
 		proveedores.getAll().stream()
 		.map(Usuario::getUserName)
 		.filter(user -> user.startsWith(field.getText()))
 		.toArray(String[]::new);
-	}	
+	}
+	public static Function<JTextField, String[]> getClientFilter(Service<Cliente> clientes){
+		return field ->
+		clientes.getAll().stream()
+		.map(Cliente::getTelefono)
+		.filter(user -> user.startsWith(field.getText()))
+		.toArray(String[]::new);
+	}
 
 
 	public static KeyListener lenghtLimit(int limit){

@@ -189,7 +189,7 @@ public class ProductosRepository implements CRUDRepository<Producto> {
 	
 	@Override
 	public boolean isEmpty() {
-		return getSize() == 0 ? true:false;
+		return getSize() == 0;
 	}
 
 

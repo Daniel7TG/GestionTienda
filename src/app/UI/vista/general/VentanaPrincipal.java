@@ -18,14 +18,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import app.UI.vista.captura.*;
+import app.UI.vista.consulta.PanelConsultaCliente;
 import app.UI.vista.consulta.PanelConsultaProductos;
 import app.UI.vista.consulta.PanelConsultaProveedor;
 import app.UI.vista.consulta.PanelConsultaUsuarios;
+import app.UI.vista.eliminar.PanelEliminarClientes;
 import app.UI.vista.eliminar.PanelEliminarProductos;
 import app.UI.vista.eliminar.PanelEliminarProveedor;
 import app.UI.vista.eliminar.PanelEliminarUsuario;
 import app.UI.vista.listado.*;
 import app.UI.vista.menus.*;
+import app.UI.vista.modificar.PanelModificarCliente;
 import app.UI.vista.modificar.PanelModificarProductos;
 import app.UI.vista.modificar.PanelModificarProveedor;
 import app.UI.vista.modificar.PanelModificarUsuarios;
@@ -132,10 +135,10 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private PanelMenuClientes panelMenuClientes;
 	private JMenuItem cMenuCliente;
 	private PanelCapturaClientes capturaClientesPane;
-//	private PanelListadoClientes listadoClientesPane;
-//	private PanelModificarClientes modificarClientesPane;
-//	private PanelConsultaClientes consultarClientesPane;
-//	private PanelEliminarClientes eliminarClientesPane;
+	private PanelListadoClientes listadoClientesPane;
+	private PanelModificarCliente modificarClientesPane;
+	private PanelConsultaCliente consultarClientesPane;
+	private PanelEliminarClientes eliminarClientesPane;
 
 	private JButton registrarClientButton;
 	private JButton listarClientButton;

@@ -365,6 +365,16 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		registrarClientButton.addActionListener(e->{
 			regCliFunc();
 		});
+		
+		consultarClientButton = panelMenuClientes.getConsultarButton();
+		consultarClientButton.addActionListener(e->{
+			consCliFunc();
+		});
+		
+		eliminarClientButton = panelMenuClientes.getEliminarButton();
+		eliminarClientButton.addActionListener(e->{
+			elimClisFunc();
+		});
 //		listarVentButton = panelMenuVenta.getListarButton();
 //		listarVentButton.addActionListener(e->{
 //			listVentFunc();
@@ -392,7 +402,49 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		enableButtons(panelMenuClientes, false);
 		revalidate();
 	}
+	
+	private void consCliFunc() {
+		consultarClientesPane = new PanelConsultaCliente(clientes);
+		panelEncabezados = new PanelEncabezados("Consulta de Clientes");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
 
+		guardarButton.addActionListener(ec -> {
+			consultarClientesPane.consultarClientes();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuClientes, consultarClientesPane, panelOpciones);
+		});
+		panelEncabezados.add(consultarClientesPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuClientes, false);
+		revalidate();	
+	}
+
+	
+	private void elimClisFunc() {
+		eliminarClientesPane = new PanelEliminarClientes(clientes);
+		panelEncabezados = new PanelEncabezados("Eliminar Clientes");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+
+		guardarButton.addActionListener(ec -> {
+			eliminarClientesPane.eliminarClientes();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuClientes, eliminarClientesPane, panelOpciones);
+		});
+		panelEncabezados.add(eliminarClientesPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuClientes, false);
+		revalidate();
+	}
+	
+	
 	
 	// Usuarios
 	private void uMenuEmpFunc() {

@@ -375,6 +375,11 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		eliminarClientButton.addActionListener(e->{
 			elimClisFunc();
 		});
+		
+		modificarClientButton = panelMenuClientes.getModificarButton();
+		modificarClientButton.addActionListener(e->{
+			modClieFunc();
+		});
 //		listarVentButton = panelMenuVenta.getListarButton();
 //		listarVentButton.addActionListener(e->{
 //			listVentFunc();
@@ -444,6 +449,26 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		revalidate();
 	}
 	
+	
+	private void modClieFunc() {
+		modificarClientesPane = new PanelModificarCliente(clientes);
+		panelEncabezados = new PanelEncabezados("Modificar Cliente");
+		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
+		guardarButton = panelOpciones.getGuardarButton();
+		cancelarButton = panelOpciones.getCancelarButton();
+		
+		guardarButton.addActionListener(ec -> {
+		modificarClientesPane.modificarCliente();
+		});
+		cancelarButton.addActionListener(ec -> {
+			cancelButton(panelEncabezados, panelMenuClientes, modificarClientesPane, panelOpciones);
+		});
+		panelEncabezados.add(modificarClientesPane, BorderLayout.CENTER);
+		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
+		contentPane.add(panelEncabezados, BorderLayout.CENTER);
+		enableButtons(panelMenuClientes, false);
+		revalidate();
+	}
 	
 	
 	// Usuarios

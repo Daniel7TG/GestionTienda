@@ -158,8 +158,8 @@ public class PanelClientes extends JPanel {
     public void updateTable() {
         listado.update();
     }
-
-    private void autoCompleteFields(Cliente c, boolean fromField){
+ private void autoCompleteFields(Cliente c, boolean fromField){
+//    public void autoCompleteFields(Cliente c, boolean fromField){
         if(c == null) return;
         if (!fromField) {
             txtTelefono.setText(c.getTelefono());

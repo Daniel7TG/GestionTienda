@@ -20,10 +20,12 @@ import java.util.LinkedHashMap;
 public class PanelClientes extends JPanel {
 
     protected Service<Cliente> clienteService;
+    protected GridBagLayout layout;
 
     protected JTextField txtTelefono;
     protected JTextField txtNombre;
     protected JTextField txtApellido;
+    protected JTextField txtTarjeta;
 
     private Listado listado;
     private Font fontLabel;
@@ -46,9 +48,9 @@ public class PanelClientes extends JPanel {
         Insets insetsLabel = new Insets(15, 0, 5, 0);
         Insets insetsField = new Insets(0, 0, 0, 0);
 
-        GridBagLayout layout = new GridBagLayout();
-        layout.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.0};
-        layout.rowHeights = new int[]{25, 25, 25, 25, 25, 25, 200};
+        layout = new GridBagLayout();
+        layout.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 4.0};
+        layout.rowHeights = new int[]{25, 25, 25, 25, 200};
         layout.columnWeights = new double[]{1.0, 1.0, 1.0};
 
         GridBagConstraints constraints = new GridBagConstraints();
@@ -57,7 +59,7 @@ public class PanelClientes extends JPanel {
         setLayout(layout);
 
         JLabel lblTelefono = new JLabel("Telefono");
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.insets = insetsLabel;
         add(lblTelefono, constraints);
@@ -95,38 +97,51 @@ public class PanelClientes extends JPanel {
             }
         });
         txtTelefono.addKeyListener(Util.lenghtLimit(10));
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.insets = insetsField;
         add(txtTelefono, constraints);
 
         JLabel lblNombre = new JLabel("Nombre");
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 2;
         constraints.insets = insetsLabel;
         add(lblNombre, constraints);
 
         txtNombre = new JTextField();
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 3;
         constraints.insets = insetsField;
         add(txtNombre, constraints);
 
+        JLabel lblTarjeta = new JLabel("Tarjeta");
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.insets = insetsLabel;
+        add(lblTarjeta, constraints);
+
+        txtTarjeta = new JTextField();
+        txtTarjeta.setEditable(false);
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        constraints.insets = insetsField;
+        add(txtTarjeta, constraints);
+
         JLabel lblApellido = new JLabel("Apellido");
         constraints.gridx = 1;
-        constraints.gridy = 4;
+        constraints.gridy = 2;
         constraints.insets = insetsLabel;
         add(lblApellido, constraints);
 
         txtApellido = new JTextField();
         constraints.gridx = 1;
-        constraints.gridy = 5;
+        constraints.gridy = 3;
         constraints.insets = insetsField;
         add(txtApellido, constraints);
 
         listado = new Listado(columns, clienteService);
         constraints.gridx = 0;
-        constraints.gridy = 6;
+        constraints.gridy = 4;
         constraints.gridwidth = 3;
         constraints.insets = new Insets(15, 0, 0, 0);
         add(listado, constraints);
@@ -158,7 +173,7 @@ public class PanelClientes extends JPanel {
     public void updateTable() {
         listado.update();
     }
- private void autoCompleteFields(Cliente c, boolean fromField){
+    protected void autoCompleteFields(Cliente c, boolean fromField){
 //    public void autoCompleteFields(Cliente c, boolean fromField){
         if(c == null) return;
         if (!fromField) {
@@ -166,6 +181,7 @@ public class PanelClientes extends JPanel {
         }
         txtNombre.setText(c.getNombre());
         txtApellido.setText(c.getApellido());
+        txtTarjeta.setText(c.getTarjeta());
     }
 
     public void vaciarComponentes() {
@@ -185,6 +201,7 @@ public class PanelClientes extends JPanel {
         txtTelefono.setEditable(true);
         txtNombre.setEditable(true);
         txtApellido.setEditable(true);
+
     }
 
 }

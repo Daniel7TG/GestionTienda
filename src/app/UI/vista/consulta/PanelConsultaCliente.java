@@ -3,19 +3,39 @@ package app.UI.vista.consulta;
 import javax.swing.JOptionPane;
 
 import app.UI.vista.general.PanelClientes;
+import app.UI.vista.listado.Listado;
+import app.UI.vista.listado.PanelListadoVentas;
 import app.interfaces.Service;
 import app.modelos.Cliente;
+import app.modelos.Venta;
+
+import java.awt.*;
+import java.util.List;
+
 
 public class PanelConsultaCliente extends PanelClientes {
-    public PanelConsultaCliente(Service<Cliente> clientes) {
-        super(clientes, true);
-        
+
+	Listado ventas;
+	Service<Venta> ventasService;
+
+	public PanelConsultaCliente(Service<Cliente> clientes, Service<Venta> ventasService) {
+		super(clientes, true);
+		this.ventasService = ventasService;
+
         txtNombre.setEditable(false);
 		txtApellido.setEditable(false);
 		
 		txtNombre.setFocusable(false);
 		txtApellido.setFocusable(false);
-		
+
+		ventas = new Listado(PanelListadoVentas.columns, List.of());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		constraints.gridheight = 4;
+		constraints.gridwidth = 1;
+		add(ventas, constraints);
     }
 
 	public void consultarClientes() {
@@ -37,8 +57,13 @@ public class PanelConsultaCliente extends PanelClientes {
 		
 		txtNombre.setText(cliente.getNombre());
 		txtApellido.setText(cliente.getApellido());
-	
-		
-		
+	}
+
+
+	@Override
+	protected void autoCompleteFields(Cliente c, boolean fromField) {
+		super.autoCompleteFields(c, fromField);
+		List<Venta> ventasCliente = ventasService.getAll().stream().filter(v -> v.getCliente().equals(c.getTelefono())).toList();
+		ventas.update(ventasCliente);
 	}
 }

@@ -11,12 +11,14 @@ public class PanelCapturaClientes extends PanelClientes {
 
     public PanelCapturaClientes(Service<Cliente> clientes) {
         super(clientes, false);
+        txtTarjeta.setText(Cliente.generarTarjeta());
     }
 
     public void guardarCliente(){
         String telefono = txtTelefono.getText();
         String apellido = txtApellido.getText();
         String nombre = txtNombre.getText();
+        String tarjeta = txtTarjeta.getText();
 
         if(telefono.isBlank()){
             JOptionPane.showMessageDialog(this, "El telefono no puede estar vacio");
@@ -35,11 +37,12 @@ public class PanelCapturaClientes extends PanelClientes {
             return;
         }
 
-        Cliente cliente = new Cliente(nombre, apellido, telefono);
-        JOptionPane.showMessageDialog(this, "Cliente guardado con tarjeta: " + cliente.getTarjeta());
+        Cliente cliente = new Cliente(nombre, apellido, telefono, tarjeta);
+        JOptionPane.showMessageDialog(this, "Cliente guardado con tarjeta: " + tarjeta);
         clienteService.save(cliente);
         vaciarComponentes();
         updateTable();
+        txtTarjeta.setText(Cliente.generarTarjeta());
     }
 
 }

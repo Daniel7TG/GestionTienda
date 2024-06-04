@@ -15,10 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 import app.abstractClasses.Detalles;
 import app.interfaces.Service;
-import app.modelos.DetallesVenta;
-import app.modelos.Producto;
-import app.modelos.Usuario;
-import app.modelos.Venta;
+import app.modelos.*;
 import app.util.TableModel;
 import app.util.Util;
 
@@ -44,6 +41,7 @@ public class PanelCapturaVenta extends JPanel {
 	private Usuario user;
 	private Service<Venta> clientes;
 	private Service<Producto> catalogo;
+	private Service<Cliente> clientesService;
 	private List<DetallesVenta> lista;
 	
 	private JPanel topPanel;
@@ -56,10 +54,11 @@ public class PanelCapturaVenta extends JPanel {
 	};
 	private List<String> headers = List.of("Tienda", "Sucursal Zitacuaro", "Telefono: 55-5555-5555", "RFC: ", LocalDate.now().toString());
 	
-	public PanelCapturaVenta(Service<Producto> catalogo, Service<Venta> clientes, Usuario user) {
+	public PanelCapturaVenta(Service<Producto> catalogo, Service<Venta> clientes, Service<Cliente> clientesService, Usuario user) {
 		setLayout(new BorderLayout(0, 0));
 		this.clientes = clientes;
 		this.catalogo = catalogo;
+		this.clientesService = clientesService;
 		this.user = user;
 		
 		lista = new ArrayList<>();
@@ -153,8 +152,13 @@ public class PanelCapturaVenta extends JPanel {
 	
 	public void guardarVenta() {
 		if(lista.isEmpty()) return;
+
+		String cliente = JOptionPane.showInputDialog("Numero de telefono del cliente: ");
+		if(cliente.length() != 10 | !clientesService.exists(cliente)) cliente = "SIN CLIENTE";
+
 		LocalDate fecha = LocalDate.now();
-		Venta venta = new Venta(fecha, lista, user.getUserName());
+		Venta venta = new Venta(fecha, lista, user.getUserName(), cliente);
+
 		lista.forEach(detalle -> 
 			catalogo.get(detalle.getCodigo()).subtractStock(detalle.getCantidad())
 		);

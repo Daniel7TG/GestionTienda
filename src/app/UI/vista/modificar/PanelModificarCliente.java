@@ -20,7 +20,7 @@ public class PanelModificarCliente extends PanelClientes {
         String telefono = txtTelefono.getText();
         String nombre = txtNombre.getText();
         String apellido = txtApellido.getText();
-
+        String tarjeta = txtTarjeta.getText();
         if (telefono.isBlank()) {
             JOptionPane.showMessageDialog(this, "El teléfono no puede estar vacío");
             return;
@@ -35,7 +35,7 @@ public class PanelModificarCliente extends PanelClientes {
             return;
         }
 
-        Cliente cliente = new Cliente(nombre, apellido, telefono);
+        Cliente cliente = new Cliente(nombre, apellido, telefono, tarjeta);
         boolean resultado = clienteService.set(cliente);
         if(resultado) {
         	JOptionPane.showMessageDialog(this, "Cliente modificado");

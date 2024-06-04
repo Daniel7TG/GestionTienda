@@ -319,7 +319,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	
 	
 	public void regVentaFunc() {
-		capturaVentaPane = new PanelCapturaVenta(catalogo, historialVenta, usuarioActual);
+		capturaVentaPane = new PanelCapturaVenta(catalogo, historialVenta, clientes, usuarioActual);
 		panelEncabezados = new PanelEncabezados("Registro de Venta");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
 		guardarButton = panelOpciones.getGuardarButton();
@@ -409,7 +409,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	}
 	
 	private void consCliFunc() {
-		consultarClientesPane = new PanelConsultaCliente(clientes);
+		consultarClientesPane = new PanelConsultaCliente(clientes, historialVenta);
 		panelEncabezados = new PanelEncabezados("Consulta de Clientes");
 		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
 		guardarButton = panelOpciones.getGuardarButton();
@@ -930,6 +930,7 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		panelMenuCompra = null;
 		panelMenuVenta = null;
 		panelMenuEmpleados = null;
+		panelMenuClientes = null;
 		repaint();
 	}
 

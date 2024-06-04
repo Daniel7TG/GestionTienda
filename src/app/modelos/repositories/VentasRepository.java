@@ -44,12 +44,13 @@ public class VentasRepository implements CRUDRepository<Venta> {
 	}
 
 	public int save(Venta venta) {
-		String sql = "INSERT INTO venta(total, fecha, username) VALUES(?, ?, ?)";
+		String sql = "INSERT INTO venta(total, fecha, username, cliente) VALUES(?, ?, ?, ?)";
 		try {
 			pStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pStatement.setDouble(1, venta.getTotal());
 			pStatement.setDate(2, Date.valueOf(venta.getFecha()));
 			pStatement.setString(3, venta.getUserName());
+			pStatement.setString(4, venta.getCliente());
 			pStatement.executeUpdate();
 			resultSet = pStatement.getGeneratedKeys();
 			if(resultSet.next()) return resultSet.getInt(1);
@@ -154,6 +155,29 @@ public class VentasRepository implements CRUDRepository<Venta> {
 	@Override
 	public int saveAll(List<Venta> obj) {
 		return 0;
+	}
+
+	public List<Venta> getByData(String cliente) {
+		String sql = "SELECT venta.*, det.* FROM venta JOIN detalles_venta AS det ON venta.folio = det.folio WHERE venta.cliente = ?";
+		List<Venta> ventas = new ArrayList<Venta>();
+		try {
+			pStatement = connection.prepareStatement(sql);
+			pStatement.setString(1, cliente);
+			resultSet = pStatement.executeQuery();
+			while(resultSet.next()) {
+				int folio = resultSet.getInt("venta.folio");
+				int indexOnList = ventas.indexOf(new Venta(folio));
+				if(indexOnList != -1) {
+					ventas.get(indexOnList).getDetalles().add( MoveResult.toDetallesVenta(resultSet));
+				}
+				else {
+					ventas.add(MoveResult.toVenta(resultSet));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ventas;
 	}
 
 }

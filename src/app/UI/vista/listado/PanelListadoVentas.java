@@ -22,13 +22,14 @@ import app.util.Util;
 public class PanelListadoVentas extends Listado {
 
 
-	private static final LinkedHashMap<String, Integer> columns = new LinkedHashMap<String, Integer>(){
+	public static final LinkedHashMap<String, Integer> columns = new LinkedHashMap<String, Integer>(){
 		{
 			put("Folio", 2);
 			put("Total", 2);
 			put("Fecha", 2);
 			put("Detalles", 6);
 			put("Usuario", 2);
+			put("Cliente", 2);
 		}
 	};
 

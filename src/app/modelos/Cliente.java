@@ -10,23 +10,23 @@ public class Cliente implements Listable {
     private String tarjeta;
 
 
-    public Cliente(String nombre, String apellido, String telefono) {
+    public Cliente(String nombre, String apellido, String telefono, String tarjeta) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
-        generarTarjeta();
+        this.tarjeta = tarjeta;
     }
 
     public Cliente() {
 
     }
 
-    private void generarTarjeta() {
+    public static String generarTarjeta() {
         StringBuilder t = new StringBuilder();
         for(int i = 0; i < 16; i++){
              t.append((int)(Math.random() * 10));
         }
-        this.tarjeta = t.toString();
+        return t.toString();
     }
 
     public String getNombre() {

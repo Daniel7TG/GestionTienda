@@ -83,8 +83,12 @@ public class VentasServiceImp implements Service<Venta> {
 	}
 
 	@Override
-	@Deprecated
+	/**
+	 * @param telCliente
+	 * @return ventas asignadas a un cliente
+	 */
 	public Venta getByData(String obj) {
+
 		return null; 
 	}
 

@@ -125,6 +125,7 @@ public abstract class MoveResult {
 			venta.setTotal(result.getInt("total"));
 			venta.setFecha(result.getDate("fecha").toLocalDate());
 			venta.setUserName(result.getString("username"));
+			venta.setCliente(result.getString("cliente"));
 			venta.getDetalles().add(toDetallesVenta(result));
 		}catch (SQLException e) {
 			e.printStackTrace();

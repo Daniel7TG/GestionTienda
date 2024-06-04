@@ -48,6 +48,8 @@ public class Listado extends JPanel {
     public void update() {
         model.update(service.getAll());
     }
-
+    public void update(List<? extends Listable> data) {
+        model.update(data);
+    }
 
 }

@@ -12,14 +12,15 @@ import app.interfaces.Listable;
 public class Venta extends Transaccion<DetallesVenta> implements Listable {
 
 	private String userName;
-	
+	private String cliente;
 	public Venta(LocalDate fecha, List<DetallesVenta> detalles) {
 		super(fecha, detalles);
 	}
 
-	public Venta(LocalDate fecha, List<DetallesVenta> detalles, String userName) {
+	public Venta(LocalDate fecha, List<DetallesVenta> detalles, String userName, String cliente) {
 		super(fecha, detalles);
 		this.userName = userName;
+		this.cliente = cliente;
 	}
 	
 	public Venta(int folio) {
@@ -36,12 +37,20 @@ public class Venta extends Transaccion<DetallesVenta> implements Listable {
 	public void setUserName(String userName) {
 		this.userName = userName != null ? userName : "UNKNOWN";
 	}
+	public void setCliente(String cliente){
+		this.cliente = cliente != null ? cliente : "UNKNOWN";
+	}
+
+	public String getCliente() {
+		return cliente;
+	}
 
 	@Override
 	public String toString() {
 		return super.toString() + "Venta [folio=" + userName + "]";
 	}
-	
+
+
 	@Override
 	public boolean equals(Object o) {
 		if(o instanceof Venta c)
@@ -51,7 +60,7 @@ public class Venta extends Transaccion<DetallesVenta> implements Listable {
 	
 	@Override
 	public Object[] toRow() {
-		return new Object[] {folio, total, fecha, detalles, userName};
+		return new Object[] {folio, total, fecha, detalles, userName, cliente};
 	}
 	
 }

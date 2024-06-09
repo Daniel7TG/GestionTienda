@@ -185,12 +185,12 @@ public class Util {
 	}
 	
 	
-	public static String generateTicket(List<? extends Detalles> detailsList, Service<Producto> catalogo,  List<String> headers) {
+	public static String generateTicket(List<? extends Detalles> detailsList, Service<Producto> catalogo,  String... headers) {
 		StringBuilder ticket = new StringBuilder("<html>");
 		int space = 60; 
-		ticket.append( centerText(headers.get(0), space, true));
-		for(int i = 1; i < headers.size(); i++) {
-			ticket.append( centerText(headers.get(i), space) );
+		ticket.append( centerText(headers[0], space, true));
+		for(int i = 1; i < headers.length; i++) {
+			ticket.append( centerText(headers[i], space) );
 		}
 		ticket.append("*".repeat(space));
 		ticket.append(formatAny(space, "Codigo", "Nombre", "Cantidad", "Precio", "Total"));

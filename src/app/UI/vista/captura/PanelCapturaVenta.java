@@ -23,6 +23,9 @@ import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +55,8 @@ public class PanelCapturaVenta extends JPanel {
 	private String[] columnNames = {
 		"Codigo", "Cantidad", "Precio", "Total"
 	};
-	private List<String> headers = List.of("Tienda", "Sucursal Zitacuaro", "Telefono: 55-5555-5555", "RFC: ", LocalDate.now().toString());
+	private String[] headers = new String[]{"Tienda", "Sucursal Zitacuaro", "Telefono: 55-5555-5555", "RFC: AAAA0000ASD",
+			LocalDate.now().toString() + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))};
 	
 	public PanelCapturaVenta(Service<Producto> catalogo, Service<Venta> clientes, Service<Cliente> clientesService, Usuario user) {
 		setLayout(new BorderLayout(0, 0));

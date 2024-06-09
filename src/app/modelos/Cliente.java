@@ -65,4 +65,8 @@ public class Cliente implements Listable {
     public Object[] toRow() {
         return new String[]{tarjeta, nombre, apellido, telefono};
     }
+
+    public int compareByName(Cliente cliente) {
+        return this.nombre.compareTo(cliente.getNombre());
+    }
 }

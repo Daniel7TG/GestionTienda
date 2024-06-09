@@ -47,10 +47,13 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -87,8 +90,10 @@ public class PanelCapturaCompra extends JPanel {
 			"Precio", 
 	"Total", 
 	};
-	private List<String> headers = List.of("Registro de compra", LocalDate.now().toString());
-
+	private String[] headers = new String[]{
+			"Registro de compra", LocalDate.now().toString(),
+			LocalDate.now().toString() + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
+};
 	private JLabel lbPrecio;
 	private JLabel lbCantidad;
 	private JLabel lbTotal;
@@ -599,8 +604,9 @@ public class PanelCapturaCompra extends JPanel {
 		LocalDate fecha = LocalDate.now();
 		String rfc = fieldRfc.getText();
 		Compra compra = new Compra(fecha, listaDetalles, rfc);
-		historialCompra.save(compra);
-		showTicket(listaDetalles);
+		int folio = historialCompra.save(compra);
+		compra.setFolio(folio);
+		showTicket(compra);
 		listaDetalles.clear();
 		actualizarTabla();
 		clearProveedor();
@@ -659,10 +665,13 @@ public class PanelCapturaCompra extends JPanel {
 		lockProveedor();
 	}
 
-	public void showTicket(ArrayList<DetallesCompra> lista) {
+	public void showTicket(Compra compra) {
+		List<DetallesCompra> lista = compra.getDetalles();
 		JFrame ticketFrame = new JFrame();
 		ticketFrame.setBounds(0, 0, 500, 750);
-		JLabel textTicket = new JLabel(Util.generateTicket(lista, catalogo, headers), JLabel.CENTER);
+
+		String[] newHeaders = Stream.concat(Arrays.stream(headers), Stream.of("RFC: " + compra.getRfc(), "Folio: " + compra.getFolio())).toArray(String[]::new);
+		JLabel textTicket = new JLabel(Util.generateTicket(lista, catalogo, newHeaders), JLabel.CENTER);
 		textTicket.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		ticketFrame.getContentPane().add(textTicket);
 		ticketFrame.setVisible(true);

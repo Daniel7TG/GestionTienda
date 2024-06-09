@@ -479,16 +479,9 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 	private void listClieFunc() {
 		listadoClientesPane = new PanelListadoClientes(clientes);
 		panelEncabezados = new PanelEncabezados("Listar Clientes");
-		panelOpciones = new PanelOpciones(null, PanelOpciones.BOTH);
-		guardarButton = panelOpciones.getGuardarButton();
+		panelOpciones = new PanelOpciones(null, PanelOpciones.CANCEL);
 		cancelarButton = panelOpciones.getCancelarButton();
-		
-		guardarButton.addActionListener(ec -> {
-		listadoClientesPane.cargarClientes();
-		});
-		cancelarButton.addActionListener(ec -> {
-			cancelButton(panelEncabezados, panelMenuClientes, listadoClientesPane, panelOpciones);
-		});
+		cancelarButton.addActionListener(ec -> cancelButton(panelEncabezados, panelMenuClientes, listadoClientesPane, panelOpciones));
 		panelEncabezados.add(listadoClientesPane, BorderLayout.CENTER);
 		panelEncabezados.add(panelOpciones, BorderLayout.SOUTH);
 		contentPane.add(panelEncabezados, BorderLayout.CENTER);
@@ -503,25 +496,15 @@ public class VentanaPrincipal extends JFrame implements WindowListener {
 		if(panelMenuEmpleados != null) return;
 		panelMenuEmpleados = new PanelMenuEmpleados(usuarioActual);
 		registrarEmpButton = panelMenuEmpleados.getRegistrarButton();
-		registrarEmpButton.addActionListener(e->{
-			regEmpFunc();
-		});
+		registrarEmpButton.addActionListener(e-> regEmpFunc());
 		modificarEmpButton = panelMenuEmpleados.getModificarButton();
-		modificarEmpButton.addActionListener(e->{
-			modifEmpFunc();
-		});
+		modificarEmpButton.addActionListener(e-> modifEmpFunc());
 		eliminarEmpButton = panelMenuEmpleados.getEliminarButton();
-		eliminarEmpButton.addActionListener(e->{
-			elimEmpFunc();
-		});
+		eliminarEmpButton.addActionListener(e-> elimEmpFunc());
 		consultarEmpButton = panelMenuEmpleados.getConsultarButton();
-		consultarEmpButton.addActionListener(e->{
-			consEmpFunc();
-		});		
+		consultarEmpButton.addActionListener(e-> consEmpFunc());
 		listarEmpButton = panelMenuEmpleados.getListarButton();
-		listarEmpButton.addActionListener(e->{
-			listEmpFunc();
-		});
+		listarEmpButton.addActionListener(e-> listEmpFunc());
 		contentPane.add(panelMenuEmpleados, BorderLayout.WEST);
 		revalidate();
 	}
